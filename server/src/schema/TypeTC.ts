@@ -3,6 +3,8 @@ import { composeMongoose } from 'graphql-compose-mongoose';
 import mongoose from 'mongoose';
 import _ from 'lodash';
 
+import { singlePhotoResolver } from '../helpers/photoResolver';
+
 import { ProductTC } from './ProductTC';
 
 export interface TypeDoc extends mongoose.Document {
@@ -15,6 +17,7 @@ const TypeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  photo: String,
 }, {
   timestamps: true,
 });
@@ -47,11 +50,13 @@ export const typeQuery = {
 };
 
 export const typeMutation = {
-  typeCreateOne: TypeTC.mongooseResolvers.createOne(),
-  typeCreateMany: TypeTC.mongooseResolvers.createMany(),
-  typeUpdateById: TypeTC.mongooseResolvers.updateById(),
-  typeUpdateOne: TypeTC.mongooseResolvers.updateOne(),
-  typeUpdateMany: TypeTC.mongooseResolvers.updateMany(),
+  ...singlePhotoResolver({
+    typeCreateOne: TypeTC.mongooseResolvers.createOne(),
+    typeCreateMany: TypeTC.mongooseResolvers.createMany(),
+    typeUpdateById: TypeTC.mongooseResolvers.updateById(),
+    typeUpdateOne: TypeTC.mongooseResolvers.updateOne(),
+    typeUpdateMany: TypeTC.mongooseResolvers.updateMany(),
+  }),
   typeRemoveById: TypeTC.mongooseResolvers.removeById(),
   typeRemoveOne: TypeTC.mongooseResolvers.removeOne(),
   typeRemoveMany: TypeTC.mongooseResolvers.removeMany(),
