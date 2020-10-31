@@ -5,6 +5,8 @@ import _ from 'lodash';
 
 import { ProductTC } from './ProductTC';
 
+import { singlePhotoResolver } from '../helpers/photoResolver';
+
 export interface LocationDoc extends mongoose.Document {
   name: string;
   productRefs: string[];
@@ -15,6 +17,7 @@ const LocationSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  photo: String,
 }, {
   timestamps: true,
 });
@@ -47,11 +50,13 @@ export const locationQuery = {
 };
 
 export const locationMutation = {
-  locationCreateOne: LocationTC.mongooseResolvers.createOne(),
-  locationCreateMany: LocationTC.mongooseResolvers.createMany(),
-  locationUpdateById: LocationTC.mongooseResolvers.updateById(),
-  locationUpdateOne: LocationTC.mongooseResolvers.updateOne(),
-  locationUpdateMany: LocationTC.mongooseResolvers.updateMany(),
+  ...singlePhotoResolver({
+    locationCreateOne: LocationTC.mongooseResolvers.createOne(),
+    locationCreateMany: LocationTC.mongooseResolvers.createMany(),
+    locationUpdateById: LocationTC.mongooseResolvers.updateById(),
+    locationUpdateOne: LocationTC.mongooseResolvers.updateOne(),
+    locationUpdateMany: LocationTC.mongooseResolvers.updateMany(),
+  }),
   locationRemoveById: LocationTC.mongooseResolvers.removeById(),
   locationRemoveOne: LocationTC.mongooseResolvers.removeOne(),
   locationRemoveMany: LocationTC.mongooseResolvers.removeMany(),
