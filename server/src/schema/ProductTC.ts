@@ -124,24 +124,27 @@ const photoResolver = (resolvers: Record<any, any>) => {
       rp.beforeRecordMutate = async (doc: any, rp: any) => {
         const newDoc = doc;
 
-        const buffered = Buffer.from(newDoc.photos[0],'base64')
-        var data = {
-          Bucket: 'grech-store',
-          Key: uuidv4(),
-          Body: buffered,
-          ContentEncoding: 'base64',
-          ContentType: 'image/jpeg'
-        };
+        return Promise.all(newDoc.photos.map((buffer: string) => {
+          const buffered = Buffer.from(buffer,'base64')
 
-        return new Promise((resolve) => {
-          s3.upload(data as S3.PutObjectRequest, (err, data) => {
-            if (err) {
-              throw err;
-            }
-            resolve(data.Location);
+          const data = {
+            Bucket: 'grech-store',
+            Key: uuidv4(),
+            Body: buffered,
+            ContentEncoding: 'base64',
+            ContentType: 'image/jpeg'
+          };
+
+          return new Promise(resolve => {
+            s3.upload(data as S3.PutObjectRequest, (err, data) => {
+              if (err) {
+                throw err;
+              }
+              resolve(data.Location);
+            });
           });
-        }).then((photo) => {
-          newDoc.photos[0] = photo;
+        })).then((photos) => {
+          newDoc.photos = photos;
           return newDoc;
         });
       }
