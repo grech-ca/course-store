@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
@@ -10,15 +10,13 @@ import client from 'startup/apollo';
 import theme from 'startup/theme';
 
 import Routes from 'Routes';
-import Header from 'components/Header';
 
-const App = () => (
+const App: FC = () => (
   <Provider store={store}>
     <ApolloProvider client={client}>
       <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Header />
           <Routes />
         </ThemeProvider>
       </Router>

@@ -24,6 +24,8 @@ const TypeSchema = new mongoose.Schema({
 
 const Type = mongoose.model<TypeDoc>('Type', TypeSchema);
 
+TypeSchema.index({ createdAt: 1, updatedAt: 1 });
+
 export const TypeTC = composeMongoose(Type, {});
 
 TypeTC.addRelation(
@@ -43,8 +45,8 @@ export const typeQuery = {
   typeById: TypeTC.mongooseResolvers.findById(),
   typeByIds: TypeTC.mongooseResolvers.findByIds(),
   typeOne: TypeTC.mongooseResolvers.findOne(),
-  typeMany: TypeTC.mongooseResolvers.findMany(),
-  typeCount: TypeTC.mongooseResolvers.count(),
+  typeMany: TypeTC.mongooseResolvers.findMany({ filter: { operators: true } }),
+  typeCount: TypeTC.mongooseResolvers.count({ filter: { operators: true } }),
   typeConnection: TypeTC.mongooseResolvers.connection(),
   typePagination: TypeTC.mongooseResolvers.pagination(),
 };
@@ -55,9 +57,9 @@ export const typeMutation = {
     typeCreateMany: TypeTC.mongooseResolvers.createMany(),
     typeUpdateById: TypeTC.mongooseResolvers.updateById(),
     typeUpdateOne: TypeTC.mongooseResolvers.updateOne(),
-    typeUpdateMany: TypeTC.mongooseResolvers.updateMany(),
+    typeUpdateMany: TypeTC.mongooseResolvers.updateMany({ filter: { operators: true } }),
   }),
   typeRemoveById: TypeTC.mongooseResolvers.removeById(),
   typeRemoveOne: TypeTC.mongooseResolvers.removeOne(),
-  typeRemoveMany: TypeTC.mongooseResolvers.removeMany(),
+  typeRemoveMany: TypeTC.mongooseResolvers.removeMany({ filter: { operators: true } }),
 };
