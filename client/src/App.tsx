@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import { ApolloProvider } from '@apollo/client';
-import { ThemeProvider } from '@material-ui/core';
+import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 
@@ -11,11 +11,12 @@ import theme from 'startup/theme';
 
 import Routes from 'Routes';
 
-const App = () => (
+const App: FC = () => (
   <Provider store={store}>
     <ApolloProvider client={client}>
       <Router>
         <ThemeProvider theme={theme}>
+          <CssBaseline />
           <Routes />
         </ThemeProvider>
       </Router>

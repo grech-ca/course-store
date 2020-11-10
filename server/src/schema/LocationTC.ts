@@ -22,6 +22,8 @@ const LocationSchema = new mongoose.Schema({
   timestamps: true,
 });
 
+LocationSchema.index({ createdAt: 1, updatedAt: 1 });
+
 const Location = mongoose.model<LocationDoc>('Location', LocationSchema);
 
 export const LocationTC = composeMongoose(Location, {});
@@ -43,8 +45,8 @@ export const locationQuery = {
   locationById: LocationTC.mongooseResolvers.findById(),
   locationByIds: LocationTC.mongooseResolvers.findByIds(),
   locationOne: LocationTC.mongooseResolvers.findOne(),
-  locationMany: LocationTC.mongooseResolvers.findMany(),
-  locationCount: LocationTC.mongooseResolvers.count(),
+  locationMany: LocationTC.mongooseResolvers.findMany({ filter: { operators: true } }),
+  locationCount: LocationTC.mongooseResolvers.count({ filter: { operators: true } }),
   locationConnection: LocationTC.mongooseResolvers.connection(),
   locationPagination: LocationTC.mongooseResolvers.pagination(),
 };
@@ -55,9 +57,9 @@ export const locationMutation = {
     locationCreateMany: LocationTC.mongooseResolvers.createMany(),
     locationUpdateById: LocationTC.mongooseResolvers.updateById(),
     locationUpdateOne: LocationTC.mongooseResolvers.updateOne(),
-    locationUpdateMany: LocationTC.mongooseResolvers.updateMany(),
+    locationUpdateMany: LocationTC.mongooseResolvers.updateMany({ filter: { operators: true } }),
   }),
   locationRemoveById: LocationTC.mongooseResolvers.removeById(),
   locationRemoveOne: LocationTC.mongooseResolvers.removeOne(),
-  locationRemoveMany: LocationTC.mongooseResolvers.removeMany(),
+  locationRemoveMany: LocationTC.mongooseResolvers.removeMany({ filter: { operators: true } }),
 };

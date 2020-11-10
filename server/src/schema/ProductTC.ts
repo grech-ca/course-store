@@ -63,6 +63,8 @@ export const ProductSchema = new mongoose.Schema({
   timestamps: true
 });
 
+ProductSchema.index({ createdAt: 1, updatedAt: 1 });
+
 const Product = mongoose.model<ProductDoc>('Product', ProductSchema);
 
 export const ProductTC = composeMongoose(Product, {});
@@ -87,11 +89,15 @@ ProductTC.addRelation(
 ProductTC.addRelation(
   'type',
   {
-    resolver: () => TypeTC.mongooseResolvers.findById(),
+    resolver: () => TypeTC.mongooseResolvers.findOne(),
     args: {
       filter: (source: any) => ({
-        _id: source.typeRef
-      })
+        _operators: {
+          _id: {
+            equals: source.typeRef
+          }
+        }
+      }) 
     },
     projection: { typeRef: true },
   } as any
@@ -114,13 +120,11 @@ ProductTC.addRelation(
   } as any
 );
 
-ProductTC.removeField(['typeRef', 'materialRefs', 'locationRefs']);
-
 export const productQuery = {
   productById: ProductTC.mongooseResolvers.findById(),
   productByIds: ProductTC.mongooseResolvers.findByIds(),
   productOne: ProductTC.mongooseResolvers.findOne(),
-  productMany: ProductTC.mongooseResolvers.findMany({ filter: { operators: true } }),
+  productMany: ProductTC.mongooseResolvers.findMany({ filter: { operators: true }, sort: { multi: true } }),
   productCount: ProductTC.mongooseResolvers.count({ filter: { operators: true } }),
   productConnection: ProductTC.mongooseResolvers.connection(),
   productPagination: ProductTC.mongooseResolvers.pagination(),

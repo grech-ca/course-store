@@ -25,6 +25,8 @@ const MaterialSchema = new mongoose.Schema({
   timestamps: true
 });
 
+MaterialSchema.index({ createdAt: 1, updatedAt: 1 });
+
 const Material = mongoose.model<MaterialDoc>('Material', MaterialSchema);
 
 export const MaterialTC = composeMongoose(Material, {});
@@ -46,8 +48,8 @@ export const materialQuery = {
   materialById: MaterialTC.mongooseResolvers.findById(),
   materialByIds: MaterialTC.mongooseResolvers.findByIds(),
   materialOne: MaterialTC.mongooseResolvers.findOne(),
-  materialMany: MaterialTC.mongooseResolvers.findMany(),
-  materialCount: MaterialTC.mongooseResolvers.count(),
+  materialMany: MaterialTC.mongooseResolvers.findMany({ filter: { operators: true } }),
+  materialCount: MaterialTC.mongooseResolvers.count({ filter: { operators: true } }),
   materialConnection: MaterialTC.mongooseResolvers.connection(),
   materialPagination: MaterialTC.mongooseResolvers.pagination(),
 };
@@ -57,8 +59,8 @@ export const materialMutation = {
   materialCreateMany: MaterialTC.mongooseResolvers.createMany(),
   materialUpdateById: MaterialTC.mongooseResolvers.updateById(),
   materialUpdateOne: MaterialTC.mongooseResolvers.updateOne(),
-  materialUpdateMany: MaterialTC.mongooseResolvers.updateMany(),
+  materialUpdateMany: MaterialTC.mongooseResolvers.updateMany({ filter: { operators: true } }),
   materialRemoveById: MaterialTC.mongooseResolvers.removeById(),
   materialRemoveOne: MaterialTC.mongooseResolvers.removeOne(),
-  materialRemoveMany: MaterialTC.mongooseResolvers.removeMany(),
+  materialRemoveMany: MaterialTC.mongooseResolvers.removeMany({ filter: { operators: true } }),
 };
