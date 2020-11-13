@@ -1,4 +1,4 @@
-import React, { FC, ChangeEvent } from 'react';
+import React, { FC, useState, ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import {
@@ -18,6 +18,7 @@ import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 
 import useCart from 'hooks/useCart';
+
 import Spacer from 'components/common/Spacer';
 
 export type Props = {
@@ -38,14 +39,13 @@ const useStyles = makeStyles(theme => ({
   media: {
     height: 150,
     width: 150,
-    dislay: 'flex',
+    display: 'flex',
     justifyContent: 'center',
-    aligItems: 'center',
-  },
-  photo: {
-    height: '100%',
-    width: '100%',
-    objectFit: 'cover',
+    alignItems: 'center',
+    color: '#ccc',
+    '& svg': {
+      fontSize: 60,
+    },
   },
   content: {
     flex: 1,
@@ -109,6 +109,14 @@ const CartCard: FC<Props> = ({ _id, name, description, photo, price, type, quant
 
   const { addToCart, setInCartQuantity, decreaseFromCart, removeFromCart } = useCart();
 
+  const [imageLoaded, setImageLoaded] = useState(true);
+
+  const onImageError = () => setImageLoaded(false);
+
+  const validateCount = () => {
+    if (!quantity) setInCartQuantity(_id, 1);
+  };
+
   const handleDelete = () => removeFromCart(_id);
 
   const handleCount = (value: number) => {
@@ -122,15 +130,19 @@ const CartCard: FC<Props> = ({ _id, name, description, photo, price, type, quant
 
     if (newValue && newValue > maxQuantity) return setInCartQuantity(_id, maxQuantity);
 
-    return setInCartQuantity(_id, newValue || 1);
+    return setInCartQuantity(_id, newValue || 0);
   };
 
   return (
     <Card className={classes.card}>
       <CardActionArea className={classes.card}>
-        <CardMedia className={classes.media}>
-          {photo ? <img className={classes.photo} src={photo} alt="" /> : <CameraIcon />}
-        </CardMedia>
+        {imageLoaded && photo ? (
+          <CardMedia component="img" className={classes.media} src={photo || undefined} onError={onImageError} />
+        ) : (
+          <CardMedia className={classes.media}>
+            <CameraIcon />
+          </CardMedia>
+        )}
         <CardContent className={classes.content}>
           <Typography className={classes.name}>
             {name}
@@ -153,7 +165,12 @@ const CartCard: FC<Props> = ({ _id, name, description, photo, price, type, quant
           <IconButton onClick={() => handleCount(-1)} size="small">
             <RemoveIcon />
           </IconButton>
-          <TextField onChange={handleChangeCount} className={classes.quantityValue} value={quantity} />
+          <TextField
+            onBlur={validateCount}
+            onChange={handleChangeCount}
+            className={classes.quantityValue}
+            value={quantity || undefined}
+          />
           <IconButton onClick={() => handleCount(1)} size="small">
             <AddIcon />
           </IconButton>

@@ -21,6 +21,7 @@ import useCart from 'hooks/useCart';
 
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
+import CameraIcon from '@material-ui/icons/CameraAlt';
 
 export interface Props {
   _id: string;
@@ -52,6 +53,13 @@ const useStyles = makeStyles(theme => ({
   media: {
     width: '100%',
     height: 152,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#ccc',
+    '& svg': {
+      fontSize: 60,
+    },
   },
   content: {
     position: 'relative',
@@ -122,8 +130,13 @@ const ProductCard: FC<Props> = ({ _id, name, description, photo, price, cart, on
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [count, setCount] = useState<number | undefined>(1);
+  const [imageLoaded, setImageLoaded] = useState<boolean>(true);
 
   const { findItemInCartById, addToCart } = useCart();
+
+  const onImageError = () => {
+    setImageLoaded(false);
+  };
 
   const handleCart = (e: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
@@ -167,7 +180,13 @@ const ProductCard: FC<Props> = ({ _id, name, description, photo, price, cart, on
       <Box className={classes.wrapper}>
         <Card className={classes.root} onClick={onClick}>
           <CardActionArea className={classes.actionArea}>
-            <CardMedia component="img" className={classes.media} src={photo || undefined} />
+            {imageLoaded && photo ? (
+              <CardMedia component="img" className={classes.media} src={photo || undefined} onError={onImageError} />
+            ) : (
+              <CardMedia className={classes.media}>
+                <CameraIcon />
+              </CardMedia>
+            )}
             <CardContent className={classes.content}>
               <Typography className={clsx(classes.name, classes.limitedText)}>{name}</Typography>
               <Typography className={clsx(classes.description, classes.limitedText)}>{description}</Typography>

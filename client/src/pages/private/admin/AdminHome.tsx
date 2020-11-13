@@ -141,7 +141,7 @@ const AdminHome: FC = () => {
     <Box>
       {recent.length > 0 && (
         <Fragment>
-          <Collapse in={recentOpen} collapsedHeight={recentCount > 4 ? 265 : 160}>
+          <Collapse in={recentOpen} collapsedHeight={recentCount > 4 ? 230 : 160}>
             <Typography className={classes.heading}>Недавние изменения</Typography>
             <Box className={clsx(classes.recentList)}>
               {recent.map(group => (
