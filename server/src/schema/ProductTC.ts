@@ -58,6 +58,10 @@ export const ProductSchema = new mongoose.Schema({
   photos: {
     type: [String],
     required: true,
+  },
+  views: {
+    type: Number,
+    default: 0,
   }
 }, {
   timestamps: true
@@ -141,4 +145,9 @@ export const productMutation = {
   productRemoveById: ProductTC.mongooseResolvers.removeById(),
   productRemoveOne: ProductTC.mongooseResolvers.removeOne(),
   productRemoveMany: ProductTC.mongooseResolvers.removeMany({ filter: { operators: true } }),
+  productIncrementViews: {
+    type: ProductTC,
+    args: { id: 'MongoID!' },
+    resolve: async (source: unknown, args: { id: string }) => await Product.findOneAndUpdate({ _id: args.id }, { $inc : { views : 1 } }, { new: true }),
+  }
 };

@@ -10,6 +10,7 @@ import schema from './schema';
 mongoose.connect('mongodb+srv://admin:admin@portfolio.7lmsj.mongodb.net/course-store?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useFindAndModify: true,
 });
 
 const db = mongoose.connection;
