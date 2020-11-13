@@ -134,7 +134,7 @@ const Cart: FC = () => {
                 photo={photos[0]}
                 price={price}
                 type={type?.name}
-                quantity={findItemInCartById(_id)?.quantity || 0}
+                quantity={Math.min(findItemInCartById(_id)?.quantity || 0, quantity)}
                 maxQuantity={quantity}
               />
             ))}
