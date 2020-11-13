@@ -1,7 +1,17 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC, ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Card, CardMedia, CardContent, CardActions, Box, Typography, IconButton } from '@material-ui/core';
+import {
+  Card,
+  CardMedia,
+  CardActionArea,
+  CardContent,
+  CardActions,
+  Box,
+  Typography,
+  IconButton,
+  TextField,
+} from '@material-ui/core';
 import CameraIcon from '@material-ui/icons/CameraAlt';
 import DeleteIcon from '@material-ui/icons/Delete';
 import RemoveIcon from '@material-ui/icons/Remove';
@@ -17,6 +27,7 @@ export type Props = {
   photo?: string | null;
   price: number;
   quantity: number;
+  maxQuantity: number;
   type?: string;
 };
 
@@ -65,6 +76,10 @@ const useStyles = makeStyles(theme => ({
     fontWeight: 700,
     color: '#555',
     margin: theme.spacing(0, 2),
+    width: 50,
+    '& input': {
+      textAlign: 'center',
+    },
   },
   description: {
     fontSize: 14,
@@ -89,44 +104,57 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const CartCard: FC<Props> = ({ _id, name, description, photo, price, type }) => {
+const CartCard: FC<Props> = ({ _id, name, description, photo, price, type, quantity, maxQuantity }): JSX.Element => {
   const classes = useStyles();
 
-  const { cart } = useCart();
+  const { addToCart, setInCartQuantity, decreaseFromCart, removeFromCart } = useCart();
 
-  const quantityInCart = useMemo<number>(() => cart.find(({ id }: { id: string }) => id === _id)?.quantity || 0, [
-    _id,
-    cart,
-  ]);
+  const handleDelete = () => removeFromCart(_id);
+
+  const handleCount = (value: number) => {
+    if (value < 0) return decreaseFromCart(_id, value);
+
+    addToCart(_id, quantity + value > maxQuantity ? 0 : value);
+  };
+
+  const handleChangeCount = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = Math.abs(parseInt(e.target.value)) || undefined;
+
+    if (newValue && newValue > maxQuantity) return setInCartQuantity(_id, maxQuantity);
+
+    return setInCartQuantity(_id, newValue || 1);
+  };
 
   return (
     <Card className={classes.card}>
-      <CardMedia className={classes.media}>
-        {photo ? <img className={classes.photo} src={photo} alt="" /> : <CameraIcon />}
-      </CardMedia>
-      <CardContent className={classes.content}>
-        <Typography className={classes.name}>
-          {name}
-          {type && (
-            <Typography component="span" className={classes.category}>
-              {type}
-            </Typography>
-          )}
-        </Typography>
-        <Typography className={classes.description}>{description}</Typography>
-        <Spacer />
-        <Typography className={classes.price}>{price} руб.</Typography>
-      </CardContent>
+      <CardActionArea className={classes.card}>
+        <CardMedia className={classes.media}>
+          {photo ? <img className={classes.photo} src={photo} alt="" /> : <CameraIcon />}
+        </CardMedia>
+        <CardContent className={classes.content}>
+          <Typography className={classes.name}>
+            {name}
+            {type && (
+              <Typography component="span" className={classes.category}>
+                {type}
+              </Typography>
+            )}
+          </Typography>
+          <Typography className={classes.description}>{description}</Typography>
+          <Spacer />
+          <Typography className={classes.price}>{price} руб.</Typography>
+        </CardContent>
+      </CardActionArea>
       <CardActions className={classes.actions}>
-        <IconButton>
+        <IconButton onClick={handleDelete}>
           <DeleteIcon />
         </IconButton>
         <Box className={classes.quantity}>
-          <IconButton size="small">
+          <IconButton onClick={() => handleCount(-1)} size="small">
             <RemoveIcon />
           </IconButton>
-          <Typography className={classes.quantityValue}>{quantityInCart}</Typography>
-          <IconButton size="small">
+          <TextField onChange={handleChangeCount} className={classes.quantityValue} value={quantity} />
+          <IconButton onClick={() => handleCount(1)} size="small">
             <AddIcon />
           </IconButton>
         </Box>

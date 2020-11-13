@@ -8,6 +8,7 @@ import useCart, { CartItem } from 'hooks/useCart';
 
 import Layout from 'components/layout/Layout';
 import CartCard from 'components/cart/CartCard';
+import CartPlaceholder from 'components/cart/CartPlaceholder';
 
 import { Product } from 'graphql/types';
 
@@ -124,7 +125,7 @@ const Cart: FC = () => {
         <Typography className={classes.heading}>Корзина</Typography>
         <Box className={classes.wrapper}>
           <Box className={classes.cartItems}>
-            {data?.productByIds.map(({ _id, name, description, photos, price, type }: Product) => (
+            {data?.productByIds.map(({ _id, name, description, photos, price, type, quantity }: Product) => (
               <CartCard
                 key={_id}
                 _id={_id}
@@ -134,8 +135,10 @@ const Cart: FC = () => {
                 price={price}
                 type={type?.name}
                 quantity={findItemInCartById(_id)?.quantity || 0}
+                maxQuantity={quantity}
               />
             ))}
+            {!data?.productByIds.length && <CartPlaceholder />}
           </Box>
           <Box className={classes.sideColumn}>
             <Paper className={classes.form}>

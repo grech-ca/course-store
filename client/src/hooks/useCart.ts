@@ -33,7 +33,7 @@ const useCart = (): Hook => {
     } else {
       newCart.push({
         id,
-        quantity: 1,
+        quantity,
         date: new Date().toISOString(),
       });
     }

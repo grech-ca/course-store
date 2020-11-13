@@ -1,23 +1,24 @@
-import { useState, useEffect, useCallback } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useState, useEffect } from 'react';
 
 // Hook
-const useStorage = <T>(key: string, initialValue: T): [T, (value: T) => void] => {
+const useLocalStorage = <T>(key: string, initialValue: T): [T, (value: T) => void] => {
   // Get from local storage then
   // parse stored json or return initialValue
-  const readValue = useCallback((): T => {
+  const readValue = (): T => {
     // Prevent build error "window is undefined" but keep keep working
     if (typeof window === 'undefined') {
       return initialValue;
     }
     try {
       const item = window.localStorage.getItem(key);
-      if (Array.isArray(item) || typeof item === 'object') return JSON.parse(item as string) as T;
-      return initialValue;
+
+      return item ? (JSON.parse(item) as T) : initialValue;
     } catch (error) {
       console.warn(`Error reading localStorage key “${key}”:`, error);
       return initialValue;
     }
-  }, [initialValue, key]);
+  };
   // State to store our value
   // Pass initial state function to useState so logic is only executed once
   const [storedValue, setStoredValue] = useState<T>(readValue);
@@ -44,7 +45,7 @@ const useStorage = <T>(key: string, initialValue: T): [T, (value: T) => void] =>
   // Read latest value from LocalStorage on hook mount
   useEffect(() => {
     setStoredValue(readValue());
-  }, [readValue]);
+  }, []);
   // Keep all instances hook sync
   useEffect(() => {
     const handleStorageChange = () => {
@@ -60,9 +61,9 @@ const useStorage = <T>(key: string, initialValue: T): [T, (value: T) => void] =>
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('local-storage', handleStorageChange);
     };
-  }, [readValue]);
+  }, []);
 
   return [storedValue, setValue];
 };
 
-export default useStorage;
+export default useLocalStorage;

@@ -1,4 +1,4 @@
-import React, { FC, useState, MouseEvent, Fragment } from 'react';
+import React, { FC, useState, MouseEvent, Fragment, ChangeEvent, FormEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
@@ -95,6 +95,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    width: 220,
   },
   popupTitle: {
     fontWeight: 700,
@@ -107,6 +108,9 @@ const useStyles = makeStyles(theme => ({
   },
   counterValue: {
     margin: theme.spacing(0, 2),
+    '& input': {
+      textAlign: 'center',
+    },
   },
   popupSubmit: {
     width: '100%',
@@ -115,16 +119,47 @@ const useStyles = makeStyles(theme => ({
 
 const ProductCard: FC<Props> = ({ _id, name, description, photo, price, cart, onClick, quantity }) => {
   const classes = useStyles();
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  const { findItemInCartById } = useCart();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [count, setCount] = useState<number | undefined>(1);
+
+  const { findItemInCartById, addToCart } = useCart();
 
   const handleCart = (e: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(e.currentTarget);
+    setCount(1);
+  };
+
+  const handleCount = (value: number) => {
+    const newValue = (count || 0) + value;
+
+    if (newValue < 1) return setCount(1);
+    if (newValue > quantity) return setCount(quantity);
+
+    return setCount(newValue);
+  };
+
+  const validateCount = () => {
+    if (typeof count !== 'number') setCount(1);
+  };
+
+  const handleChangeCount = (e: ChangeEvent<HTMLInputElement>) => {
+    const newValue = Math.abs(parseInt(e.target.value)) || undefined;
+
+    if (newValue && newValue > quantity) return setCount(quantity);
+
+    return setCount(newValue);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleCountSubmit = (e: FormEvent) => {
+    e.preventDefault();
+
+    addToCart(_id, count || 1);
+    handleClose();
   };
 
   return (
@@ -161,21 +196,29 @@ const ProductCard: FC<Props> = ({ _id, name, description, photo, price, cart, on
                 horizontal: 'center',
               }}
             >
-              <Box className={classes.popup}>
+              <form onSubmit={handleCountSubmit} className={classes.popup}>
                 <Typography className={classes.popupTitle}>Добавить в корзину</Typography>
                 <Box className={classes.counter}>
-                  <IconButton size="small">
+                  <IconButton onClick={() => handleCount(-1)} size="small">
                     <RemoveIcon />
                   </IconButton>
-                  <TextField className={classes.counterValue} size="small" variant="outlined" />
-                  <IconButton size="small">
+                  <TextField
+                    onBlur={validateCount}
+                    autoFocus
+                    value={count}
+                    onChange={handleChangeCount}
+                    className={classes.counterValue}
+                    size="small"
+                    variant="outlined"
+                  />
+                  <IconButton onClick={() => handleCount(1)} size="small">
                     <AddIcon />
                   </IconButton>
                 </Box>
-                <Button className={classes.popupSubmit} variant="contained" color="primary">
+                <Button type="submit" className={classes.popupSubmit} variant="contained" color="primary">
                   Добавить
                 </Button>
-              </Box>
+              </form>
             </Popover>
           </Fragment>
         )}
