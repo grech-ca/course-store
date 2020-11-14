@@ -1,7 +1,6 @@
 import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useQuery } from '@apollo/client';
-import { useHistory } from 'react-router-dom';
 
 import { Box, Paper, Typography } from '@material-ui/core';
 
@@ -45,13 +44,7 @@ const useStyles = makeStyles(theme => ({
 const AdminProducts: FC = () => {
   const classes = useStyles();
 
-  const history = useHistory();
-
   const { data } = useQuery<QueryData>(productsQuery);
-
-  const goto = (path: string) => {
-    history.push(path);
-  };
 
   return (
     <Box className={classes.wrapper}>
@@ -65,7 +58,7 @@ const AdminProducts: FC = () => {
             price={price}
             quantity={quantity}
             _id={_id}
-            onClick={() => goto(`/admin/products/${_id as string}`)}
+            path={`/admin/products/${_id as string}`}
           />
         ))}
       </Paper>

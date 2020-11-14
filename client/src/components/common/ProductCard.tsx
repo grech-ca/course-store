@@ -15,6 +15,7 @@ import {
   TextField,
   Button,
 } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 import CartIcon from '@material-ui/icons/ShoppingCart';
 
 import useCart from 'hooks/useCart';
@@ -31,7 +32,7 @@ export interface Props {
   quantity: number;
   description: string;
   cart?: boolean;
-  onClick?: () => void;
+  path?: string;
 }
 
 const useStyles = makeStyles(theme => ({
@@ -125,7 +126,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ProductCard: FC<Props> = ({ _id, name, description, photo, price, cart, onClick, quantity }) => {
+const ProductCard: FC<Props> = ({ _id, name, description, photo, price, cart, path, quantity }) => {
   const classes = useStyles();
 
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -178,8 +179,8 @@ const ProductCard: FC<Props> = ({ _id, name, description, photo, price, cart, on
   return (
     <Badge badgeContent={findItemInCartById(_id)?.quantity} color="error">
       <Box className={classes.wrapper}>
-        <Card className={classes.root} onClick={onClick}>
-          <CardActionArea className={classes.actionArea}>
+        <Card className={classes.root}>
+          <CardActionArea component={Link} to={path ? path : `/product/${_id}`} className={classes.actionArea}>
             {imageLoaded && photo ? (
               <CardMedia component="img" className={classes.media} src={photo || undefined} onError={onImageError} />
             ) : (
