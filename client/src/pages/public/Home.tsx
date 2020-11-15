@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { Container, Typography, Box, Card, CardActionArea, CardMedia, CardContent } from '@material-ui/core';
 
 import Layout from 'components/layout/Layout';
-import ProductCard from 'components/common/ProductCard';
+import ProductCard from 'components/product/ProductCard';
 
 import typesQuery from 'graphql/queries/homeQuery';
 

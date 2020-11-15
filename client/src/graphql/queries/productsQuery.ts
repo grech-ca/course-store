@@ -1,16 +1,14 @@
 import { gql } from '@apollo/client';
 
+import productCardFields from 'graphql/fragments/productCardFields';
+
 const ProductsQuery = gql`
   query ProductsQuery {
     productMany {
-      _id
-      name
-      description
-      price
-      quantity
-      photos
+      ...productCardFields
     }
   }
+  ${productCardFields}
 `;
 
 export default ProductsQuery;

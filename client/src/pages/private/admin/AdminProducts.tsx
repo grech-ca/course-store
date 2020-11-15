@@ -4,7 +4,7 @@ import { useQuery } from '@apollo/client';
 
 import { Box, Paper, Typography } from '@material-ui/core';
 
-import ProductCard from 'components/common/ProductCard';
+import ProductCard from 'components/product/ProductCard';
 
 import productsQuery from 'graphql/queries/productsQuery';
 
