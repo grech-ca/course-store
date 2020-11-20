@@ -15,6 +15,14 @@ const homeQuery = gql`
       price
       quantity
     }
+    locations: locationMany {
+      _id
+      name
+    }
+    categories: typeMany {
+      _id
+      name
+    }
   }
 `;
 

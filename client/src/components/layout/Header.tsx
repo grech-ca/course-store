@@ -1,7 +1,7 @@
 import React, { useMemo, FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { AppBar, Toolbar, Container, Box, Typography, IconButton, Badge } from '@material-ui/core';
+import { AppBar, Toolbar, Box, Typography, IconButton, Badge } from '@material-ui/core';
 import { ShoppingCart, Notifications, AccountCircle } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     alignItems: 'center',
+    width: '100%',
   },
   logo: {
     fontWeight: 900,
@@ -42,27 +43,25 @@ const Header: FC = () => {
   );
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="static">
       <Toolbar>
-        <Container>
-          <Box className={classes.root}>
-            <Typography component={Link} to="/" className={classes.logo}>
-              G-Store
-            </Typography>
-            <Spacer />
-            <IconButton className={classes.iconButton} component={Link} to="/cart">
-              <Badge color="secondary" badgeContent={totalInCart}>
-                <ShoppingCart />
-              </Badge>
-            </IconButton>
-            <IconButton className={classes.iconButton}>
-              <Notifications />
-            </IconButton>
-            <IconButton className={classes.iconButton}>
-              <AccountCircle />
-            </IconButton>
-          </Box>
-        </Container>
+        <Box className={classes.root}>
+          <Typography component={Link} to="/" className={classes.logo}>
+            G-Store
+          </Typography>
+          <Spacer />
+          <IconButton className={classes.iconButton} component={Link} to="/cart">
+            <Badge color="secondary" badgeContent={totalInCart}>
+              <ShoppingCart />
+            </Badge>
+          </IconButton>
+          <IconButton className={classes.iconButton}>
+            <Notifications />
+          </IconButton>
+          <IconButton className={classes.iconButton}>
+            <AccountCircle />
+          </IconButton>
+        </Box>
       </Toolbar>
     </AppBar>
   );

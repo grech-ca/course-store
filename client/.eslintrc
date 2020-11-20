@@ -41,6 +41,7 @@
     "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/ban-ts-ignore": "off",
     "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/unbound-method": "off",
 
     "react/jsx-key": 2,
     "react/display-name": "off",

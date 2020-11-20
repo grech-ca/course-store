@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Paper, Box, Typography, Grid, Divider, IconButton, TextField, Button } from '@material-ui/core';
+import { Paper, Box, Typography, Grid, Divider, IconButton, TextField, Button } from '@material-ui/core';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -139,8 +139,8 @@ const ProductPage: FC = () => {
   }, [_id, makeSeen]);
 
   return (
-    <Layout header>
-      <Container className={classes.wrapper}>
+    <Layout header sidebar>
+      <Box className={classes.wrapper}>
         <Paper className={classes.main}>
           <Grid container spacing={10}>
             <Grid item md={3}>
@@ -203,7 +203,7 @@ const ProductPage: FC = () => {
             ))}
           </Box>
         </Box>
-      </Container>
+      </Box>
     </Layout>
   );
 };
