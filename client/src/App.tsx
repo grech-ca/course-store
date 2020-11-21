@@ -4,6 +4,7 @@ import { ApolloProvider } from '@apollo/client';
 import { ThemeProvider, CssBaseline } from '@material-ui/core';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
 
 import store from 'startup/redux';
 import client from 'startup/apollo';
@@ -17,7 +18,15 @@ const App: FC = () => (
       <Router>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <Routes />
+          <SnackbarProvider
+            maxSnack={7}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'right',
+            }}
+          >
+            <Routes />
+          </SnackbarProvider>
         </ThemeProvider>
       </Router>
     </ApolloProvider>

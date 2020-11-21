@@ -1,4 +1,5 @@
 import useStorage from 'hooks/useStorage';
+import useNotification from 'hooks/useNotification';
 
 export type CartItem = {
   id: string;
@@ -18,11 +19,19 @@ type Hook = {
 const useCart = (): Hook => {
   const [cart, setCart] = useStorage<CartItem[]>('cart-items', []);
 
+  const { notify } = useNotification();
+
   const findItemInCartById = (id: string) => cart.find(({ id: productId }: CartItem) => productId === id);
 
   const addToCart = (id: string, quantity = 1) => {
     const newCart = [...cart] as CartItem[];
     const productIndex = newCart.findIndex(({ id: itemId }: { id: string }) => itemId === id);
+
+    notify({
+      title: 'Корзина',
+      description: 'Товар успешно добавлен!',
+      variant: 'success',
+    });
 
     if (productIndex + 1) {
       newCart.splice(productIndex, productIndex + 1, {
