@@ -1,12 +1,16 @@
 import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+
 import Color from 'color';
 
 import { Box } from '@material-ui/core';
 
 import AdminHeader from 'components/admin/AdminHeader';
 import AdminSidebar from 'components/admin/AdminSidebar';
-import AdminRoutes from 'components/admin/AdminRoutes';
+import AdminRoutes from 'pages/private/admin/AdminRoutes';
+import AdminLogin from 'pages/public/AdminLogin';
+
+import useCredentials from 'hooks/useCredentials';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -41,6 +45,10 @@ const useStyles = makeStyles(theme => ({
 
 const Admin: FC = () => {
   const classes = useStyles();
+
+  const { token } = useCredentials();
+
+  if (!token) return <AdminLogin />;
 
   return (
     <Box className={classes.root}>
