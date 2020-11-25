@@ -1,8 +1,10 @@
 import React, { FC, ReactNode } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 
-import { Grid } from '@material-ui/core';
+import clsx from 'clsx';
+import Color from 'color';
+
+import { Box } from '@material-ui/core';
 
 import Header from 'components/layout/Header';
 import Sidebar from 'components/layout/Sidebar';
@@ -18,21 +20,34 @@ const useStyles = makeStyles(theme => ({
   layout: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'stretch',
     height: '100vh',
-    width: '100%',
   },
   container: {
+    display: 'flex',
+    overflowY: 'auto',
     flex: 1,
   },
   column: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  content: {
     flex: 1,
-  },
-  sidebar: {
-    paddingRight: theme.spacing(3),
-  },
-  page: {
-    // paddingTop: theme.spacing(5),
+    display: 'flex',
+    flexDirection: 'column',
+    padding: theme.spacing(3),
+    overflowY: 'auto',
+    '&::-webkit-scrollbar': {
+      width: theme.spacing(0.75),
+    },
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: Color(theme.palette.primary.light).lighten(0.4).string(),
+    },
+    '&::-webkit-scrollbar-thumb': {
+      borderRadius: 15,
+      width: theme.spacing(0.5),
+      backgroundColor: theme.palette.primary.light,
+    },
   },
 }));
 
@@ -42,16 +57,14 @@ const Layout: FC<Props> = ({ header, sidebar, children }) => {
   return (
     <div className={classes.layout}>
       {header && <Header />}
-      <Grid className={classes.container} container justify={!sidebar ? 'center' : undefined}>
+      <Box className={classes.container}>
         {sidebar && (
-          <Grid className={clsx(classes.column, classes.sidebar)} item md={2}>
+          <Box className={classes.column}>
             <Sidebar />
-          </Grid>
+          </Box>
         )}
-        <Grid className={clsx(classes.column, classes.page)} item md={8}>
-          {children}
-        </Grid>
-      </Grid>
+        <Box className={clsx(classes.column, classes.content)}>{children}</Box>
+      </Box>
     </div>
   );
 };

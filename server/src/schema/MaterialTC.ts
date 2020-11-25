@@ -25,7 +25,8 @@ const MaterialSchema = new mongoose.Schema({
   timestamps: true
 });
 
-MaterialSchema.index({ createdAt: 1, updatedAt: 1 });
+MaterialSchema.index({ createdAt: 1 });
+MaterialSchema.index({ updatedAt: 1 });
 
 const Material = mongoose.model<MaterialDoc>('Material', MaterialSchema);
 
@@ -45,22 +46,16 @@ MaterialTC.addRelation(
 );
 
 export const materialQuery = {
-  materialById: MaterialTC.mongooseResolvers.findById(),
-  materialByIds: MaterialTC.mongooseResolvers.findByIds(),
-  materialOne: MaterialTC.mongooseResolvers.findOne(),
-  materialMany: MaterialTC.mongooseResolvers.findMany({ filter: { operators: true } }),
-  materialCount: MaterialTC.mongooseResolvers.count({ filter: { operators: true } }),
-  materialConnection: MaterialTC.mongooseResolvers.connection(),
-  materialPagination: MaterialTC.mongooseResolvers.pagination(),
+  material: MaterialTC.mongooseResolvers.findById(),
+  materialsById: MaterialTC.mongooseResolvers.findByIds(),
+  materials: MaterialTC.mongooseResolvers.findMany({ filter: { operators: true } }),
+  aggregateMaterial: MaterialTC.mongooseResolvers.count({ filter: { operators: true } }),
 };
 
 export const materialMutation = {
-  materialCreateOne: MaterialTC.mongooseResolvers.createOne(),
-  materialCreateMany: MaterialTC.mongooseResolvers.createMany(),
-  materialUpdateById: MaterialTC.mongooseResolvers.updateById(),
-  materialUpdateOne: MaterialTC.mongooseResolvers.updateOne(),
-  materialUpdateMany: MaterialTC.mongooseResolvers.updateMany({ filter: { operators: true } }),
-  materialRemoveById: MaterialTC.mongooseResolvers.removeById(),
-  materialRemoveOne: MaterialTC.mongooseResolvers.removeOne(),
-  materialRemoveMany: MaterialTC.mongooseResolvers.removeMany({ filter: { operators: true } }),
+  createMaterial: MaterialTC.mongooseResolvers.createOne(),
+  updateMaterial: MaterialTC.mongooseResolvers.updateById(),
+  updateMaterials: MaterialTC.mongooseResolvers.updateMany({ filter: { operators: true } }),
+  removeMaterial: MaterialTC.mongooseResolvers.removeById(),
+  removeMaterials: MaterialTC.mongooseResolvers.removeMany({ filter: { operators: true } }),
 };

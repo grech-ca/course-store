@@ -22,7 +22,8 @@ const LocationSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-LocationSchema.index({ createdAt: 1, updatedAt: 1 });
+LocationSchema.index({ createdAt: 1 });
+LocationSchema.index({ updatedAt: 1 });
 
 const Location = mongoose.model<LocationDoc>('Location', LocationSchema);
 
@@ -42,24 +43,18 @@ LocationTC.addRelation(
 );
 
 export const locationQuery = {
-  locationById: LocationTC.mongooseResolvers.findById(),
-  locationByIds: LocationTC.mongooseResolvers.findByIds(),
-  locationOne: LocationTC.mongooseResolvers.findOne(),
-  locationMany: LocationTC.mongooseResolvers.findMany({ filter: { operators: true } }),
-  locationCount: LocationTC.mongooseResolvers.count({ filter: { operators: true } }),
-  locationConnection: LocationTC.mongooseResolvers.connection(),
-  locationPagination: LocationTC.mongooseResolvers.pagination(),
+  location: LocationTC.mongooseResolvers.findById(),
+  locationsById: LocationTC.mongooseResolvers.findByIds(),
+  locations: LocationTC.mongooseResolvers.findMany({ filter: { operators: true } }),
+  aggregateLocation: LocationTC.mongooseResolvers.count({ filter: { operators: true } }),
 };
 
 export const locationMutation = {
   ...singlePhotoResolver({
-    locationCreateOne: LocationTC.mongooseResolvers.createOne(),
-    locationCreateMany: LocationTC.mongooseResolvers.createMany(),
-    locationUpdateById: LocationTC.mongooseResolvers.updateById(),
-    locationUpdateOne: LocationTC.mongooseResolvers.updateOne(),
-    locationUpdateMany: LocationTC.mongooseResolvers.updateMany({ filter: { operators: true } }),
+    createLocation: LocationTC.mongooseResolvers.createOne(),
+    updateLocation: LocationTC.mongooseResolvers.updateById(),
+    updateLocations: LocationTC.mongooseResolvers.updateMany({ filter: { operators: true } }),
   }),
-  locationRemoveById: LocationTC.mongooseResolvers.removeById(),
-  locationRemoveOne: LocationTC.mongooseResolvers.removeOne(),
-  locationRemoveMany: LocationTC.mongooseResolvers.removeMany({ filter: { operators: true } }),
+  removeLocation: LocationTC.mongooseResolvers.removeById(),
+  removeLocations: LocationTC.mongooseResolvers.removeMany({ filter: { operators: true } }),
 };

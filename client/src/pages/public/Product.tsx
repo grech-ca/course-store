@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Paper, Box, Typography, Grid, Divider, IconButton, TextField, Button } from '@material-ui/core';
+import { Paper, Box, Typography, Divider, IconButton, TextField, Button } from '@material-ui/core';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 
@@ -13,17 +13,23 @@ import Layout from 'components/layout/Layout';
 import ProductGallery from 'components/product/ProductGallery';
 import ProductCard from 'components/product/ProductCard';
 
-import { Product } from 'graphql/types';
+import { Product } from 'graphql/generated';
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
     display: 'flex',
-    padding: theme.spacing(2, 0),
   },
   main: {
-    flex: 5,
+    flex: 6,
     padding: theme.spacing(2),
     display: 'flex',
+  },
+  content: {
+    flex: 1,
+    marginLeft: theme.spacing(3),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
   },
   secondary: {
     flex: 1,
@@ -100,8 +106,8 @@ const ProductPage: FC = () => {
 
   const { makeSeen } = useViews();
   const { addToCart } = useCart();
-  const { data, recommended } = useProduct();
-  const { _id, name, type, description, quantity, price, photos = [] } = data || {};
+  const { product, recommended } = useProduct();
+  const { _id, name, category, description, quantity, price, photos = [] } = product || {};
 
   const handleCount = (value: number) => {
     if (!quantity) return;
@@ -142,50 +148,46 @@ const ProductPage: FC = () => {
     <Layout header sidebar>
       <Box className={classes.wrapper}>
         <Paper className={classes.main}>
-          <Grid container spacing={10}>
-            <Grid item md={3}>
-              <ProductGallery photos={photos} />
-            </Grid>
-            <Grid item md={9}>
-              <Box className={classes.heading}>
-                <Typography className={classes.name}>{name}</Typography>
-                {type && (
-                  <Typography component="span" className={classes.category}>
-                    {type.name}
-                  </Typography>
-                )}
+          <ProductGallery photos={photos} />
+          <Box className={classes.content}>
+            <Box className={classes.heading}>
+              <Typography className={classes.name}>{name}</Typography>
+              {category && (
+                <Typography component="span" className={classes.category}>
+                  {category.name}
+                </Typography>
+              )}
+            </Box>
+            <Divider className={classes.divider} />
+            <Typography className={classes.price}>{price} руб.</Typography>
+            <Typography>Количество:</Typography>
+            <Box component="form" onSubmit={handleCountSubmit} className={classes.form}>
+              <Box className={classes.counter}>
+                <IconButton size="small" onClick={() => handleCount(-1)}>
+                  <RemoveIcon />
+                </IconButton>
+                <TextField
+                  className={classes.counterValue}
+                  onBlur={validateCount}
+                  value={count}
+                  onChange={handleChangeCount}
+                />
+                <IconButton size="small" onClick={() => handleCount(1)}>
+                  <AddIcon />
+                </IconButton>
+                <Typography className={classes.quantity}>{quantity} шт.</Typography>
               </Box>
-              <Divider className={classes.divider} />
-              <Typography className={classes.price}>{price} руб.</Typography>
-              <Typography>Количество:</Typography>
-              <Box component="form" onSubmit={handleCountSubmit} className={classes.form}>
-                <Box className={classes.counter}>
-                  <IconButton size="small" onClick={() => handleCount(-1)}>
-                    <RemoveIcon />
-                  </IconButton>
-                  <TextField
-                    className={classes.counterValue}
-                    onBlur={validateCount}
-                    value={count}
-                    onChange={handleChangeCount}
-                  />
-                  <IconButton size="small" onClick={() => handleCount(1)}>
-                    <AddIcon />
-                  </IconButton>
-                  <Typography className={classes.quantity}>{quantity} шт.</Typography>
-                </Box>
-                <Box className={classes.actions}>
-                  <Button variant="contained" color="secondary" className={classes.button}>
-                    Купить сейчас
-                  </Button>
-                  <Button type="submit" variant="contained" color="primary" className={classes.button}>
-                    Добавить в корзину
-                  </Button>
-                </Box>
+              <Box className={classes.actions}>
+                <Button variant="contained" color="secondary" className={classes.button}>
+                  Купить сейчас
+                </Button>
+                <Button type="submit" variant="contained" color="primary" className={classes.button}>
+                  Добавить в корзину
+                </Button>
               </Box>
-              <Typography>{description}</Typography>
-            </Grid>
-          </Grid>
+            </Box>
+            <Typography>{description}</Typography>
+          </Box>
         </Paper>
         <Box className={classes.secondary}>
           <Box className={classes.recommended}>

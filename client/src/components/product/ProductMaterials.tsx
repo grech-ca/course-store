@@ -7,7 +7,7 @@ import { MaterialsDictionary } from 'helpers/constants';
 
 import ProductChip from 'components/product/ProductChip';
 
-import { Material } from 'graphql/types';
+import { Material } from 'graphql/generated';
 
 type Props = {
   materials: Material[];

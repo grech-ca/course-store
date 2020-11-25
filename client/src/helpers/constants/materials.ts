@@ -1,4 +1,4 @@
-import { EnumMaterialType as Materials } from 'graphql/types';
+import { EnumMaterialType as Materials } from 'graphql/generated';
 
 type MaterialColors = {
   color: string;

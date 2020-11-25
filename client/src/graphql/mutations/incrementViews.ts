@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 const incrementViews = gql`
   mutation incrementViews($id: MongoID!) {
-    productIncrementViews(id: $id) {
+    incrementProductViews(id: $id) {
       _id
       name
       views

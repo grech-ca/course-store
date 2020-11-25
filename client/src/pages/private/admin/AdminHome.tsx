@@ -95,19 +95,19 @@ const AdminHome: FC = () => {
       let section;
       let path;
       switch (key) {
-        case 'typeMany':
+        case 'categories':
           section = 'Типы мебели';
           path = '/types';
           break;
-        case 'locationMany':
+        case 'locations':
           section = 'Комнаты';
           path = '/rooms';
           break;
-        case 'materialMany':
+        case 'materials':
           section = 'Материалы';
           path = '/materials';
           break;
-        case 'productMany':
+        case 'products':
           section = 'Мебель';
           path = '/product';
       }

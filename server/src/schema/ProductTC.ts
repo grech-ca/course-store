@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 import 'dotenv';
 
 import { MaterialTC } from './MaterialTC';
-import { TypeTC } from './TypeTC';
+import { CategoryTC } from './CategoryTC';
 import { LocationTC } from './LocationTC';
 
 import { multiplePhotoResolver } from '../helpers/photoResolver';
@@ -13,7 +13,7 @@ import { multiplePhotoResolver } from '../helpers/photoResolver';
 export interface ProductDoc extends mongoose.Document {
   name: string;
   description: string;
-  typeRefs: string[];
+  categoryRefs: string[];
   locations: string[];
   materialRefs: string[];
   price: number;
@@ -30,9 +30,9 @@ export const ProductSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  typeRef: {
+  categoryRef: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Type',
+    ref: 'Category',
     default: "",
   },
   locationRefs: {
@@ -67,7 +67,10 @@ export const ProductSchema = new mongoose.Schema({
   timestamps: true
 });
 
-ProductSchema.index({ createdAt: 1, updatedAt: 1 });
+ProductSchema.index({ createdAt: 1 });
+ProductSchema.index({ updatedAt: 1 });
+ProductSchema.index({ price: 1 });
+ProductSchema.index({ quantity: 1 });
 
 const Product = mongoose.model<ProductDoc>('Product', ProductSchema);
 
@@ -91,19 +94,19 @@ ProductTC.addRelation(
 );
 
 ProductTC.addRelation(
-  'type',
+  'category',
   {
-    resolver: () => TypeTC.mongooseResolvers.findOne(),
+    resolver: () => CategoryTC.mongooseResolvers.findOne(),
     args: {
       filter: (source: any) => ({
         _operators: {
           _id: {
-            equals: source.typeRef
+            equals: source.categoryRef
           }
         }
       }) 
     },
-    projection: { typeRef: true },
+    projection: { categoryRef: true },
   } as any
 );
 
@@ -125,27 +128,21 @@ ProductTC.addRelation(
 );
 
 export const productQuery = {
-  productById: ProductTC.mongooseResolvers.findById(),
-  productByIds: ProductTC.mongooseResolvers.findByIds(),
-  productOne: ProductTC.mongooseResolvers.findOne(),
-  productMany: ProductTC.mongooseResolvers.findMany({ filter: { operators: true }, sort: { multi: true } }),
-  productCount: ProductTC.mongooseResolvers.count({ filter: { operators: true } }),
-  productConnection: ProductTC.mongooseResolvers.connection(),
-  productPagination: ProductTC.mongooseResolvers.pagination(),
+  product: ProductTC.mongooseResolvers.findById(),
+  productsById: ProductTC.mongooseResolvers.findByIds(),
+  products: ProductTC.mongooseResolvers.findMany({ filter: { operators: true }, sort: { multi: true } }),
+  productsPagination: ProductTC.mongooseResolvers.pagination({ findManyOpts: { filter: { operators: true } }, countOpts: { filter: { operators: true } }}),
 };
 
 export const productMutation = {
   ...multiplePhotoResolver({
-    productCreateOne: ProductTC.mongooseResolvers.createOne(),
-    productCreateMany: ProductTC.mongooseResolvers.createMany(),
-    productUpdateById: ProductTC.mongooseResolvers.updateById(),
-    productUpdateOne: ProductTC.mongooseResolvers.updateOne(),
-    productUpdateMany: ProductTC.mongooseResolvers.updateMany({ filter: { operators: true } }),
+    createProduct: ProductTC.mongooseResolvers.createOne(),
+    updateProduct: ProductTC.mongooseResolvers.updateById(),
+    updateProducts: ProductTC.mongooseResolvers.updateMany({ filter: { operators: true } }),
   }),
-  productRemoveById: ProductTC.mongooseResolvers.removeById(),
-  productRemoveOne: ProductTC.mongooseResolvers.removeOne(),
-  productRemoveMany: ProductTC.mongooseResolvers.removeMany({ filter: { operators: true } }),
-  productIncrementViews: {
+  removeProduct: ProductTC.mongooseResolvers.removeById(),
+  removeProducts: ProductTC.mongooseResolvers.removeMany({ filter: { operators: true } }),
+  incrementProductViews: {
     type: ProductTC,
     args: { id: 'MongoID!' },
     resolve: async (source: unknown, args: { id: string }) => await Product.findOneAndUpdate({ _id: args.id }, { $inc : { views : 1 } }, { new: true }),

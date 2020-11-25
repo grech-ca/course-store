@@ -62,8 +62,8 @@ const useStyles = makeStyles(theme => ({
 const AdminProduct: FC = () => {
   const classes = useStyles();
 
-  const { data } = useProduct({ admin: true });
-  const { photos = [] } = data || {};
+  const { product } = useProduct({ admin: true });
+  const { photos = [] } = product || {};
 
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -72,13 +72,13 @@ const AdminProduct: FC = () => {
   const [material] = useState<string[]>([]);
 
   useEffect(() => {
-    if (data) {
-      setName(data.name);
-      setDescription(data.description);
-      setQuantity(data.quantity);
-      setPrice(data.price);
+    if (product) {
+      setName(product.name);
+      setDescription(product.description);
+      setQuantity(product.quantity);
+      setPrice(product.price);
     }
-  }, [data]);
+  }, [product]);
 
   const handleName = (e: ChangeEvent<HTMLInputElement>) => {
     setName(e.target.value);

@@ -6,7 +6,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import AdminHome from 'pages/private/admin/AdminHome';
 import AdminCategories from 'pages/private/admin/AdminCategories';
-import AdminProducts from 'pages/private/admin/AdminProducts';
+import Products from 'components/product/Products';
 import AdminProduct from 'pages/private/admin/AdminProduct';
 
 const ADMIN_PATH = '/admin/';
@@ -28,7 +28,7 @@ const AdminRoutes: FC = () => {
       <Switch>
         <Route exact path={ADMIN_PATH} component={AdminHome} />
         <Route path={`${ADMIN_PATH}categories`} component={AdminCategories} />
-        <Route exact path={`${ADMIN_PATH}products`} component={AdminProducts} />
+        <Route exact path={`${ADMIN_PATH}products`} component={Products} />
         <Route path={`${ADMIN_PATH}products/:id`} component={AdminProduct} />
       </Switch>
     </Fragment>

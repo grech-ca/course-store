@@ -1,3 +1,5 @@
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** All built-in and custom scalars, mapped to their actual values */
@@ -41,6 +43,7 @@ export type ValidatorError = {
   idx: Scalars['Int'];
 };
 
+
 export type MongoError = ErrorInterface & {
   __typename?: 'MongoError';
   /** MongoDB error message */
@@ -57,225 +60,153 @@ export type RuntimeError = ErrorInterface & {
 
 export type Query = {
   __typename?: 'Query';
-  productById?: Maybe<Product>;
-  productByIds: Array<Product>;
-  productOne?: Maybe<Product>;
-  productMany: Array<Product>;
-  productCount?: Maybe<Scalars['Int']>;
-  productConnection?: Maybe<ProductConnection>;
-  productPagination?: Maybe<ProductPagination>;
-  materialById?: Maybe<Material>;
-  materialByIds: Array<Material>;
-  materialOne?: Maybe<Material>;
-  materialMany: Array<Material>;
-  materialCount?: Maybe<Scalars['Int']>;
-  materialConnection?: Maybe<MaterialConnection>;
-  materialPagination?: Maybe<MaterialPagination>;
-  typeById?: Maybe<Type>;
-  typeByIds: Array<Type>;
-  typeOne?: Maybe<Type>;
-  typeMany: Array<Type>;
-  typeCount?: Maybe<Scalars['Int']>;
-  typeConnection?: Maybe<TypeConnection>;
-  typePagination?: Maybe<TypePagination>;
-  locationById?: Maybe<Location>;
-  locationByIds: Array<Location>;
-  locationOne?: Maybe<Location>;
-  locationMany: Array<Location>;
-  locationCount?: Maybe<Scalars['Int']>;
-  locationConnection?: Maybe<LocationConnection>;
-  locationPagination?: Maybe<LocationPagination>;
+  product?: Maybe<Product>;
+  productsById: Array<Product>;
+  products: Array<Product>;
+  productsPagination?: Maybe<ProductPagination>;
+  material?: Maybe<Material>;
+  materialsById: Array<Material>;
+  materials: Array<Material>;
+  aggregateMaterial?: Maybe<Scalars['Int']>;
+  category?: Maybe<Type>;
+  categoriesById: Array<Type>;
+  categories: Array<Type>;
+  aggregateCategory?: Maybe<Scalars['Int']>;
+  location?: Maybe<Location>;
+  locationsById: Array<Location>;
+  locations: Array<Location>;
+  aggregateLocation?: Maybe<Scalars['Int']>;
+  login?: Maybe<User>;
 };
 
-export type QueryProductByIdArgs = {
+
+export type QueryProductArgs = {
   _id: Scalars['MongoID'];
 };
 
-export type QueryProductByIdsArgs = {
+
+export type QueryProductsByIdArgs = {
   _ids: Array<Scalars['MongoID']>;
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindByIdsProductInput>;
 };
 
-export type QueryProductOneArgs = {
-  filter?: Maybe<FilterFindOneProductInput>;
-  skip?: Maybe<Scalars['Int']>;
-  sort?: Maybe<SortFindOneProductInput>;
-};
 
-export type QueryProductManyArgs = {
+export type QueryProductsArgs = {
   filter?: Maybe<FilterFindManyProductInput>;
   skip?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<Array<SortFindManyProductInput>>;
 };
 
-export type QueryProductCountArgs = {
-  filter?: Maybe<FilterCountProductInput>;
-};
 
-export type QueryProductConnectionArgs = {
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  filter?: Maybe<FilterFindManyProductInput>;
-  sort?: Maybe<SortConnectionProductEnum>;
-};
-
-export type QueryProductPaginationArgs = {
+export type QueryProductsPaginationArgs = {
   page?: Maybe<Scalars['Int']>;
   perPage?: Maybe<Scalars['Int']>;
   filter?: Maybe<FilterFindManyProductInput>;
   sort?: Maybe<SortFindManyProductInput>;
 };
 
-export type QueryMaterialByIdArgs = {
+
+export type QueryMaterialArgs = {
   _id: Scalars['MongoID'];
 };
 
-export type QueryMaterialByIdsArgs = {
+
+export type QueryMaterialsByIdArgs = {
   _ids: Array<Scalars['MongoID']>;
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindByIdsMaterialInput>;
 };
 
-export type QueryMaterialOneArgs = {
-  filter?: Maybe<FilterFindOneMaterialInput>;
-  skip?: Maybe<Scalars['Int']>;
-  sort?: Maybe<SortFindOneMaterialInput>;
-};
 
-export type QueryMaterialManyArgs = {
+export type QueryMaterialsArgs = {
   filter?: Maybe<FilterFindManyMaterialInput>;
   skip?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindManyMaterialInput>;
 };
 
-export type QueryMaterialCountArgs = {
+
+export type QueryAggregateMaterialArgs = {
   filter?: Maybe<FilterCountMaterialInput>;
 };
 
-export type QueryMaterialConnectionArgs = {
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  filter?: Maybe<FilterFindManyMaterialInput>;
-  sort?: Maybe<SortConnectionMaterialEnum>;
-};
 
-export type QueryMaterialPaginationArgs = {
-  page?: Maybe<Scalars['Int']>;
-  perPage?: Maybe<Scalars['Int']>;
-  filter?: Maybe<FilterFindManyMaterialInput>;
-  sort?: Maybe<SortFindManyMaterialInput>;
-};
-
-export type QueryTypeByIdArgs = {
+export type QueryCategoryArgs = {
   _id: Scalars['MongoID'];
 };
 
-export type QueryTypeByIdsArgs = {
+
+export type QueryCategoriesByIdArgs = {
   _ids: Array<Scalars['MongoID']>;
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindByIdsTypeInput>;
 };
 
-export type QueryTypeOneArgs = {
-  filter?: Maybe<FilterFindOneTypeInput>;
-  skip?: Maybe<Scalars['Int']>;
-  sort?: Maybe<SortFindOneTypeInput>;
-};
 
-export type QueryTypeManyArgs = {
+export type QueryCategoriesArgs = {
   filter?: Maybe<FilterFindManyTypeInput>;
   skip?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindManyTypeInput>;
 };
 
-export type QueryTypeCountArgs = {
+
+export type QueryAggregateCategoryArgs = {
   filter?: Maybe<FilterCountTypeInput>;
 };
 
-export type QueryTypeConnectionArgs = {
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  filter?: Maybe<FilterFindManyTypeInput>;
-  sort?: Maybe<SortConnectionTypeEnum>;
-};
 
-export type QueryTypePaginationArgs = {
-  page?: Maybe<Scalars['Int']>;
-  perPage?: Maybe<Scalars['Int']>;
-  filter?: Maybe<FilterFindManyTypeInput>;
-  sort?: Maybe<SortFindManyTypeInput>;
-};
-
-export type QueryLocationByIdArgs = {
+export type QueryLocationArgs = {
   _id: Scalars['MongoID'];
 };
 
-export type QueryLocationByIdsArgs = {
+
+export type QueryLocationsByIdArgs = {
   _ids: Array<Scalars['MongoID']>;
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindByIdsLocationInput>;
 };
 
-export type QueryLocationOneArgs = {
-  filter?: Maybe<FilterFindOneLocationInput>;
-  skip?: Maybe<Scalars['Int']>;
-  sort?: Maybe<SortFindOneLocationInput>;
-};
 
-export type QueryLocationManyArgs = {
+export type QueryLocationsArgs = {
   filter?: Maybe<FilterFindManyLocationInput>;
   skip?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindManyLocationInput>;
 };
 
-export type QueryLocationCountArgs = {
+
+export type QueryAggregateLocationArgs = {
   filter?: Maybe<FilterCountLocationInput>;
 };
 
-export type QueryLocationConnectionArgs = {
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  filter?: Maybe<FilterFindManyLocationInput>;
-  sort?: Maybe<SortConnectionLocationEnum>;
-};
 
-export type QueryLocationPaginationArgs = {
-  page?: Maybe<Scalars['Int']>;
-  perPage?: Maybe<Scalars['Int']>;
-  filter?: Maybe<FilterFindManyLocationInput>;
-  sort?: Maybe<SortFindManyLocationInput>;
+export type QueryLoginArgs = {
+  login?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
 };
 
 export type Product = {
   __typename?: 'Product';
   name: Scalars['String'];
   description: Scalars['String'];
-  typeRef?: Maybe<Scalars['MongoID']>;
+  categoryRef?: Maybe<Scalars['MongoID']>;
   locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   price: Scalars['Float'];
   quantity: Scalars['Float'];
   photos: Array<Maybe<Scalars['String']>>;
+  views?: Maybe<Scalars['Float']>;
   _id: Scalars['MongoID'];
   updatedAt?: Maybe<Scalars['Date']>;
   createdAt?: Maybe<Scalars['Date']>;
   materials: Array<Material>;
-  type?: Maybe<Type>;
+  category?: Maybe<Type>;
   locations: Array<Location>;
 };
+
 
 export type ProductMaterialsArgs = {
   filter?: Maybe<FilterFindManyMaterialInput>;
@@ -284,11 +215,13 @@ export type ProductMaterialsArgs = {
   sort?: Maybe<SortFindManyMaterialInput>;
 };
 
-export type ProductTypeArgs = {
+
+export type ProductCategoryArgs = {
   filter?: Maybe<FilterFindOneTypeInput>;
   skip?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindOneTypeInput>;
 };
+
 
 export type ProductLocationsArgs = {
   filter?: Maybe<FilterFindManyLocationInput>;
@@ -296,6 +229,8 @@ export type ProductLocationsArgs = {
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindManyLocationInput>;
 };
+
+
 
 export type Material = {
   __typename?: 'Material';
@@ -306,6 +241,7 @@ export type Material = {
   createdAt?: Maybe<Scalars['Date']>;
   products: Array<Product>;
 };
+
 
 export type MaterialProductsArgs = {
   filter?: Maybe<FilterFindManyProductInput>;
@@ -321,18 +257,19 @@ export enum EnumMaterialType {
   Glass = 'glass',
   Ceramic = 'ceramic',
   Fabric = 'fabric',
-  Stone = 'stone',
+  Stone = 'stone'
 }
 
 export type FilterFindManyProductInput = {
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  typeRef?: Maybe<Scalars['MongoID']>;
+  categoryRef?: Maybe<Scalars['MongoID']>;
   locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   price?: Maybe<Scalars['Float']>;
   quantity?: Maybe<Scalars['Float']>;
   photos?: Maybe<Array<Maybe<Scalars['String']>>>;
+  views?: Maybe<Scalars['Float']>;
   _id?: Maybe<Scalars['MongoID']>;
   updatedAt?: Maybe<Scalars['Date']>;
   createdAt?: Maybe<Scalars['Date']>;
@@ -346,12 +283,13 @@ export type FilterFindManyProductInput = {
 export type FilterFindManyProductOperatorsInput = {
   name?: Maybe<FilterFindManyProductNameOperatorsInput>;
   description?: Maybe<FilterFindManyProductDescriptionOperatorsInput>;
-  typeRef?: Maybe<FilterFindManyProductTypeRefOperatorsInput>;
+  categoryRef?: Maybe<FilterFindManyProductCategoryRefOperatorsInput>;
   locationRefs?: Maybe<FilterFindManyProductLocationRefsOperatorsInput>;
   materialRefs?: Maybe<FilterFindManyProductMaterialRefsOperatorsInput>;
   price?: Maybe<FilterFindManyProductPriceOperatorsInput>;
   quantity?: Maybe<FilterFindManyProductQuantityOperatorsInput>;
   photos?: Maybe<FilterFindManyProductPhotosOperatorsInput>;
+  views?: Maybe<FilterFindManyProductViewsOperatorsInput>;
   _id?: Maybe<FilterFindManyProduct_IdOperatorsInput>;
   updatedAt?: Maybe<FilterFindManyProductUpdatedAtOperatorsInput>;
   createdAt?: Maybe<FilterFindManyProductCreatedAtOperatorsInput>;
@@ -369,6 +307,7 @@ export type FilterFindManyProductNameOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
+
 export type FilterFindManyProductDescriptionOperatorsInput = {
   gt?: Maybe<Scalars['String']>;
   gte?: Maybe<Scalars['String']>;
@@ -381,7 +320,7 @@ export type FilterFindManyProductDescriptionOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
-export type FilterFindManyProductTypeRefOperatorsInput = {
+export type FilterFindManyProductCategoryRefOperatorsInput = {
   gt?: Maybe<Scalars['MongoID']>;
   gte?: Maybe<Scalars['MongoID']>;
   lt?: Maybe<Scalars['MongoID']>;
@@ -448,6 +387,17 @@ export type FilterFindManyProductPhotosOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
+export type FilterFindManyProductViewsOperatorsInput = {
+  gt?: Maybe<Scalars['Float']>;
+  gte?: Maybe<Scalars['Float']>;
+  lt?: Maybe<Scalars['Float']>;
+  lte?: Maybe<Scalars['Float']>;
+  ne?: Maybe<Scalars['Float']>;
+  in?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
 export type FilterFindManyProduct_IdOperatorsInput = {
   gt?: Maybe<Scalars['MongoID']>;
   gte?: Maybe<Scalars['MongoID']>;
@@ -486,8 +436,12 @@ export enum SortFindManyProductInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC',
+  PriceAsc = 'PRICE_ASC',
+  PriceDesc = 'PRICE_DESC',
+  QuantityAsc = 'QUANTITY_ASC',
+  QuantityDesc = 'QUANTITY_DESC'
 }
 
 export type FilterFindManyMaterialInput = {
@@ -572,8 +526,8 @@ export enum SortFindManyMaterialInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC'
 }
 
 export type Type = {
@@ -585,6 +539,7 @@ export type Type = {
   createdAt?: Maybe<Scalars['Date']>;
   products: Array<Product>;
 };
+
 
 export type TypeProductsArgs = {
   filter?: Maybe<FilterFindManyProductInput>;
@@ -608,6 +563,7 @@ export type FilterFindOneTypeInput = {
 /** For performance reason this type contains only *indexed* fields. */
 export type FilterFindOneTypeOperatorsInput = {
   _id?: Maybe<FilterFindOneType_IdOperatorsInput>;
+  updatedAt?: Maybe<FilterFindOneTypeUpdatedAtOperatorsInput>;
   createdAt?: Maybe<FilterFindOneTypeCreatedAtOperatorsInput>;
 };
 
@@ -619,6 +575,17 @@ export type FilterFindOneType_IdOperatorsInput = {
   ne?: Maybe<Scalars['MongoID']>;
   in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindOneTypeUpdatedAtOperatorsInput = {
+  gt?: Maybe<Scalars['Date']>;
+  gte?: Maybe<Scalars['Date']>;
+  lt?: Maybe<Scalars['Date']>;
+  lte?: Maybe<Scalars['Date']>;
+  ne?: Maybe<Scalars['Date']>;
+  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
   exists?: Maybe<Scalars['Boolean']>;
 };
 
@@ -638,8 +605,8 @@ export enum SortFindOneTypeInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC'
 }
 
 export type Location = {
@@ -651,6 +618,7 @@ export type Location = {
   createdAt?: Maybe<Scalars['Date']>;
   products: Array<Product>;
 };
+
 
 export type LocationProductsArgs = {
   filter?: Maybe<FilterFindManyProductInput>;
@@ -742,8 +710,8 @@ export enum SortFindManyLocationInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC'
 }
 
 export enum SortFindByIdsProductInput {
@@ -751,258 +719,12 @@ export enum SortFindByIdsProductInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
-
-export type FilterFindOneProductInput = {
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  typeRef?: Maybe<Scalars['MongoID']>;
-  locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  price?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-  photos?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterFindOneProductOperatorsInput>;
-  OR?: Maybe<Array<FilterFindOneProductInput>>;
-  AND?: Maybe<Array<FilterFindOneProductInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterFindOneProductOperatorsInput = {
-  _id?: Maybe<FilterFindOneProduct_IdOperatorsInput>;
-  createdAt?: Maybe<FilterFindOneProductCreatedAtOperatorsInput>;
-};
-
-export type FilterFindOneProduct_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterFindOneProductCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortFindOneProductInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
-
-export type FilterCountProductInput = {
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  typeRef?: Maybe<Scalars['MongoID']>;
-  locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  price?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-  photos?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterCountProductOperatorsInput>;
-  OR?: Maybe<Array<FilterCountProductInput>>;
-  AND?: Maybe<Array<FilterCountProductInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterCountProductOperatorsInput = {
-  name?: Maybe<FilterCountProductNameOperatorsInput>;
-  description?: Maybe<FilterCountProductDescriptionOperatorsInput>;
-  typeRef?: Maybe<FilterCountProductTypeRefOperatorsInput>;
-  locationRefs?: Maybe<FilterCountProductLocationRefsOperatorsInput>;
-  materialRefs?: Maybe<FilterCountProductMaterialRefsOperatorsInput>;
-  price?: Maybe<FilterCountProductPriceOperatorsInput>;
-  quantity?: Maybe<FilterCountProductQuantityOperatorsInput>;
-  photos?: Maybe<FilterCountProductPhotosOperatorsInput>;
-  _id?: Maybe<FilterCountProduct_IdOperatorsInput>;
-  updatedAt?: Maybe<FilterCountProductUpdatedAtOperatorsInput>;
-  createdAt?: Maybe<FilterCountProductCreatedAtOperatorsInput>;
-};
-
-export type FilterCountProductNameOperatorsInput = {
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  ne?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  regex?: Maybe<Scalars['RegExpAsString']>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterCountProductDescriptionOperatorsInput = {
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  ne?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  regex?: Maybe<Scalars['RegExpAsString']>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterCountProductTypeRefOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterCountProductLocationRefsOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterCountProductMaterialRefsOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterCountProductPriceOperatorsInput = {
-  gt?: Maybe<Scalars['Float']>;
-  gte?: Maybe<Scalars['Float']>;
-  lt?: Maybe<Scalars['Float']>;
-  lte?: Maybe<Scalars['Float']>;
-  ne?: Maybe<Scalars['Float']>;
-  in?: Maybe<Array<Maybe<Scalars['Float']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Float']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterCountProductQuantityOperatorsInput = {
-  gt?: Maybe<Scalars['Float']>;
-  gte?: Maybe<Scalars['Float']>;
-  lt?: Maybe<Scalars['Float']>;
-  lte?: Maybe<Scalars['Float']>;
-  ne?: Maybe<Scalars['Float']>;
-  in?: Maybe<Array<Maybe<Scalars['Float']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Float']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterCountProductPhotosOperatorsInput = {
-  gt?: Maybe<Scalars['String']>;
-  gte?: Maybe<Scalars['String']>;
-  lt?: Maybe<Scalars['String']>;
-  lte?: Maybe<Scalars['String']>;
-  ne?: Maybe<Scalars['String']>;
-  in?: Maybe<Array<Maybe<Scalars['String']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
-  regex?: Maybe<Scalars['RegExpAsString']>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterCountProduct_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterCountProductUpdatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterCountProductCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-/** A connection to a list of items. */
-export type ProductConnection = {
-  __typename?: 'ProductConnection';
-  /** Total object count. */
-  count: Scalars['Int'];
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** Information to aid in pagination. */
-  edges: Array<ProductEdge>;
-};
-
-/** Information about pagination in a connection. */
-export type PageInfo = {
-  __typename?: 'PageInfo';
-  /** When paginating forwards, are there more items? */
-  hasNextPage: Scalars['Boolean'];
-  /** When paginating backwards, are there more items? */
-  hasPreviousPage: Scalars['Boolean'];
-  /** When paginating backwards, the cursor to continue. */
-  startCursor?: Maybe<Scalars['String']>;
-  /** When paginating forwards, the cursor to continue. */
-  endCursor?: Maybe<Scalars['String']>;
-};
-
-/** An edge in a connection. */
-export type ProductEdge = {
-  __typename?: 'ProductEdge';
-  /** The item at the end of the edge */
-  node: Product;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
-};
-
-export enum SortConnectionProductEnum {
-  IdDesc = '_ID_DESC',
-  IdAsc = '_ID_ASC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC',
+  PriceAsc = 'PRICE_ASC',
+  PriceDesc = 'PRICE_DESC',
+  QuantityAsc = 'QUANTITY_ASC',
+  QuantityDesc = 'QUANTITY_DESC'
 }
 
 /** List of items with pagination. */
@@ -1031,57 +753,8 @@ export enum SortFindByIdsMaterialInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
-
-export type FilterFindOneMaterialInput = {
-  type?: Maybe<EnumMaterialType>;
-  name?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterFindOneMaterialOperatorsInput>;
-  OR?: Maybe<Array<FilterFindOneMaterialInput>>;
-  AND?: Maybe<Array<FilterFindOneMaterialInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterFindOneMaterialOperatorsInput = {
-  _id?: Maybe<FilterFindOneMaterial_IdOperatorsInput>;
-  createdAt?: Maybe<FilterFindOneMaterialCreatedAtOperatorsInput>;
-};
-
-export type FilterFindOneMaterial_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterFindOneMaterialCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortFindOneMaterialInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC'
 }
 
 export type FilterCountMaterialInput = {
@@ -1161,49 +834,13 @@ export type FilterCountMaterialCreatedAtOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
-/** A connection to a list of items. */
-export type MaterialConnection = {
-  __typename?: 'MaterialConnection';
-  /** Total object count. */
-  count: Scalars['Int'];
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** Information to aid in pagination. */
-  edges: Array<MaterialEdge>;
-};
-
-/** An edge in a connection. */
-export type MaterialEdge = {
-  __typename?: 'MaterialEdge';
-  /** The item at the end of the edge */
-  node: Material;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
-};
-
-export enum SortConnectionMaterialEnum {
-  IdDesc = '_ID_DESC',
-  IdAsc = '_ID_ASC',
-}
-
-/** List of items with pagination. */
-export type MaterialPagination = {
-  __typename?: 'MaterialPagination';
-  /** Total object count. */
-  count?: Maybe<Scalars['Int']>;
-  /** Array of objects. */
-  items?: Maybe<Array<Material>>;
-  /** Information to aid in pagination. */
-  pageInfo: PaginationInfo;
-};
-
 export enum SortFindByIdsTypeInput {
   IdAsc = '_ID_ASC',
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC'
 }
 
 export type FilterFindManyTypeInput = {
@@ -1289,8 +926,8 @@ export enum SortFindManyTypeInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC'
 }
 
 export type FilterCountTypeInput = {
@@ -1371,98 +1008,13 @@ export type FilterCountTypeCreatedAtOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
-/** A connection to a list of items. */
-export type TypeConnection = {
-  __typename?: 'TypeConnection';
-  /** Total object count. */
-  count: Scalars['Int'];
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** Information to aid in pagination. */
-  edges: Array<TypeEdge>;
-};
-
-/** An edge in a connection. */
-export type TypeEdge = {
-  __typename?: 'TypeEdge';
-  /** The item at the end of the edge */
-  node: Type;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
-};
-
-export enum SortConnectionTypeEnum {
-  IdDesc = '_ID_DESC',
-  IdAsc = '_ID_ASC',
-}
-
-/** List of items with pagination. */
-export type TypePagination = {
-  __typename?: 'TypePagination';
-  /** Total object count. */
-  count?: Maybe<Scalars['Int']>;
-  /** Array of objects. */
-  items?: Maybe<Array<Type>>;
-  /** Information to aid in pagination. */
-  pageInfo: PaginationInfo;
-};
-
 export enum SortFindByIdsLocationInput {
   IdAsc = '_ID_ASC',
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
-
-export type FilterFindOneLocationInput = {
-  name?: Maybe<Scalars['String']>;
-  photo?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterFindOneLocationOperatorsInput>;
-  OR?: Maybe<Array<FilterFindOneLocationInput>>;
-  AND?: Maybe<Array<FilterFindOneLocationInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterFindOneLocationOperatorsInput = {
-  _id?: Maybe<FilterFindOneLocation_IdOperatorsInput>;
-  createdAt?: Maybe<FilterFindOneLocationCreatedAtOperatorsInput>;
-};
-
-export type FilterFindOneLocation_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterFindOneLocationCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortFindOneLocationInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC'
 }
 
 export type FilterCountLocationInput = {
@@ -1543,131 +1095,72 @@ export type FilterCountLocationCreatedAtOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
-/** A connection to a list of items. */
-export type LocationConnection = {
-  __typename?: 'LocationConnection';
-  /** Total object count. */
-  count: Scalars['Int'];
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** Information to aid in pagination. */
-  edges: Array<LocationEdge>;
-};
-
-/** An edge in a connection. */
-export type LocationEdge = {
-  __typename?: 'LocationEdge';
-  /** The item at the end of the edge */
-  node: Location;
-  /** A cursor for use in pagination */
-  cursor: Scalars['String'];
-};
-
-export enum SortConnectionLocationEnum {
-  IdDesc = '_ID_DESC',
-  IdAsc = '_ID_ASC',
-}
-
-/** List of items with pagination. */
-export type LocationPagination = {
-  __typename?: 'LocationPagination';
-  /** Total object count. */
-  count?: Maybe<Scalars['Int']>;
-  /** Array of objects. */
-  items?: Maybe<Array<Location>>;
-  /** Information to aid in pagination. */
-  pageInfo: PaginationInfo;
+export type User = {
+  __typename?: 'User';
+  name?: Maybe<Scalars['String']>;
+  password?: Maybe<Scalars['String']>;
+  token?: Maybe<Scalars['String']>;
+  _id: Scalars['MongoID'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
   /** Create one document with mongoose defaults, setters, hooks and validation */
-  productCreateOne?: Maybe<CreateOneProductPayload>;
-  /** Creates Many documents with mongoose defaults, setters, hooks and validation */
-  productCreateMany?: Maybe<CreateManyProductPayload>;
+  createProduct?: Maybe<CreateOneProductPayload>;
   /** Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it. */
-  productUpdateById?: Maybe<UpdateByIdProductPayload>;
-  /** Update one document: 1) Retrieve one document via findOne. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it. */
-  productUpdateOne?: Maybe<UpdateOneProductPayload>;
+  updateProduct?: Maybe<UpdateByIdProductPayload>;
   /** Update many documents without returning them: Use Query.update mongoose method. Do not apply mongoose defaults, setters, hooks and validation.  */
-  productUpdateMany?: Maybe<UpdateManyProductPayload>;
+  updateProducts?: Maybe<UpdateManyProductPayload>;
   /** Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document. */
-  productRemoveById?: Maybe<RemoveByIdProductPayload>;
-  /** Remove one document: 1) Remove with hooks via findOneAndRemove. 2) Return removed document. */
-  productRemoveOne?: Maybe<RemoveOneProductPayload>;
+  removeProduct?: Maybe<RemoveByIdProductPayload>;
   /** Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation.  */
-  productRemoveMany?: Maybe<RemoveManyProductPayload>;
+  removeProducts?: Maybe<RemoveManyProductPayload>;
+  incrementProductViews?: Maybe<Product>;
   /** Create one document with mongoose defaults, setters, hooks and validation */
-  materialCreateOne?: Maybe<CreateOneMaterialPayload>;
-  /** Creates Many documents with mongoose defaults, setters, hooks and validation */
-  materialCreateMany?: Maybe<CreateManyMaterialPayload>;
+  createMaterial?: Maybe<CreateOneMaterialPayload>;
   /** Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it. */
-  materialUpdateById?: Maybe<UpdateByIdMaterialPayload>;
-  /** Update one document: 1) Retrieve one document via findOne. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it. */
-  materialUpdateOne?: Maybe<UpdateOneMaterialPayload>;
+  updateMaterial?: Maybe<UpdateByIdMaterialPayload>;
   /** Update many documents without returning them: Use Query.update mongoose method. Do not apply mongoose defaults, setters, hooks and validation.  */
-  materialUpdateMany?: Maybe<UpdateManyMaterialPayload>;
+  updateMaterials?: Maybe<UpdateManyMaterialPayload>;
   /** Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document. */
-  materialRemoveById?: Maybe<RemoveByIdMaterialPayload>;
-  /** Remove one document: 1) Remove with hooks via findOneAndRemove. 2) Return removed document. */
-  materialRemoveOne?: Maybe<RemoveOneMaterialPayload>;
+  removeMaterial?: Maybe<RemoveByIdMaterialPayload>;
   /** Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation.  */
-  materialRemoveMany?: Maybe<RemoveManyMaterialPayload>;
+  removeMaterials?: Maybe<RemoveManyMaterialPayload>;
   /** Create one document with mongoose defaults, setters, hooks and validation */
-  typeCreateOne?: Maybe<CreateOneTypePayload>;
-  /** Creates Many documents with mongoose defaults, setters, hooks and validation */
-  typeCreateMany?: Maybe<CreateManyTypePayload>;
+  createCategory?: Maybe<CreateOneTypePayload>;
   /** Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it. */
-  typeUpdateById?: Maybe<UpdateByIdTypePayload>;
-  /** Update one document: 1) Retrieve one document via findOne. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it. */
-  typeUpdateOne?: Maybe<UpdateOneTypePayload>;
+  updateCategory?: Maybe<UpdateByIdTypePayload>;
   /** Update many documents without returning them: Use Query.update mongoose method. Do not apply mongoose defaults, setters, hooks and validation.  */
-  typeUpdateMany?: Maybe<UpdateManyTypePayload>;
+  updateCategories?: Maybe<UpdateManyTypePayload>;
   /** Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document. */
-  typeRemoveById?: Maybe<RemoveByIdTypePayload>;
-  /** Remove one document: 1) Remove with hooks via findOneAndRemove. 2) Return removed document. */
-  typeRemoveOne?: Maybe<RemoveOneTypePayload>;
+  removeCategory?: Maybe<RemoveByIdTypePayload>;
   /** Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation.  */
-  typeRemoveMany?: Maybe<RemoveManyTypePayload>;
+  removeCategories?: Maybe<RemoveManyTypePayload>;
   /** Create one document with mongoose defaults, setters, hooks and validation */
-  locationCreateOne?: Maybe<CreateOneLocationPayload>;
-  /** Creates Many documents with mongoose defaults, setters, hooks and validation */
-  locationCreateMany?: Maybe<CreateManyLocationPayload>;
+  createLocation?: Maybe<CreateOneLocationPayload>;
   /** Update one document: 1) Retrieve one document by findById. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it. */
-  locationUpdateById?: Maybe<UpdateByIdLocationPayload>;
-  /** Update one document: 1) Retrieve one document via findOne. 2) Apply updates to mongoose document. 3) Mongoose applies defaults, setters, hooks and validation. 4) And save it. */
-  locationUpdateOne?: Maybe<UpdateOneLocationPayload>;
+  updateLocation?: Maybe<UpdateByIdLocationPayload>;
   /** Update many documents without returning them: Use Query.update mongoose method. Do not apply mongoose defaults, setters, hooks and validation.  */
-  locationUpdateMany?: Maybe<UpdateManyLocationPayload>;
+  updateLocations?: Maybe<UpdateManyLocationPayload>;
   /** Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document. */
-  locationRemoveById?: Maybe<RemoveByIdLocationPayload>;
-  /** Remove one document: 1) Remove with hooks via findOneAndRemove. 2) Return removed document. */
-  locationRemoveOne?: Maybe<RemoveOneLocationPayload>;
+  removeLocation?: Maybe<RemoveByIdLocationPayload>;
   /** Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation.  */
-  locationRemoveMany?: Maybe<RemoveManyLocationPayload>;
+  removeLocations?: Maybe<RemoveManyLocationPayload>;
 };
 
-export type MutationProductCreateOneArgs = {
+
+export type MutationCreateProductArgs = {
   record: CreateOneProductInput;
 };
 
-export type MutationProductCreateManyArgs = {
-  records: Array<CreateManyProductInput>;
-};
 
-export type MutationProductUpdateByIdArgs = {
+export type MutationUpdateProductArgs = {
   _id: Scalars['MongoID'];
   record: UpdateByIdProductInput;
 };
 
-export type MutationProductUpdateOneArgs = {
-  record: UpdateOneProductInput;
-  filter?: Maybe<FilterUpdateOneProductInput>;
-  sort?: Maybe<SortUpdateOneProductInput>;
-  skip?: Maybe<Scalars['Int']>;
-};
 
-export type MutationProductUpdateManyArgs = {
+export type MutationUpdateProductsArgs = {
   record: UpdateManyProductInput;
   filter?: Maybe<FilterUpdateManyProductInput>;
   sort?: Maybe<SortUpdateManyProductInput>;
@@ -1675,41 +1168,35 @@ export type MutationProductUpdateManyArgs = {
   limit?: Maybe<Scalars['Int']>;
 };
 
-export type MutationProductRemoveByIdArgs = {
+
+export type MutationRemoveProductArgs = {
   _id: Scalars['MongoID'];
 };
 
-export type MutationProductRemoveOneArgs = {
-  filter?: Maybe<FilterRemoveOneProductInput>;
-  sort?: Maybe<SortRemoveOneProductInput>;
-};
 
-export type MutationProductRemoveManyArgs = {
+export type MutationRemoveProductsArgs = {
   filter: FilterRemoveManyProductInput;
   limit?: Maybe<Scalars['Int']>;
 };
 
-export type MutationMaterialCreateOneArgs = {
+
+export type MutationIncrementProductViewsArgs = {
+  id: Scalars['MongoID'];
+};
+
+
+export type MutationCreateMaterialArgs = {
   record: CreateOneMaterialInput;
 };
 
-export type MutationMaterialCreateManyArgs = {
-  records: Array<CreateManyMaterialInput>;
-};
 
-export type MutationMaterialUpdateByIdArgs = {
+export type MutationUpdateMaterialArgs = {
   _id: Scalars['MongoID'];
   record: UpdateByIdMaterialInput;
 };
 
-export type MutationMaterialUpdateOneArgs = {
-  record: UpdateOneMaterialInput;
-  filter?: Maybe<FilterUpdateOneMaterialInput>;
-  sort?: Maybe<SortUpdateOneMaterialInput>;
-  skip?: Maybe<Scalars['Int']>;
-};
 
-export type MutationMaterialUpdateManyArgs = {
+export type MutationUpdateMaterialsArgs = {
   record: UpdateManyMaterialInput;
   filter?: Maybe<FilterUpdateManyMaterialInput>;
   sort?: Maybe<SortUpdateManyMaterialInput>;
@@ -1717,41 +1204,30 @@ export type MutationMaterialUpdateManyArgs = {
   limit?: Maybe<Scalars['Int']>;
 };
 
-export type MutationMaterialRemoveByIdArgs = {
+
+export type MutationRemoveMaterialArgs = {
   _id: Scalars['MongoID'];
 };
 
-export type MutationMaterialRemoveOneArgs = {
-  filter?: Maybe<FilterRemoveOneMaterialInput>;
-  sort?: Maybe<SortRemoveOneMaterialInput>;
-};
 
-export type MutationMaterialRemoveManyArgs = {
+export type MutationRemoveMaterialsArgs = {
   filter: FilterRemoveManyMaterialInput;
   limit?: Maybe<Scalars['Int']>;
 };
 
-export type MutationTypeCreateOneArgs = {
+
+export type MutationCreateCategoryArgs = {
   record: CreateOneTypeInput;
 };
 
-export type MutationTypeCreateManyArgs = {
-  records: Array<CreateManyTypeInput>;
-};
 
-export type MutationTypeUpdateByIdArgs = {
+export type MutationUpdateCategoryArgs = {
   _id: Scalars['MongoID'];
   record: UpdateByIdTypeInput;
 };
 
-export type MutationTypeUpdateOneArgs = {
-  record: UpdateOneTypeInput;
-  filter?: Maybe<FilterUpdateOneTypeInput>;
-  sort?: Maybe<SortUpdateOneTypeInput>;
-  skip?: Maybe<Scalars['Int']>;
-};
 
-export type MutationTypeUpdateManyArgs = {
+export type MutationUpdateCategoriesArgs = {
   record: UpdateManyTypeInput;
   filter?: Maybe<FilterUpdateManyTypeInput>;
   sort?: Maybe<SortUpdateManyTypeInput>;
@@ -1759,41 +1235,30 @@ export type MutationTypeUpdateManyArgs = {
   limit?: Maybe<Scalars['Int']>;
 };
 
-export type MutationTypeRemoveByIdArgs = {
+
+export type MutationRemoveCategoryArgs = {
   _id: Scalars['MongoID'];
 };
 
-export type MutationTypeRemoveOneArgs = {
-  filter?: Maybe<FilterRemoveOneTypeInput>;
-  sort?: Maybe<SortRemoveOneTypeInput>;
-};
 
-export type MutationTypeRemoveManyArgs = {
+export type MutationRemoveCategoriesArgs = {
   filter: FilterRemoveManyTypeInput;
   limit?: Maybe<Scalars['Int']>;
 };
 
-export type MutationLocationCreateOneArgs = {
+
+export type MutationCreateLocationArgs = {
   record: CreateOneLocationInput;
 };
 
-export type MutationLocationCreateManyArgs = {
-  records: Array<CreateManyLocationInput>;
-};
 
-export type MutationLocationUpdateByIdArgs = {
+export type MutationUpdateLocationArgs = {
   _id: Scalars['MongoID'];
   record: UpdateByIdLocationInput;
 };
 
-export type MutationLocationUpdateOneArgs = {
-  record: UpdateOneLocationInput;
-  filter?: Maybe<FilterUpdateOneLocationInput>;
-  sort?: Maybe<SortUpdateOneLocationInput>;
-  skip?: Maybe<Scalars['Int']>;
-};
 
-export type MutationLocationUpdateManyArgs = {
+export type MutationUpdateLocationsArgs = {
   record: UpdateManyLocationInput;
   filter?: Maybe<FilterUpdateManyLocationInput>;
   sort?: Maybe<SortUpdateManyLocationInput>;
@@ -1801,16 +1266,13 @@ export type MutationLocationUpdateManyArgs = {
   limit?: Maybe<Scalars['Int']>;
 };
 
-export type MutationLocationRemoveByIdArgs = {
+
+export type MutationRemoveLocationArgs = {
   _id: Scalars['MongoID'];
 };
 
-export type MutationLocationRemoveOneArgs = {
-  filter?: Maybe<FilterRemoveOneLocationInput>;
-  sort?: Maybe<SortRemoveOneLocationInput>;
-};
 
-export type MutationLocationRemoveManyArgs = {
+export type MutationRemoveLocationsArgs = {
   filter: FilterRemoveManyLocationInput;
   limit?: Maybe<Scalars['Int']>;
 };
@@ -1828,37 +1290,13 @@ export type CreateOneProductPayload = {
 export type CreateOneProductInput = {
   name: Scalars['String'];
   description: Scalars['String'];
-  typeRef?: Maybe<Scalars['MongoID']>;
+  categoryRef?: Maybe<Scalars['MongoID']>;
   locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   price: Scalars['Float'];
   quantity: Scalars['Float'];
   photos: Array<Maybe<Scalars['String']>>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-};
-
-export type CreateManyProductPayload = {
-  __typename?: 'CreateManyProductPayload';
-  /** Documents IDs */
-  recordIds: Array<Scalars['MongoID']>;
-  /** Created documents */
-  records?: Maybe<Array<Product>>;
-  /** Number of created documents */
-  createdCount: Scalars['Int'];
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type CreateManyProductInput = {
-  name: Scalars['String'];
-  description: Scalars['String'];
-  typeRef?: Maybe<Scalars['MongoID']>;
-  locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  price: Scalars['Float'];
-  quantity: Scalars['Float'];
-  photos: Array<Maybe<Scalars['String']>>;
+  views?: Maybe<Scalars['Float']>;
   updatedAt?: Maybe<Scalars['Date']>;
   createdAt?: Maybe<Scalars['Date']>;
 };
@@ -1876,93 +1314,16 @@ export type UpdateByIdProductPayload = {
 export type UpdateByIdProductInput = {
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  typeRef?: Maybe<Scalars['MongoID']>;
+  categoryRef?: Maybe<Scalars['MongoID']>;
   locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   price?: Maybe<Scalars['Float']>;
   quantity?: Maybe<Scalars['Float']>;
   photos?: Maybe<Array<Maybe<Scalars['String']>>>;
+  views?: Maybe<Scalars['Float']>;
   updatedAt?: Maybe<Scalars['Date']>;
   createdAt?: Maybe<Scalars['Date']>;
 };
-
-export type UpdateOneProductPayload = {
-  __typename?: 'UpdateOneProductPayload';
-  /** Document ID */
-  recordId?: Maybe<Scalars['MongoID']>;
-  /** Updated document */
-  record?: Maybe<Product>;
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type UpdateOneProductInput = {
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  typeRef?: Maybe<Scalars['MongoID']>;
-  locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  price?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-  photos?: Maybe<Array<Maybe<Scalars['String']>>>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-};
-
-export type FilterUpdateOneProductInput = {
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  typeRef?: Maybe<Scalars['MongoID']>;
-  locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  price?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-  photos?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterUpdateOneProductOperatorsInput>;
-  OR?: Maybe<Array<FilterUpdateOneProductInput>>;
-  AND?: Maybe<Array<FilterUpdateOneProductInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterUpdateOneProductOperatorsInput = {
-  _id?: Maybe<FilterUpdateOneProduct_IdOperatorsInput>;
-  createdAt?: Maybe<FilterUpdateOneProductCreatedAtOperatorsInput>;
-};
-
-export type FilterUpdateOneProduct_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterUpdateOneProductCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortUpdateOneProductInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
 
 export type UpdateManyProductPayload = {
   __typename?: 'UpdateManyProductPayload';
@@ -1975,12 +1336,13 @@ export type UpdateManyProductPayload = {
 export type UpdateManyProductInput = {
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  typeRef?: Maybe<Scalars['MongoID']>;
+  categoryRef?: Maybe<Scalars['MongoID']>;
   locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   price?: Maybe<Scalars['Float']>;
   quantity?: Maybe<Scalars['Float']>;
   photos?: Maybe<Array<Maybe<Scalars['String']>>>;
+  views?: Maybe<Scalars['Float']>;
   updatedAt?: Maybe<Scalars['Date']>;
   createdAt?: Maybe<Scalars['Date']>;
 };
@@ -1988,12 +1350,13 @@ export type UpdateManyProductInput = {
 export type FilterUpdateManyProductInput = {
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  typeRef?: Maybe<Scalars['MongoID']>;
+  categoryRef?: Maybe<Scalars['MongoID']>;
   locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   price?: Maybe<Scalars['Float']>;
   quantity?: Maybe<Scalars['Float']>;
   photos?: Maybe<Array<Maybe<Scalars['String']>>>;
+  views?: Maybe<Scalars['Float']>;
   _id?: Maybe<Scalars['MongoID']>;
   updatedAt?: Maybe<Scalars['Date']>;
   createdAt?: Maybe<Scalars['Date']>;
@@ -2007,12 +1370,13 @@ export type FilterUpdateManyProductInput = {
 export type FilterUpdateManyProductOperatorsInput = {
   name?: Maybe<FilterUpdateManyProductNameOperatorsInput>;
   description?: Maybe<FilterUpdateManyProductDescriptionOperatorsInput>;
-  typeRef?: Maybe<FilterUpdateManyProductTypeRefOperatorsInput>;
+  categoryRef?: Maybe<FilterUpdateManyProductCategoryRefOperatorsInput>;
   locationRefs?: Maybe<FilterUpdateManyProductLocationRefsOperatorsInput>;
   materialRefs?: Maybe<FilterUpdateManyProductMaterialRefsOperatorsInput>;
   price?: Maybe<FilterUpdateManyProductPriceOperatorsInput>;
   quantity?: Maybe<FilterUpdateManyProductQuantityOperatorsInput>;
   photos?: Maybe<FilterUpdateManyProductPhotosOperatorsInput>;
+  views?: Maybe<FilterUpdateManyProductViewsOperatorsInput>;
   _id?: Maybe<FilterUpdateManyProduct_IdOperatorsInput>;
   updatedAt?: Maybe<FilterUpdateManyProductUpdatedAtOperatorsInput>;
   createdAt?: Maybe<FilterUpdateManyProductCreatedAtOperatorsInput>;
@@ -2042,7 +1406,7 @@ export type FilterUpdateManyProductDescriptionOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
-export type FilterUpdateManyProductTypeRefOperatorsInput = {
+export type FilterUpdateManyProductCategoryRefOperatorsInput = {
   gt?: Maybe<Scalars['MongoID']>;
   gte?: Maybe<Scalars['MongoID']>;
   lt?: Maybe<Scalars['MongoID']>;
@@ -2109,6 +1473,17 @@ export type FilterUpdateManyProductPhotosOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
+export type FilterUpdateManyProductViewsOperatorsInput = {
+  gt?: Maybe<Scalars['Float']>;
+  gte?: Maybe<Scalars['Float']>;
+  lt?: Maybe<Scalars['Float']>;
+  lte?: Maybe<Scalars['Float']>;
+  ne?: Maybe<Scalars['Float']>;
+  in?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
 export type FilterUpdateManyProduct_IdOperatorsInput = {
   gt?: Maybe<Scalars['MongoID']>;
   gte?: Maybe<Scalars['MongoID']>;
@@ -2147,8 +1522,12 @@ export enum SortUpdateManyProductInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC',
+  PriceAsc = 'PRICE_ASC',
+  PriceDesc = 'PRICE_DESC',
+  QuantityAsc = 'QUANTITY_ASC',
+  QuantityDesc = 'QUANTITY_DESC'
 }
 
 export type RemoveByIdProductPayload = {
@@ -2161,71 +1540,6 @@ export type RemoveByIdProductPayload = {
   error?: Maybe<ErrorInterface>;
 };
 
-export type RemoveOneProductPayload = {
-  __typename?: 'RemoveOneProductPayload';
-  /** Document ID */
-  recordId?: Maybe<Scalars['MongoID']>;
-  /** Removed document */
-  record?: Maybe<Product>;
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type FilterRemoveOneProductInput = {
-  name?: Maybe<Scalars['String']>;
-  description?: Maybe<Scalars['String']>;
-  typeRef?: Maybe<Scalars['MongoID']>;
-  locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  price?: Maybe<Scalars['Float']>;
-  quantity?: Maybe<Scalars['Float']>;
-  photos?: Maybe<Array<Maybe<Scalars['String']>>>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterRemoveOneProductOperatorsInput>;
-  OR?: Maybe<Array<FilterRemoveOneProductInput>>;
-  AND?: Maybe<Array<FilterRemoveOneProductInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterRemoveOneProductOperatorsInput = {
-  _id?: Maybe<FilterRemoveOneProduct_IdOperatorsInput>;
-  createdAt?: Maybe<FilterRemoveOneProductCreatedAtOperatorsInput>;
-};
-
-export type FilterRemoveOneProduct_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterRemoveOneProductCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortRemoveOneProductInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
-
 export type RemoveManyProductPayload = {
   __typename?: 'RemoveManyProductPayload';
   /** Affected documents number */
@@ -2237,12 +1551,13 @@ export type RemoveManyProductPayload = {
 export type FilterRemoveManyProductInput = {
   name?: Maybe<Scalars['String']>;
   description?: Maybe<Scalars['String']>;
-  typeRef?: Maybe<Scalars['MongoID']>;
+  categoryRef?: Maybe<Scalars['MongoID']>;
   locationRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   materialRefs?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
   price?: Maybe<Scalars['Float']>;
   quantity?: Maybe<Scalars['Float']>;
   photos?: Maybe<Array<Maybe<Scalars['String']>>>;
+  views?: Maybe<Scalars['Float']>;
   _id?: Maybe<Scalars['MongoID']>;
   updatedAt?: Maybe<Scalars['Date']>;
   createdAt?: Maybe<Scalars['Date']>;
@@ -2256,12 +1571,13 @@ export type FilterRemoveManyProductInput = {
 export type FilterRemoveManyProductOperatorsInput = {
   name?: Maybe<FilterRemoveManyProductNameOperatorsInput>;
   description?: Maybe<FilterRemoveManyProductDescriptionOperatorsInput>;
-  typeRef?: Maybe<FilterRemoveManyProductTypeRefOperatorsInput>;
+  categoryRef?: Maybe<FilterRemoveManyProductCategoryRefOperatorsInput>;
   locationRefs?: Maybe<FilterRemoveManyProductLocationRefsOperatorsInput>;
   materialRefs?: Maybe<FilterRemoveManyProductMaterialRefsOperatorsInput>;
   price?: Maybe<FilterRemoveManyProductPriceOperatorsInput>;
   quantity?: Maybe<FilterRemoveManyProductQuantityOperatorsInput>;
   photos?: Maybe<FilterRemoveManyProductPhotosOperatorsInput>;
+  views?: Maybe<FilterRemoveManyProductViewsOperatorsInput>;
   _id?: Maybe<FilterRemoveManyProduct_IdOperatorsInput>;
   updatedAt?: Maybe<FilterRemoveManyProductUpdatedAtOperatorsInput>;
   createdAt?: Maybe<FilterRemoveManyProductCreatedAtOperatorsInput>;
@@ -2291,7 +1607,7 @@ export type FilterRemoveManyProductDescriptionOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
-export type FilterRemoveManyProductTypeRefOperatorsInput = {
+export type FilterRemoveManyProductCategoryRefOperatorsInput = {
   gt?: Maybe<Scalars['MongoID']>;
   gte?: Maybe<Scalars['MongoID']>;
   lt?: Maybe<Scalars['MongoID']>;
@@ -2358,6 +1674,17 @@ export type FilterRemoveManyProductPhotosOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
+export type FilterRemoveManyProductViewsOperatorsInput = {
+  gt?: Maybe<Scalars['Float']>;
+  gte?: Maybe<Scalars['Float']>;
+  lt?: Maybe<Scalars['Float']>;
+  lte?: Maybe<Scalars['Float']>;
+  ne?: Maybe<Scalars['Float']>;
+  in?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
 export type FilterRemoveManyProduct_IdOperatorsInput = {
   gt?: Maybe<Scalars['MongoID']>;
   gte?: Maybe<Scalars['MongoID']>;
@@ -2408,25 +1735,6 @@ export type CreateOneMaterialInput = {
   createdAt?: Maybe<Scalars['Date']>;
 };
 
-export type CreateManyMaterialPayload = {
-  __typename?: 'CreateManyMaterialPayload';
-  /** Documents IDs */
-  recordIds: Array<Scalars['MongoID']>;
-  /** Created documents */
-  records?: Maybe<Array<Material>>;
-  /** Number of created documents */
-  createdCount: Scalars['Int'];
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type CreateManyMaterialInput = {
-  type: EnumMaterialType;
-  name: Scalars['String'];
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-};
-
 export type UpdateByIdMaterialPayload = {
   __typename?: 'UpdateByIdMaterialPayload';
   /** Document ID */
@@ -2443,72 +1751,6 @@ export type UpdateByIdMaterialInput = {
   updatedAt?: Maybe<Scalars['Date']>;
   createdAt?: Maybe<Scalars['Date']>;
 };
-
-export type UpdateOneMaterialPayload = {
-  __typename?: 'UpdateOneMaterialPayload';
-  /** Document ID */
-  recordId?: Maybe<Scalars['MongoID']>;
-  /** Updated document */
-  record?: Maybe<Material>;
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type UpdateOneMaterialInput = {
-  type?: Maybe<EnumMaterialType>;
-  name?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-};
-
-export type FilterUpdateOneMaterialInput = {
-  type?: Maybe<EnumMaterialType>;
-  name?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterUpdateOneMaterialOperatorsInput>;
-  OR?: Maybe<Array<FilterUpdateOneMaterialInput>>;
-  AND?: Maybe<Array<FilterUpdateOneMaterialInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterUpdateOneMaterialOperatorsInput = {
-  _id?: Maybe<FilterUpdateOneMaterial_IdOperatorsInput>;
-  createdAt?: Maybe<FilterUpdateOneMaterialCreatedAtOperatorsInput>;
-};
-
-export type FilterUpdateOneMaterial_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterUpdateOneMaterialCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortUpdateOneMaterialInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
 
 export type UpdateManyMaterialPayload = {
   __typename?: 'UpdateManyMaterialPayload';
@@ -2607,8 +1849,8 @@ export enum SortUpdateManyMaterialInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC'
 }
 
 export type RemoveByIdMaterialPayload = {
@@ -2620,65 +1862,6 @@ export type RemoveByIdMaterialPayload = {
   /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
   error?: Maybe<ErrorInterface>;
 };
-
-export type RemoveOneMaterialPayload = {
-  __typename?: 'RemoveOneMaterialPayload';
-  /** Document ID */
-  recordId?: Maybe<Scalars['MongoID']>;
-  /** Removed document */
-  record?: Maybe<Material>;
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type FilterRemoveOneMaterialInput = {
-  type?: Maybe<EnumMaterialType>;
-  name?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterRemoveOneMaterialOperatorsInput>;
-  OR?: Maybe<Array<FilterRemoveOneMaterialInput>>;
-  AND?: Maybe<Array<FilterRemoveOneMaterialInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterRemoveOneMaterialOperatorsInput = {
-  _id?: Maybe<FilterRemoveOneMaterial_IdOperatorsInput>;
-  createdAt?: Maybe<FilterRemoveOneMaterialCreatedAtOperatorsInput>;
-};
-
-export type FilterRemoveOneMaterial_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterRemoveOneMaterialCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortRemoveOneMaterialInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
 
 export type RemoveManyMaterialPayload = {
   __typename?: 'RemoveManyMaterialPayload';
@@ -2782,25 +1965,6 @@ export type CreateOneTypeInput = {
   createdAt?: Maybe<Scalars['Date']>;
 };
 
-export type CreateManyTypePayload = {
-  __typename?: 'CreateManyTypePayload';
-  /** Documents IDs */
-  recordIds: Array<Scalars['MongoID']>;
-  /** Created documents */
-  records?: Maybe<Array<Type>>;
-  /** Number of created documents */
-  createdCount: Scalars['Int'];
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type CreateManyTypeInput = {
-  name: Scalars['String'];
-  photo?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-};
-
 export type UpdateByIdTypePayload = {
   __typename?: 'UpdateByIdTypePayload';
   /** Document ID */
@@ -2817,72 +1981,6 @@ export type UpdateByIdTypeInput = {
   updatedAt?: Maybe<Scalars['Date']>;
   createdAt?: Maybe<Scalars['Date']>;
 };
-
-export type UpdateOneTypePayload = {
-  __typename?: 'UpdateOneTypePayload';
-  /** Document ID */
-  recordId?: Maybe<Scalars['MongoID']>;
-  /** Updated document */
-  record?: Maybe<Type>;
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type UpdateOneTypeInput = {
-  name?: Maybe<Scalars['String']>;
-  photo?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-};
-
-export type FilterUpdateOneTypeInput = {
-  name?: Maybe<Scalars['String']>;
-  photo?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterUpdateOneTypeOperatorsInput>;
-  OR?: Maybe<Array<FilterUpdateOneTypeInput>>;
-  AND?: Maybe<Array<FilterUpdateOneTypeInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterUpdateOneTypeOperatorsInput = {
-  _id?: Maybe<FilterUpdateOneType_IdOperatorsInput>;
-  createdAt?: Maybe<FilterUpdateOneTypeCreatedAtOperatorsInput>;
-};
-
-export type FilterUpdateOneType_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterUpdateOneTypeCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortUpdateOneTypeInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
 
 export type UpdateManyTypePayload = {
   __typename?: 'UpdateManyTypePayload';
@@ -2982,8 +2080,8 @@ export enum SortUpdateManyTypeInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC'
 }
 
 export type RemoveByIdTypePayload = {
@@ -2995,65 +2093,6 @@ export type RemoveByIdTypePayload = {
   /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
   error?: Maybe<ErrorInterface>;
 };
-
-export type RemoveOneTypePayload = {
-  __typename?: 'RemoveOneTypePayload';
-  /** Document ID */
-  recordId?: Maybe<Scalars['MongoID']>;
-  /** Removed document */
-  record?: Maybe<Type>;
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type FilterRemoveOneTypeInput = {
-  name?: Maybe<Scalars['String']>;
-  photo?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterRemoveOneTypeOperatorsInput>;
-  OR?: Maybe<Array<FilterRemoveOneTypeInput>>;
-  AND?: Maybe<Array<FilterRemoveOneTypeInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterRemoveOneTypeOperatorsInput = {
-  _id?: Maybe<FilterRemoveOneType_IdOperatorsInput>;
-  createdAt?: Maybe<FilterRemoveOneTypeCreatedAtOperatorsInput>;
-};
-
-export type FilterRemoveOneType_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterRemoveOneTypeCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortRemoveOneTypeInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
 
 export type RemoveManyTypePayload = {
   __typename?: 'RemoveManyTypePayload';
@@ -3158,25 +2197,6 @@ export type CreateOneLocationInput = {
   createdAt?: Maybe<Scalars['Date']>;
 };
 
-export type CreateManyLocationPayload = {
-  __typename?: 'CreateManyLocationPayload';
-  /** Documents IDs */
-  recordIds: Array<Scalars['MongoID']>;
-  /** Created documents */
-  records?: Maybe<Array<Location>>;
-  /** Number of created documents */
-  createdCount: Scalars['Int'];
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type CreateManyLocationInput = {
-  name: Scalars['String'];
-  photo?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-};
-
 export type UpdateByIdLocationPayload = {
   __typename?: 'UpdateByIdLocationPayload';
   /** Document ID */
@@ -3193,72 +2213,6 @@ export type UpdateByIdLocationInput = {
   updatedAt?: Maybe<Scalars['Date']>;
   createdAt?: Maybe<Scalars['Date']>;
 };
-
-export type UpdateOneLocationPayload = {
-  __typename?: 'UpdateOneLocationPayload';
-  /** Document ID */
-  recordId?: Maybe<Scalars['MongoID']>;
-  /** Updated document */
-  record?: Maybe<Location>;
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type UpdateOneLocationInput = {
-  name?: Maybe<Scalars['String']>;
-  photo?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-};
-
-export type FilterUpdateOneLocationInput = {
-  name?: Maybe<Scalars['String']>;
-  photo?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterUpdateOneLocationOperatorsInput>;
-  OR?: Maybe<Array<FilterUpdateOneLocationInput>>;
-  AND?: Maybe<Array<FilterUpdateOneLocationInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterUpdateOneLocationOperatorsInput = {
-  _id?: Maybe<FilterUpdateOneLocation_IdOperatorsInput>;
-  createdAt?: Maybe<FilterUpdateOneLocationCreatedAtOperatorsInput>;
-};
-
-export type FilterUpdateOneLocation_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterUpdateOneLocationCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortUpdateOneLocationInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
 
 export type UpdateManyLocationPayload = {
   __typename?: 'UpdateManyLocationPayload';
@@ -3358,8 +2312,8 @@ export enum SortUpdateManyLocationInput {
   IdDesc = '_ID_DESC',
   CreatedatAsc = 'CREATEDAT_ASC',
   CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
+  UpdatedatAsc = 'UPDATEDAT_ASC',
+  UpdatedatDesc = 'UPDATEDAT_DESC'
 }
 
 export type RemoveByIdLocationPayload = {
@@ -3371,65 +2325,6 @@ export type RemoveByIdLocationPayload = {
   /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
   error?: Maybe<ErrorInterface>;
 };
-
-export type RemoveOneLocationPayload = {
-  __typename?: 'RemoveOneLocationPayload';
-  /** Document ID */
-  recordId?: Maybe<Scalars['MongoID']>;
-  /** Removed document */
-  record?: Maybe<Location>;
-  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
-  error?: Maybe<ErrorInterface>;
-};
-
-export type FilterRemoveOneLocationInput = {
-  name?: Maybe<Scalars['String']>;
-  photo?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterRemoveOneLocationOperatorsInput>;
-  OR?: Maybe<Array<FilterRemoveOneLocationInput>>;
-  AND?: Maybe<Array<FilterRemoveOneLocationInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterRemoveOneLocationOperatorsInput = {
-  _id?: Maybe<FilterRemoveOneLocation_IdOperatorsInput>;
-  createdAt?: Maybe<FilterRemoveOneLocationCreatedAtOperatorsInput>;
-};
-
-export type FilterRemoveOneLocation_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterRemoveOneLocationCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortRemoveOneLocationInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  CreatedatUpdatedatAsc = 'CREATEDAT__UPDATEDAT_ASC',
-  CreatedatUpdatedatDesc = 'CREATEDAT__UPDATEDAT_DESC',
-}
 
 export type RemoveManyLocationPayload = {
   __typename?: 'RemoveManyLocationPayload';
@@ -3516,3 +2411,543 @@ export type FilterRemoveManyLocationCreatedAtOperatorsInput = {
   nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
   exists?: Maybe<Scalars['Boolean']>;
 };
+
+export type ProductCardFieldsFragment = (
+  { __typename?: 'Product' }
+  & Pick<Product, '_id' | 'name' | 'description' | 'price' | 'quantity' | 'photos'>
+);
+
+export type IncrementViewsMutationVariables = Exact<{
+  id: Scalars['MongoID'];
+}>;
+
+
+export type IncrementViewsMutation = (
+  { __typename?: 'Mutation' }
+  & { incrementProductViews?: Maybe<(
+    { __typename?: 'Product' }
+    & Pick<Product, '_id' | 'name' | 'views'>
+  )> }
+);
+
+export type CartQueryVariables = Exact<{
+  ids: Array<Scalars['MongoID']>;
+}>;
+
+
+export type CartQuery = (
+  { __typename?: 'Query' }
+  & { products: Array<(
+    { __typename?: 'Product' }
+    & Pick<Product, '_id' | 'name' | 'description' | 'photos' | 'price' | 'quantity'>
+    & { category?: Maybe<(
+      { __typename?: 'Type' }
+      & Pick<Type, 'name'>
+    )> }
+  )> }
+);
+
+export type CategoriesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CategoriesQuery = (
+  { __typename?: 'Query' }
+  & { categories: Array<(
+    { __typename?: 'Type' }
+    & Pick<Type, '_id' | 'name'>
+  )> }
+);
+
+export type HomeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HomeQuery = (
+  { __typename?: 'Query' }
+  & { categories: Array<(
+    { __typename?: 'Type' }
+    & Pick<Type, '_id' | 'name' | 'photo'>
+  )>, products: Array<(
+    { __typename?: 'Product' }
+    & Pick<Product, '_id' | 'name' | 'photos' | 'description' | 'price' | 'quantity'>
+  )> }
+);
+
+export type LocationsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type LocationsQuery = (
+  { __typename?: 'Query' }
+  & { locations: Array<(
+    { __typename?: 'Location' }
+    & Pick<Location, '_id' | 'name'>
+  )> }
+);
+
+export type MaterialsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MaterialsQuery = (
+  { __typename?: 'Query' }
+  & { materials: Array<(
+    { __typename?: 'Material' }
+    & Pick<Material, '_id' | 'name'>
+  )> }
+);
+
+export type ProductQueryVariables = Exact<{
+  id: Scalars['MongoID'];
+  admin: Scalars['Boolean'];
+}>;
+
+
+export type ProductQuery = (
+  { __typename?: 'Query' }
+  & { product?: Maybe<(
+    { __typename?: 'Product' }
+    & Pick<Product, '_id' | 'photos' | 'name' | 'description' | 'price' | 'quantity'>
+    & { category?: Maybe<(
+      { __typename?: 'Type' }
+      & Pick<Type, '_id' | 'name'>
+    )>, locations: Array<(
+      { __typename?: 'Location' }
+      & Pick<Location, '_id' | 'name'>
+    )>, materials: Array<(
+      { __typename?: 'Material' }
+      & Pick<Material, '_id' | 'name' | 'type'>
+    )> }
+  )>, materials: Array<(
+    { __typename?: 'Material' }
+    & Pick<Material, '_id' | 'name'>
+  )>, recommended: Array<(
+    { __typename?: 'Product' }
+    & ProductCardFieldsFragment
+  )> }
+);
+
+export type ProductsQueryVariables = Exact<{
+  filter?: Maybe<FilterFindManyProductInput>;
+  page?: Maybe<Scalars['Int']>;
+  perPage?: Maybe<Scalars['Int']>;
+  sort?: Maybe<SortFindManyProductInput>;
+}>;
+
+
+export type ProductsQuery = (
+  { __typename?: 'Query' }
+  & { productsPagination?: Maybe<(
+    { __typename?: 'ProductPagination' }
+    & { items?: Maybe<Array<(
+      { __typename?: 'Product' }
+      & ProductCardFieldsFragment
+    )>>, pageInfo: (
+      { __typename?: 'PaginationInfo' }
+      & Pick<PaginationInfo, 'currentPage' | 'pageCount'>
+    ) }
+  )> }
+);
+
+export type RecentlyModifiedQueryVariables = Exact<{
+  date: Scalars['Date'];
+}>;
+
+
+export type RecentlyModifiedQuery = (
+  { __typename?: 'Query' }
+  & { products: Array<(
+    { __typename?: 'Product' }
+    & Pick<Product, '_id' | 'name' | 'photos' | 'updatedAt'>
+  )>, materials: Array<(
+    { __typename?: 'Material' }
+    & Pick<Material, '_id' | 'name' | 'updatedAt'>
+  )>, categories: Array<(
+    { __typename?: 'Type' }
+    & Pick<Type, '_id' | 'name' | 'photo' | 'updatedAt'>
+  )>, locations: Array<(
+    { __typename?: 'Location' }
+    & Pick<Location, '_id' | 'name' | 'photo' | 'updatedAt'>
+  )> }
+);
+
+export const ProductCardFieldsFragmentDoc = gql`
+    fragment productCardFields on Product {
+  _id
+  name
+  description
+  price
+  quantity
+  photos
+}
+    `;
+export const IncrementViewsDocument = gql`
+    mutation incrementViews($id: MongoID!) {
+  incrementProductViews(id: $id) {
+    _id
+    name
+    views
+  }
+}
+    `;
+export type IncrementViewsMutationFn = Apollo.MutationFunction<IncrementViewsMutation, IncrementViewsMutationVariables>;
+
+/**
+ * __useIncrementViewsMutation__
+ *
+ * To run a mutation, you first call `useIncrementViewsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useIncrementViewsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [incrementViewsMutation, { data, loading, error }] = useIncrementViewsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useIncrementViewsMutation(baseOptions?: Apollo.MutationHookOptions<IncrementViewsMutation, IncrementViewsMutationVariables>) {
+        return Apollo.useMutation<IncrementViewsMutation, IncrementViewsMutationVariables>(IncrementViewsDocument, baseOptions);
+      }
+export type IncrementViewsMutationHookResult = ReturnType<typeof useIncrementViewsMutation>;
+export type IncrementViewsMutationResult = Apollo.MutationResult<IncrementViewsMutation>;
+export type IncrementViewsMutationOptions = Apollo.BaseMutationOptions<IncrementViewsMutation, IncrementViewsMutationVariables>;
+export const CartDocument = gql`
+    query cart($ids: [MongoID!]!) {
+  products: productsById(_ids: $ids) {
+    _id
+    name
+    description
+    photos
+    price
+    category {
+      name
+    }
+    quantity
+  }
+}
+    `;
+
+/**
+ * __useCartQuery__
+ *
+ * To run a query within a React component, call `useCartQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCartQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCartQuery({
+ *   variables: {
+ *      ids: // value for 'ids'
+ *   },
+ * });
+ */
+export function useCartQuery(baseOptions: Apollo.QueryHookOptions<CartQuery, CartQueryVariables>) {
+        return Apollo.useQuery<CartQuery, CartQueryVariables>(CartDocument, baseOptions);
+      }
+export function useCartLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CartQuery, CartQueryVariables>) {
+          return Apollo.useLazyQuery<CartQuery, CartQueryVariables>(CartDocument, baseOptions);
+        }
+export type CartQueryHookResult = ReturnType<typeof useCartQuery>;
+export type CartLazyQueryHookResult = ReturnType<typeof useCartLazyQuery>;
+export type CartQueryResult = Apollo.QueryResult<CartQuery, CartQueryVariables>;
+export const CategoriesDocument = gql`
+    query categories {
+  categories {
+    _id
+    name
+  }
+}
+    `;
+
+/**
+ * __useCategoriesQuery__
+ *
+ * To run a query within a React component, call `useCategoriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCategoriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCategoriesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCategoriesQuery(baseOptions?: Apollo.QueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+        return Apollo.useQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, baseOptions);
+      }
+export function useCategoriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CategoriesQuery, CategoriesQueryVariables>) {
+          return Apollo.useLazyQuery<CategoriesQuery, CategoriesQueryVariables>(CategoriesDocument, baseOptions);
+        }
+export type CategoriesQueryHookResult = ReturnType<typeof useCategoriesQuery>;
+export type CategoriesLazyQueryHookResult = ReturnType<typeof useCategoriesLazyQuery>;
+export type CategoriesQueryResult = Apollo.QueryResult<CategoriesQuery, CategoriesQueryVariables>;
+export const HomeDocument = gql`
+    query Home {
+  categories(limit: 5) {
+    _id
+    name
+    photo
+  }
+  products(limit: 10) {
+    _id
+    name
+    photos
+    description
+    price
+    quantity
+  }
+}
+    `;
+
+/**
+ * __useHomeQuery__
+ *
+ * To run a query within a React component, call `useHomeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useHomeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useHomeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useHomeQuery(baseOptions?: Apollo.QueryHookOptions<HomeQuery, HomeQueryVariables>) {
+        return Apollo.useQuery<HomeQuery, HomeQueryVariables>(HomeDocument, baseOptions);
+      }
+export function useHomeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<HomeQuery, HomeQueryVariables>) {
+          return Apollo.useLazyQuery<HomeQuery, HomeQueryVariables>(HomeDocument, baseOptions);
+        }
+export type HomeQueryHookResult = ReturnType<typeof useHomeQuery>;
+export type HomeLazyQueryHookResult = ReturnType<typeof useHomeLazyQuery>;
+export type HomeQueryResult = Apollo.QueryResult<HomeQuery, HomeQueryVariables>;
+export const LocationsDocument = gql`
+    query locations {
+  locations {
+    _id
+    name
+  }
+}
+    `;
+
+/**
+ * __useLocationsQuery__
+ *
+ * To run a query within a React component, call `useLocationsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useLocationsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useLocationsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useLocationsQuery(baseOptions?: Apollo.QueryHookOptions<LocationsQuery, LocationsQueryVariables>) {
+        return Apollo.useQuery<LocationsQuery, LocationsQueryVariables>(LocationsDocument, baseOptions);
+      }
+export function useLocationsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<LocationsQuery, LocationsQueryVariables>) {
+          return Apollo.useLazyQuery<LocationsQuery, LocationsQueryVariables>(LocationsDocument, baseOptions);
+        }
+export type LocationsQueryHookResult = ReturnType<typeof useLocationsQuery>;
+export type LocationsLazyQueryHookResult = ReturnType<typeof useLocationsLazyQuery>;
+export type LocationsQueryResult = Apollo.QueryResult<LocationsQuery, LocationsQueryVariables>;
+export const MaterialsDocument = gql`
+    query materials {
+  materials {
+    _id
+    name
+  }
+}
+    `;
+
+/**
+ * __useMaterialsQuery__
+ *
+ * To run a query within a React component, call `useMaterialsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMaterialsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMaterialsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMaterialsQuery(baseOptions?: Apollo.QueryHookOptions<MaterialsQuery, MaterialsQueryVariables>) {
+        return Apollo.useQuery<MaterialsQuery, MaterialsQueryVariables>(MaterialsDocument, baseOptions);
+      }
+export function useMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MaterialsQuery, MaterialsQueryVariables>) {
+          return Apollo.useLazyQuery<MaterialsQuery, MaterialsQueryVariables>(MaterialsDocument, baseOptions);
+        }
+export type MaterialsQueryHookResult = ReturnType<typeof useMaterialsQuery>;
+export type MaterialsLazyQueryHookResult = ReturnType<typeof useMaterialsLazyQuery>;
+export type MaterialsQueryResult = Apollo.QueryResult<MaterialsQuery, MaterialsQueryVariables>;
+export const ProductDocument = gql`
+    query product($id: MongoID!, $admin: Boolean!) {
+  product(_id: $id) {
+    _id
+    photos
+    name
+    description
+    price
+    quantity
+    category {
+      _id
+      name
+    }
+    locations {
+      _id
+      name
+    }
+    materials {
+      _id
+      name
+      type
+    }
+  }
+  materials @skip(if: $admin) {
+    _id
+    name
+  }
+  recommended: products(limit: 5) {
+    ...productCardFields
+  }
+}
+    ${ProductCardFieldsFragmentDoc}`;
+
+/**
+ * __useProductQuery__
+ *
+ * To run a query within a React component, call `useProductQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *      admin: // value for 'admin'
+ *   },
+ * });
+ */
+export function useProductQuery(baseOptions: Apollo.QueryHookOptions<ProductQuery, ProductQueryVariables>) {
+        return Apollo.useQuery<ProductQuery, ProductQueryVariables>(ProductDocument, baseOptions);
+      }
+export function useProductLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductQuery, ProductQueryVariables>) {
+          return Apollo.useLazyQuery<ProductQuery, ProductQueryVariables>(ProductDocument, baseOptions);
+        }
+export type ProductQueryHookResult = ReturnType<typeof useProductQuery>;
+export type ProductLazyQueryHookResult = ReturnType<typeof useProductLazyQuery>;
+export type ProductQueryResult = Apollo.QueryResult<ProductQuery, ProductQueryVariables>;
+export const ProductsDocument = gql`
+    query Products($filter: FilterFindManyProductInput, $page: Int = 1, $perPage: Int = 10, $sort: SortFindManyProductInput) {
+  productsPagination(filter: $filter, page: $page, perPage: $perPage, sort: $sort) {
+    items {
+      ...productCardFields
+    }
+    pageInfo {
+      currentPage
+      pageCount
+    }
+  }
+}
+    ${ProductCardFieldsFragmentDoc}`;
+
+/**
+ * __useProductsQuery__
+ *
+ * To run a query within a React component, call `useProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductsQuery({
+ *   variables: {
+ *      filter: // value for 'filter'
+ *      page: // value for 'page'
+ *      perPage: // value for 'perPage'
+ *      sort: // value for 'sort'
+ *   },
+ * });
+ */
+export function useProductsQuery(baseOptions?: Apollo.QueryHookOptions<ProductsQuery, ProductsQueryVariables>) {
+        return Apollo.useQuery<ProductsQuery, ProductsQueryVariables>(ProductsDocument, baseOptions);
+      }
+export function useProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductsQuery, ProductsQueryVariables>) {
+          return Apollo.useLazyQuery<ProductsQuery, ProductsQueryVariables>(ProductsDocument, baseOptions);
+        }
+export type ProductsQueryHookResult = ReturnType<typeof useProductsQuery>;
+export type ProductsLazyQueryHookResult = ReturnType<typeof useProductsLazyQuery>;
+export type ProductsQueryResult = Apollo.QueryResult<ProductsQuery, ProductsQueryVariables>;
+export const RecentlyModifiedDocument = gql`
+    query RecentlyModified($date: Date!) {
+  products(filter: {_operators: {updatedAt: {gte: $date}}}, sort: UPDATEDAT_DESC) {
+    _id
+    name
+    photos
+    updatedAt
+  }
+  materials(filter: {_operators: {updatedAt: {gte: $date}}}, sort: UPDATEDAT_DESC) {
+    _id
+    name
+    updatedAt
+  }
+  categories(
+    filter: {_operators: {updatedAt: {gte: $date}}}
+    sort: UPDATEDAT_DESC
+  ) {
+    _id
+    name
+    photo
+    updatedAt
+  }
+  locations(filter: {_operators: {updatedAt: {gte: $date}}}, sort: UPDATEDAT_DESC) {
+    _id
+    name
+    photo
+    updatedAt
+  }
+}
+    `;
+
+/**
+ * __useRecentlyModifiedQuery__
+ *
+ * To run a query within a React component, call `useRecentlyModifiedQuery` and pass it any options that fit your needs.
+ * When your component renders, `useRecentlyModifiedQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useRecentlyModifiedQuery({
+ *   variables: {
+ *      date: // value for 'date'
+ *   },
+ * });
+ */
+export function useRecentlyModifiedQuery(baseOptions: Apollo.QueryHookOptions<RecentlyModifiedQuery, RecentlyModifiedQueryVariables>) {
+        return Apollo.useQuery<RecentlyModifiedQuery, RecentlyModifiedQueryVariables>(RecentlyModifiedDocument, baseOptions);
+      }
+export function useRecentlyModifiedLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<RecentlyModifiedQuery, RecentlyModifiedQueryVariables>) {
+          return Apollo.useLazyQuery<RecentlyModifiedQuery, RecentlyModifiedQueryVariables>(RecentlyModifiedDocument, baseOptions);
+        }
+export type RecentlyModifiedQueryHookResult = ReturnType<typeof useRecentlyModifiedQuery>;
+export type RecentlyModifiedLazyQueryHookResult = ReturnType<typeof useRecentlyModifiedLazyQuery>;
+export type RecentlyModifiedQueryResult = Apollo.QueryResult<RecentlyModifiedQuery, RecentlyModifiedQueryVariables>;

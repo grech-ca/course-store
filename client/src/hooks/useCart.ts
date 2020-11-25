@@ -1,5 +1,9 @@
+import { useMemo } from 'react';
+
 import useStorage from 'hooks/useStorage';
 import useNotification from 'hooks/useNotification';
+
+import { Product, useCartQuery } from 'graphql/generated';
 
 export type CartItem = {
   id: string;
@@ -14,6 +18,9 @@ type Hook = {
   setInCartQuantity: (id: string, quantity: number) => void;
   removeFromCart: (id: string) => void;
   decreaseFromCart: (id: string, quantity: number) => void;
+  products: Product[];
+  productsCost: number;
+  delieverCost: number;
 };
 
 const useCart = (): Hook => {
@@ -101,6 +108,29 @@ const useCart = (): Hook => {
     }
   };
 
+  const { data } = useCartQuery({
+    variables: {
+      ids: cart.map(({ id }: { id: string }) => id),
+    },
+  });
+  const { products = [] } = data || {};
+
+  const productsCost = useMemo<number>(
+    () =>
+      (products as Product[]).reduce((total: number, cur: Product) => {
+        const cartItem = cart.find(({ id }: CartItem) => id === cur._id);
+
+        return total + cur.price * (cartItem?.quantity || 0);
+      }, 0),
+    [cart, products],
+  );
+
+  const delieverCost = useMemo<number>(() => {
+    const delieverPrice = productsCost * 0.2;
+
+    return productsCost > 15000 ? 0 : delieverPrice;
+  }, [productsCost]);
+
   return {
     cart,
     findItemInCartById,
@@ -108,6 +138,9 @@ const useCart = (): Hook => {
     setInCartQuantity,
     removeFromCart,
     decreaseFromCart,
+    products: products as Product[],
+    productsCost,
+    delieverCost,
   };
 };
 

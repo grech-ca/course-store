@@ -4,7 +4,7 @@ import { GraphQLUpload } from 'apollo-server';
 
 import { productMutation, productQuery } from './ProductTC';
 import { materialMutation, materialQuery } from './MaterialTC';
-import { typeMutation, typeQuery } from './TypeTC';
+import { categoryMutation, categoryQuery } from './CategoryTC';
 import { locationMutation, locationQuery } from './LocationTC';
 import { authQuery } from './AuthTC';
 
@@ -12,11 +12,11 @@ import { authQuery } from './AuthTC';
 schemaComposer.add(GraphQLUpload);
 
 schemaComposer.Query.addFields({
-  ...productQuery, ...materialQuery, ...typeQuery, ...locationQuery, ...authQuery,
+  ...productQuery, ...materialQuery, ...categoryQuery, ...locationQuery, ...authQuery,
 });
 
 schemaComposer.Mutation.addFields({
-  ...productMutation, ...materialMutation, ...typeMutation, ...locationMutation,
+  ...productMutation, ...materialMutation, ...categoryMutation, ...locationMutation,
 });
 
 const graphqlSchema = schemaComposer.buildSchema();

@@ -5,7 +5,8 @@ import clsx from 'clsx';
 
 import { Paper, List, ListItem, ListItemText, Collapse } from '@material-ui/core';
 
-import useHomeQuery from 'graphql/hooks/useHomeQuery';
+import useCategories from 'hooks/useCategories';
+import useLocations from 'hooks/useLocations';
 
 type Section = {
   name: string;
@@ -59,7 +60,8 @@ const Sidebar: FC = () => {
 
   const { push } = useHistory();
 
-  const { categories, locations } = useHomeQuery();
+  const { categories } = useCategories();
+  const { locations } = useLocations();
 
   const [openedSection, setOpenedSection] = useState<string | undefined>(undefined);
 

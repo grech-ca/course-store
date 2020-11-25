@@ -1,6 +1,6 @@
 import React, { FC, useMemo, useState, ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 
 import { Container, Box, Paper, Typography, Divider, TextField, Button } from '@material-ui/core';
 
@@ -10,31 +10,7 @@ import Layout from 'components/layout/Layout';
 import CartCard from 'components/cart/CartCard';
 import CartPlaceholder from 'components/cart/CartPlaceholder';
 
-import { Product } from 'graphql/types';
-
-type QueryData = null | {
-  productByIds: Product[];
-};
-
-type QueryArgs = {
-  ids: string[];
-};
-
-const cartQuery = gql`
-  query cartQuery($ids: [MongoID!]!) {
-    productByIds(_ids: $ids) {
-      _id
-      name
-      description
-      photos
-      price
-      quantity
-      type {
-        name
-      }
-    }
-  }
-`;
+import { Product } from 'graphql/generated';
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -89,31 +65,9 @@ const useStyles = makeStyles(theme => ({
 const Cart: FC = () => {
   const classes = useStyles();
 
-  const { cart, findItemInCartById } = useCart();
-
-  const { data } = useQuery<QueryData, QueryArgs>(cartQuery, {
-    variables: {
-      ids: cart.map(({ id }: { id: string }) => id),
-    },
-  });
+  const { findItemInCartById, products, productsCost, delieverCost } = useCart();
 
   const [phone, setPhone] = useState<string>('');
-
-  const productsCost = useMemo<number>(
-    () =>
-      data?.productByIds.reduce((total: number, cur: Product) => {
-        const cartItem = cart.find(({ id }: CartItem) => id === cur._id);
-
-        return total + cur.price * (cartItem?.quantity || 0);
-      }, 0) as number,
-    [cart, data?.productByIds],
-  );
-
-  const delieverCost = useMemo<number>(() => {
-    const delieverPrice = productsCost * 0.2;
-
-    return productsCost > 15000 ? 0 : delieverPrice;
-  }, [productsCost]);
 
   const handlePhone = (e: ChangeEvent<HTMLInputElement>) => {
     setPhone(`+8${e.target.value.slice(2, 12)}`);
@@ -125,7 +79,7 @@ const Cart: FC = () => {
         <Typography className={classes.heading}>Корзина</Typography>
         <Box className={classes.wrapper}>
           <Box className={classes.cartItems}>
-            {data?.productByIds.map(({ _id, name, description, photos, price, type, quantity }: Product) => (
+            {products.map(({ _id, name, description, photos, price, category, quantity }: Product) => (
               <CartCard
                 key={_id}
                 _id={_id}
@@ -133,12 +87,12 @@ const Cart: FC = () => {
                 description={description}
                 photo={photos[0]}
                 price={price}
-                type={type?.name}
+                type={category?.name}
                 quantity={Math.min(findItemInCartById(_id)?.quantity || 0, quantity)}
                 maxQuantity={quantity}
               />
             ))}
-            {!data?.productByIds.length && <CartPlaceholder />}
+            {!products.length && <CartPlaceholder />}
           </Box>
           <Box className={classes.sideColumn}>
             <Paper className={classes.form}>
