@@ -11,6 +11,9 @@ const productQuery = gql`
       description
       price
       quantity
+      categoryRef
+      materialRefs
+      locationRefs
       category {
         _id
         name

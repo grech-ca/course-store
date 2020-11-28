@@ -2,7 +2,8 @@ const removeOrCreate = <T>(arr: T[], element: T): T[] => {
   const newArr = [...arr];
 
   if (newArr.includes(element)) {
-    newArr.splice(newArr.indexOf(element), 1);
+    const index = newArr.indexOf(element);
+    newArr.splice(index, 1);
   } else {
     newArr.push(element);
   }

@@ -11,6 +11,7 @@ type UseProductArgs = {
 };
 
 type UseProductHookResult = {
+  id: string;
   loading: boolean;
   product: Product;
   recommended: Product[];
@@ -28,6 +29,7 @@ const useProductPage = (options?: UseProductArgs): UseProductHookResult => {
   const { product, recommended = [] } = data || {};
 
   return {
+    id,
     loading,
     product: product as Product,
     recommended: recommended as Product[],

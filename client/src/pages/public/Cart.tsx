@@ -1,10 +1,9 @@
-import React, { FC, useMemo, useState, ChangeEvent } from 'react';
+import React, { FC, useState, ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useQuery } from '@apollo/client';
 
 import { Container, Box, Paper, Typography, Divider, TextField, Button } from '@material-ui/core';
 
-import useCart, { CartItem } from 'hooks/useCart';
+import useCart from 'hooks/useCart';
 
 import Layout from 'components/layout/Layout';
 import CartCard from 'components/cart/CartCard';

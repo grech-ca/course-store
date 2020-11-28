@@ -2430,6 +2430,47 @@ export type IncrementViewsMutation = (
   )> }
 );
 
+export type CreateProductMutationVariables = Exact<{
+  record: CreateOneProductInput;
+}>;
+
+
+export type CreateProductMutation = (
+  { __typename?: 'Mutation' }
+  & { createProduct?: Maybe<(
+    { __typename?: 'CreateOneProductPayload' }
+    & { record?: Maybe<(
+      { __typename?: 'Product' }
+      & Pick<Product, '_id' | 'name' | 'description' | 'price' | 'quantity' | 'photos'>
+      & { materials: Array<(
+        { __typename?: 'Material' }
+        & Pick<Material, 'name'>
+      )> }
+    )> }
+  )> }
+);
+
+export type UpdateProductMutationVariables = Exact<{
+  id: Scalars['MongoID'];
+  record: UpdateByIdProductInput;
+}>;
+
+
+export type UpdateProductMutation = (
+  { __typename?: 'Mutation' }
+  & { updateProduct?: Maybe<(
+    { __typename?: 'UpdateByIdProductPayload' }
+    & { record?: Maybe<(
+      { __typename?: 'Product' }
+      & Pick<Product, '_id' | 'name' | 'description' | 'price' | 'quantity' | 'photos'>
+      & { materials: Array<(
+        { __typename?: 'Material' }
+        & Pick<Material, 'name'>
+      )> }
+    )> }
+  )> }
+);
+
 export type CartQueryVariables = Exact<{
   ids: Array<Scalars['MongoID']>;
 }>;
@@ -2504,7 +2545,7 @@ export type ProductQuery = (
   { __typename?: 'Query' }
   & { product?: Maybe<(
     { __typename?: 'Product' }
-    & Pick<Product, '_id' | 'photos' | 'name' | 'description' | 'price' | 'quantity'>
+    & Pick<Product, '_id' | 'photos' | 'name' | 'description' | 'price' | 'quantity' | 'categoryRef' | 'materialRefs' | 'locationRefs'>
     & { category?: Maybe<(
       { __typename?: 'Type' }
       & Pick<Type, '_id' | 'name'>
@@ -2612,6 +2653,91 @@ export function useIncrementViewsMutation(baseOptions?: Apollo.MutationHookOptio
 export type IncrementViewsMutationHookResult = ReturnType<typeof useIncrementViewsMutation>;
 export type IncrementViewsMutationResult = Apollo.MutationResult<IncrementViewsMutation>;
 export type IncrementViewsMutationOptions = Apollo.BaseMutationOptions<IncrementViewsMutation, IncrementViewsMutationVariables>;
+export const CreateProductDocument = gql`
+    mutation createProduct($record: CreateOneProductInput!) {
+  createProduct(record: $record) {
+    record {
+      _id
+      name
+      description
+      price
+      quantity
+      materials {
+        name
+      }
+      photos
+    }
+  }
+}
+    `;
+export type CreateProductMutationFn = Apollo.MutationFunction<CreateProductMutation, CreateProductMutationVariables>;
+
+/**
+ * __useCreateProductMutation__
+ *
+ * To run a mutation, you first call `useCreateProductMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProductMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProductMutation, { data, loading, error }] = useCreateProductMutation({
+ *   variables: {
+ *      record: // value for 'record'
+ *   },
+ * });
+ */
+export function useCreateProductMutation(baseOptions?: Apollo.MutationHookOptions<CreateProductMutation, CreateProductMutationVariables>) {
+        return Apollo.useMutation<CreateProductMutation, CreateProductMutationVariables>(CreateProductDocument, baseOptions);
+      }
+export type CreateProductMutationHookResult = ReturnType<typeof useCreateProductMutation>;
+export type CreateProductMutationResult = Apollo.MutationResult<CreateProductMutation>;
+export type CreateProductMutationOptions = Apollo.BaseMutationOptions<CreateProductMutation, CreateProductMutationVariables>;
+export const UpdateProductDocument = gql`
+    mutation updateProduct($id: MongoID!, $record: UpdateByIdProductInput!) {
+  updateProduct(_id: $id, record: $record) {
+    record {
+      _id
+      name
+      description
+      price
+      quantity
+      materials {
+        name
+      }
+      photos
+    }
+  }
+}
+    `;
+export type UpdateProductMutationFn = Apollo.MutationFunction<UpdateProductMutation, UpdateProductMutationVariables>;
+
+/**
+ * __useUpdateProductMutation__
+ *
+ * To run a mutation, you first call `useUpdateProductMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProductMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProductMutation, { data, loading, error }] = useUpdateProductMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      record: // value for 'record'
+ *   },
+ * });
+ */
+export function useUpdateProductMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProductMutation, UpdateProductMutationVariables>) {
+        return Apollo.useMutation<UpdateProductMutation, UpdateProductMutationVariables>(UpdateProductDocument, baseOptions);
+      }
+export type UpdateProductMutationHookResult = ReturnType<typeof useUpdateProductMutation>;
+export type UpdateProductMutationResult = Apollo.MutationResult<UpdateProductMutation>;
+export type UpdateProductMutationOptions = Apollo.BaseMutationOptions<UpdateProductMutation, UpdateProductMutationVariables>;
 export const CartDocument = gql`
     query cart($ids: [MongoID!]!) {
   products: productsById(_ids: $ids) {
@@ -2803,6 +2929,9 @@ export const ProductDocument = gql`
     description
     price
     quantity
+    categoryRef
+    materialRefs
+    locationRefs
     category {
       _id
       name

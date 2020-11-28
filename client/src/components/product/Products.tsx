@@ -1,7 +1,7 @@
 import React, { FC, useState, createContext, ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Box, Paper, TablePagination, Card, CardContent, CardActions } from '@material-ui/core';
+import { Box, TablePagination, Card, CardContent, CardActions } from '@material-ui/core';
 
 import ProductCard from 'components/product/ProductCard';
 import ProductsFilter from 'components/product/ProductsFilter';

@@ -1,11 +1,21 @@
-import React, { FC, useState, useEffect, ChangeEvent } from 'react';
+import React, { FC, useState, useEffect, useMemo, useCallback, ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Box, Paper, TextField, Typography, MenuItem, Select, FormControl, InputLabel } from '@material-ui/core';
-
-import useProduct from 'hooks/useProduct';
+import { Box, Paper, TextField, Typography, Button } from '@material-ui/core';
 
 import ProductGallery from 'components/product/ProductGallery';
+import Selector from 'components/common/Selector';
+
+import useProduct from 'hooks/useProduct';
+import useMaterials from 'hooks/useMaterials';
+import useCategories from 'hooks/useCategories';
+import useLocations from 'hooks/useLocations';
+
+import { useUpdateProductMutation } from 'graphql/generated';
+
+type Props = {
+  create?: boolean;
+};
 
 const useStyles = makeStyles(theme => ({
   wrapper: {
@@ -21,28 +31,23 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
-  },
-  inputRow: {
-    display: 'flex',
-  },
-  name: {
-    marginBottom: theme.spacing(3),
-    '& input': {
-      fontSize: 20,
-      fontWeight: 700,
+    marginLeft: theme.spacing(2),
+    '& > *': {
+      marginBottom: theme.spacing(2),
     },
   },
-  description: {
-    marginBottom: theme.spacing(2),
+  inputRow: {
+    display: 'grid',
+    gridAutoColumns: '1fr',
+    gridTemplateRows: 'initial',
+    gridColumnGap: theme.spacing(2),
+    gridAutoFlow: 'column',
   },
-  price: {
-    flex: 1,
-    marginBottom: theme.spacing(2),
-  },
-  quantity: {
-    flex: 1,
-    marginLeft: theme.spacing(2),
-    marginBottom: theme.spacing(2),
+  name: {
+    '& input': {
+      fontSize: 18,
+      fontWeight: 700,
+    },
   },
   secondary: {
     flex: 1,
@@ -54,22 +59,29 @@ const useStyles = makeStyles(theme => ({
     fontSize: 18,
     fontWeight: 700,
   },
-  material: {
+  grow: {
     flex: 1,
   },
 }));
 
-const AdminProduct: FC = () => {
+const AdminProduct: FC<Props> = () => {
   const classes = useStyles();
 
-  const { product } = useProduct({ admin: true });
+  const [updateProduct] = useUpdateProductMutation();
+
+  const { materials } = useMaterials();
+  const { categories } = useCategories();
+  const { locations } = useLocations();
+  const { product, id } = useProduct({ admin: true });
   const { photos = [] } = product || {};
 
   const [name, setName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
   const [quantity, setQuantity] = useState<number>(0);
-  const [material] = useState<string[]>([]);
+  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string | undefined>('');
 
   useEffect(() => {
     if (product) {
@@ -77,61 +89,123 @@ const AdminProduct: FC = () => {
       setDescription(product.description);
       setQuantity(product.quantity);
       setPrice(product.price);
+      setSelectedCategory(product?.categoryRef);
+      setSelectedMaterials(product?.materialRefs || []);
+      setSelectedLocations(product?.locationRefs || []);
     }
   }, [product]);
 
-  const handleName = (e: ChangeEvent<HTMLInputElement>) => {
-    setName(e.target.value);
+  const handleChange = (e: ChangeEvent<HTMLInputElement | { value: unknown }>) => {
+    const { name, value } = e.target as HTMLInputElement | HTMLSelectElement;
+
+    switch (name) {
+      case 'name':
+        return setName(value);
+      case 'description':
+        return setDescription(value);
+      case 'price':
+        return setPrice(parseInt(value));
+      case 'quantity':
+        return setQuantity(parseInt(value));
+      case 'category':
+        return setSelectedCategory(value);
+      case 'materials':
+        if (Array.isArray(value)) setSelectedMaterials(value);
+        break;
+      case 'locations':
+        if (Array.isArray(value)) setSelectedLocations(value);
+        break;
+    }
   };
 
-  const handleDescription = (e: ChangeEvent<HTMLInputElement>) => {
-    setDescription(e.target.value);
-  };
+  const variables = useMemo(
+    () => ({
+      id,
+      record: {
+        photos,
+        name,
+        description,
+        price,
+        quantity,
+        materialRefs: selectedMaterials,
+        locationRefs: selectedLocations,
+        categoryRef: selectedCategory,
+      },
+    }),
+    [description, id, name, photos, price, quantity, selectedCategory, selectedLocations, selectedMaterials],
+  );
 
-  const handleMaterial = (e: ChangeEvent<{ value: unknown }>) => {
-    const { value } = e.target as HTMLSelectElement;
-    console.log(value);
-  };
+  const handleSubmit = useCallback(() => {
+    return updateProduct({
+      variables,
+    });
+  }, [updateProduct, variables]);
 
   return (
     <form className={classes.wrapper}>
       <Paper className={classes.primary}>
         <ProductGallery photos={photos} />
         <Box className={classes.content}>
-          <TextField variant="outlined" label="Название" onChange={handleName} className={classes.name} value={name} />
+          <TextField
+            className={classes.name}
+            name="name"
+            variant="outlined"
+            label="Название"
+            onChange={handleChange}
+            value={name}
+          />
           <Box className={classes.inputRow}>
-            <TextField variant="outlined" label="Цена" type="number" className={classes.price} value={price} />
-            <TextField
-              variant="outlined"
-              label="Количество"
-              type="number"
-              className={classes.quantity}
-              value={quantity}
+            <TextField onChange={handleChange} variant="outlined" label="Цена" type="number" value={price} />
+            <TextField onChange={handleChange} variant="outlined" label="Количество" type="number" value={quantity} />
+          </Box>
+          <Box className={classes.inputRow}>
+            <Selector
+              name="materials"
+              title="Материалы"
+              multiple
+              options={materials.map(({ _id, name: materialName }) => ({
+                label: materialName,
+                value: _id,
+              }))}
+              value={selectedMaterials}
+              onChange={handleChange}
+            />
+            <Selector
+              name="category"
+              title="Тип мебели"
+              options={[
+                ...categories.map(({ _id, name: categoryName }) => ({
+                  label: categoryName,
+                  value: _id,
+                })),
+              ]}
+              value={selectedCategory}
+              onChange={handleChange}
+            />
+            <Selector
+              name="locations"
+              title="Комнаты"
+              multiple
+              options={locations.map(({ _id, name: locationName }) => ({
+                label: locationName,
+                value: _id,
+              }))}
+              value={selectedLocations}
+              onChange={handleChange}
             />
           </Box>
           <TextField
+            name="description"
             variant="outlined"
             label="Описание"
-            onChange={handleDescription}
+            onChange={handleChange}
             multiline
-            className={classes.description}
             value={description}
           />
-          <Box className={classes.inputRow}>
-            <FormControl variant="filled" className={classes.material}>
-              <InputLabel>Материал</InputLabel>
-              <Select multiple value={material} onChange={handleMaterial}>
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {/* {data?.materialMany.map(({ _id, name: materialName }: Material) => (
-                  <MenuItem key={_id} value={materialName}>
-                    {materialName}
-                  </MenuItem>
-                ))} */}
-              </Select>
-            </FormControl>
-          </Box>
+          <div className={classes.grow} />
+          <Button onClick={handleSubmit} variant="contained" color="primary">
+            Сохранить
+          </Button>
         </Box>
       </Paper>
       <Paper className={classes.secondary}>

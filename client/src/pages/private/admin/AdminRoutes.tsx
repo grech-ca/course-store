@@ -28,8 +28,9 @@ const AdminRoutes: FC = () => {
       <Switch>
         <Route exact path={ADMIN_PATH} component={AdminHome} />
         <Route path={`${ADMIN_PATH}categories`} component={AdminCategories} />
-        <Route exact path={`${ADMIN_PATH}products`} component={Products} />
-        <Route path={`${ADMIN_PATH}products/:id`} component={AdminProduct} />
+        <Route exact path={`${ADMIN_PATH}product`} component={() => <Products baseUrl={`${ADMIN_PATH}product`} />} />
+        <Route path={`${ADMIN_PATH}product/:id`} component={AdminProduct} />
+        <Route path={`${ADMIN_PATH}product/create`} component={() => <AdminProduct create />} />
       </Switch>
     </Fragment>
   );
