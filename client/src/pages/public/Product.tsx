@@ -48,6 +48,7 @@ const useStyles = makeStyles(theme => ({
   category: {
     color: '#ccc',
     fontSize: 'inherit',
+
     '&:before': {
       content: '"–"',
       margin: theme.spacing(0, 1),
@@ -74,6 +75,7 @@ const useStyles = makeStyles(theme => ({
     color: '#555',
     margin: theme.spacing(0, 1),
     width: 50,
+
     '& input': {
       textAlign: 'center',
     },
@@ -88,6 +90,7 @@ const useStyles = makeStyles(theme => ({
   button: {
     padding: theme.spacing(0.9, 3),
     fontWeight: 700,
+
     '& + &': {
       marginLeft: theme.spacing(1.5),
     },
@@ -179,7 +182,7 @@ const ProductPage: FC = () => {
               </Box>
               <Box className={classes.actions}>
                 <Button variant="contained" color="secondary" className={classes.button}>
-                  Купить сейчас
+                  Оставить заявку
                 </Button>
                 <Button type="submit" variant="contained" color="primary" className={classes.button}>
                   Добавить в корзину
