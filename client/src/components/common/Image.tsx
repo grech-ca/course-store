@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo } from 'react';
+import React, { FC, useState, useMemo, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
 
@@ -59,6 +59,10 @@ const Image: FC<Props> = ({ src, size, height, width, className, objectFit }) =>
   const onImageError = () => setImageLoaded(false);
 
   const classNames = useMemo(() => clsx(classes.image, className), [className, classes.image]);
+
+  useEffect(() => {
+    if (src) setImageLoaded(true);
+  }, [src]);
 
   if (src && imageLoaded) return <img className={classNames} onError={onImageError} src={src || undefined} alt="" />;
 

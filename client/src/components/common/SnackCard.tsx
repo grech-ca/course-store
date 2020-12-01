@@ -1,14 +1,16 @@
 import React, { FC } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { DateTime } from 'luxon';
 
 import { Card, CardActionArea, CardContent, CardMedia, Typography } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
+
+import Image from 'components/common/Image';
 
 type Props = {
-  onClick: () => void;
+  path: string;
   name: string;
-  photo: string;
-  date: string;
+  photo?: string | null;
+  description: string;
 };
 
 const useStyles = makeStyles(theme => ({
@@ -38,16 +40,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const SnackCard: FC<Props> = ({ onClick, photo, name, date }) => {
+const SnackCard: FC<Props> = ({ path, photo, name, description }) => {
   const classes = useStyles();
+
+  const { push } = useHistory();
 
   return (
     <Card>
-      <CardActionArea className={classes.root} onClick={onClick} title={name}>
-        <CardMedia component="img" src={photo} className={classes.image} />
+      <CardActionArea onClick={() => push(path)} className={classes.root} title={name}>
+        <CardMedia component={Image} src={photo || ''} className={classes.image} />
         <CardContent className={classes.content}>
           <Typography className={classes.name}>{name}</Typography>
-          <Typography className={classes.date}>{DateTime.fromISO(date).toRelative({ locale: 'ru' })}</Typography>
+          <Typography className={classes.date}>{description}</Typography>
         </CardContent>
       </CardActionArea>
     </Card>

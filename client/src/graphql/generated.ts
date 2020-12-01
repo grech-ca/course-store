@@ -77,6 +77,9 @@ export type Query = {
   locations: Array<Location>;
   aggregateLocation?: Maybe<Scalars['Int']>;
   login?: Maybe<User>;
+  order?: Maybe<Order>;
+  ordersById: Array<Order>;
+  orders?: Maybe<OrderPagination>;
 };
 
 
@@ -188,6 +191,26 @@ export type QueryLoginArgs = {
   password?: Maybe<Scalars['String']>;
 };
 
+
+export type QueryOrderArgs = {
+  _id: Scalars['MongoID'];
+};
+
+
+export type QueryOrdersByIdArgs = {
+  _ids: Array<Scalars['MongoID']>;
+  limit?: Maybe<Scalars['Int']>;
+  sort?: Maybe<SortFindByIdsOrderInput>;
+};
+
+
+export type QueryOrdersArgs = {
+  page?: Maybe<Scalars['Int']>;
+  perPage?: Maybe<Scalars['Int']>;
+  filter?: Maybe<FilterFindManyOrderInput>;
+  sort?: Maybe<SortFindManyOrderInput>;
+};
+
 export type Product = {
   __typename?: 'Product';
   name: Scalars['String'];
@@ -213,13 +236,6 @@ export type ProductMaterialsArgs = {
   skip?: Maybe<Scalars['Int']>;
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindManyMaterialInput>;
-};
-
-
-export type ProductCategoryArgs = {
-  filter?: Maybe<FilterFindOneTypeInput>;
-  skip?: Maybe<Scalars['Int']>;
-  sort?: Maybe<SortFindOneTypeInput>;
 };
 
 
@@ -547,67 +563,6 @@ export type TypeProductsArgs = {
   limit?: Maybe<Scalars['Int']>;
   sort?: Maybe<SortFindManyProductInput>;
 };
-
-export type FilterFindOneTypeInput = {
-  name?: Maybe<Scalars['String']>;
-  photo?: Maybe<Scalars['String']>;
-  _id?: Maybe<Scalars['MongoID']>;
-  updatedAt?: Maybe<Scalars['Date']>;
-  createdAt?: Maybe<Scalars['Date']>;
-  /** List of *indexed* fields that can be filtered via operators. */
-  _operators?: Maybe<FilterFindOneTypeOperatorsInput>;
-  OR?: Maybe<Array<FilterFindOneTypeInput>>;
-  AND?: Maybe<Array<FilterFindOneTypeInput>>;
-};
-
-/** For performance reason this type contains only *indexed* fields. */
-export type FilterFindOneTypeOperatorsInput = {
-  _id?: Maybe<FilterFindOneType_IdOperatorsInput>;
-  updatedAt?: Maybe<FilterFindOneTypeUpdatedAtOperatorsInput>;
-  createdAt?: Maybe<FilterFindOneTypeCreatedAtOperatorsInput>;
-};
-
-export type FilterFindOneType_IdOperatorsInput = {
-  gt?: Maybe<Scalars['MongoID']>;
-  gte?: Maybe<Scalars['MongoID']>;
-  lt?: Maybe<Scalars['MongoID']>;
-  lte?: Maybe<Scalars['MongoID']>;
-  ne?: Maybe<Scalars['MongoID']>;
-  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterFindOneTypeUpdatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export type FilterFindOneTypeCreatedAtOperatorsInput = {
-  gt?: Maybe<Scalars['Date']>;
-  gte?: Maybe<Scalars['Date']>;
-  lt?: Maybe<Scalars['Date']>;
-  lte?: Maybe<Scalars['Date']>;
-  ne?: Maybe<Scalars['Date']>;
-  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
-  exists?: Maybe<Scalars['Boolean']>;
-};
-
-export enum SortFindOneTypeInput {
-  IdAsc = '_ID_ASC',
-  IdDesc = '_ID_DESC',
-  CreatedatAsc = 'CREATEDAT_ASC',
-  CreatedatDesc = 'CREATEDAT_DESC',
-  UpdatedatAsc = 'UPDATEDAT_ASC',
-  UpdatedatDesc = 'UPDATEDAT_DESC'
-}
 
 export type Location = {
   __typename?: 'Location';
@@ -1103,6 +1058,269 @@ export type User = {
   _id: Scalars['MongoID'];
 };
 
+export type Order = {
+  __typename?: 'Order';
+  orderedProducts?: Maybe<Array<Maybe<OrderOrderedProducts>>>;
+  name: Scalars['String'];
+  lastName: Scalars['String'];
+  phone: Scalars['String'];
+  adress: Scalars['String'];
+  status: EnumOrderStatus;
+  _id: Scalars['MongoID'];
+  updatedAt?: Maybe<Scalars['Date']>;
+  createdAt?: Maybe<Scalars['Date']>;
+  products?: Maybe<Array<Maybe<Product>>>;
+  totalCost?: Maybe<Scalars['Float']>;
+  quantity?: Maybe<Scalars['Int']>;
+};
+
+export type OrderOrderedProducts = {
+  __typename?: 'OrderOrderedProducts';
+  type?: Maybe<Scalars['JSON']>;
+  quantity?: Maybe<Scalars['Float']>;
+  product?: Maybe<Scalars['MongoID']>;
+  _id?: Maybe<Scalars['MongoID']>;
+  updatedAt?: Maybe<Scalars['Date']>;
+  createdAt?: Maybe<Scalars['Date']>;
+};
+
+export enum EnumOrderStatus {
+  Pending = 'Pending',
+  InProcess = 'InProcess',
+  Finished = 'Finished',
+  Cancelled = 'Cancelled'
+}
+
+export enum SortFindByIdsOrderInput {
+  IdAsc = '_ID_ASC',
+  IdDesc = '_ID_DESC',
+  CreatedatAsc = 'CREATEDAT_ASC',
+  CreatedatDesc = 'CREATEDAT_DESC'
+}
+
+/** List of items with pagination. */
+export type OrderPagination = {
+  __typename?: 'OrderPagination';
+  /** Total object count. */
+  count?: Maybe<Scalars['Int']>;
+  /** Array of objects. */
+  items?: Maybe<Array<Order>>;
+  /** Information to aid in pagination. */
+  pageInfo: PaginationInfo;
+};
+
+export type FilterFindManyOrderInput = {
+  orderedProducts?: Maybe<Array<Maybe<FilterFindManyOrderOrderedProductsInput>>>;
+  name?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  adress?: Maybe<Scalars['String']>;
+  status?: Maybe<EnumOrderStatus>;
+  _id?: Maybe<Scalars['MongoID']>;
+  updatedAt?: Maybe<Scalars['Date']>;
+  createdAt?: Maybe<Scalars['Date']>;
+  /** List of *indexed* fields that can be filtered via operators. */
+  _operators?: Maybe<FilterFindManyOrderOperatorsInput>;
+  OR?: Maybe<Array<FilterFindManyOrderInput>>;
+  AND?: Maybe<Array<FilterFindManyOrderInput>>;
+};
+
+export type FilterFindManyOrderOrderedProductsInput = {
+  type?: Maybe<Scalars['JSON']>;
+  quantity?: Maybe<Scalars['Float']>;
+  product?: Maybe<Scalars['MongoID']>;
+  _id?: Maybe<Scalars['MongoID']>;
+  updatedAt?: Maybe<Scalars['Date']>;
+  createdAt?: Maybe<Scalars['Date']>;
+};
+
+/** For performance reason this type contains only *indexed* fields. */
+export type FilterFindManyOrderOperatorsInput = {
+  orderedProducts?: Maybe<FilterFindManyOrderOrderedProductsOperatorsInput>;
+  name?: Maybe<FilterFindManyOrderNameOperatorsInput>;
+  lastName?: Maybe<FilterFindManyOrderLastNameOperatorsInput>;
+  phone?: Maybe<FilterFindManyOrderPhoneOperatorsInput>;
+  adress?: Maybe<FilterFindManyOrderAdressOperatorsInput>;
+  status?: Maybe<FilterFindManyOrderStatusOperatorsInput>;
+  _id?: Maybe<FilterFindManyOrder_IdOperatorsInput>;
+  updatedAt?: Maybe<FilterFindManyOrderUpdatedAtOperatorsInput>;
+  createdAt?: Maybe<FilterFindManyOrderCreatedAtOperatorsInput>;
+};
+
+export type FilterFindManyOrderOrderedProductsOperatorsInput = {
+  type?: Maybe<FilterFindManyOrderOrderedProductsTypeOperatorsInput>;
+  quantity?: Maybe<FilterFindManyOrderOrderedProductsQuantityOperatorsInput>;
+  product?: Maybe<FilterFindManyOrderOrderedProductsProductOperatorsInput>;
+  _id?: Maybe<FilterFindManyOrderOrderedProducts_IdOperatorsInput>;
+  updatedAt?: Maybe<FilterFindManyOrderOrderedProductsUpdatedAtOperatorsInput>;
+  createdAt?: Maybe<FilterFindManyOrderOrderedProductsCreatedAtOperatorsInput>;
+};
+
+export type FilterFindManyOrderOrderedProductsTypeOperatorsInput = {
+  gt?: Maybe<Scalars['JSON']>;
+  gte?: Maybe<Scalars['JSON']>;
+  lt?: Maybe<Scalars['JSON']>;
+  lte?: Maybe<Scalars['JSON']>;
+  ne?: Maybe<Scalars['JSON']>;
+  in?: Maybe<Array<Maybe<Scalars['JSON']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['JSON']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderOrderedProductsQuantityOperatorsInput = {
+  gt?: Maybe<Scalars['Float']>;
+  gte?: Maybe<Scalars['Float']>;
+  lt?: Maybe<Scalars['Float']>;
+  lte?: Maybe<Scalars['Float']>;
+  ne?: Maybe<Scalars['Float']>;
+  in?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderOrderedProductsProductOperatorsInput = {
+  gt?: Maybe<Scalars['MongoID']>;
+  gte?: Maybe<Scalars['MongoID']>;
+  lt?: Maybe<Scalars['MongoID']>;
+  lte?: Maybe<Scalars['MongoID']>;
+  ne?: Maybe<Scalars['MongoID']>;
+  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderOrderedProducts_IdOperatorsInput = {
+  gt?: Maybe<Scalars['MongoID']>;
+  gte?: Maybe<Scalars['MongoID']>;
+  lt?: Maybe<Scalars['MongoID']>;
+  lte?: Maybe<Scalars['MongoID']>;
+  ne?: Maybe<Scalars['MongoID']>;
+  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderOrderedProductsUpdatedAtOperatorsInput = {
+  gt?: Maybe<Scalars['Date']>;
+  gte?: Maybe<Scalars['Date']>;
+  lt?: Maybe<Scalars['Date']>;
+  lte?: Maybe<Scalars['Date']>;
+  ne?: Maybe<Scalars['Date']>;
+  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderOrderedProductsCreatedAtOperatorsInput = {
+  gt?: Maybe<Scalars['Date']>;
+  gte?: Maybe<Scalars['Date']>;
+  lt?: Maybe<Scalars['Date']>;
+  lte?: Maybe<Scalars['Date']>;
+  ne?: Maybe<Scalars['Date']>;
+  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderNameOperatorsInput = {
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  ne?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  regex?: Maybe<Scalars['RegExpAsString']>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderLastNameOperatorsInput = {
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  ne?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  regex?: Maybe<Scalars['RegExpAsString']>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderPhoneOperatorsInput = {
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  ne?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  regex?: Maybe<Scalars['RegExpAsString']>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderAdressOperatorsInput = {
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  ne?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  regex?: Maybe<Scalars['RegExpAsString']>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderStatusOperatorsInput = {
+  gt?: Maybe<EnumOrderStatus>;
+  gte?: Maybe<EnumOrderStatus>;
+  lt?: Maybe<EnumOrderStatus>;
+  lte?: Maybe<EnumOrderStatus>;
+  ne?: Maybe<EnumOrderStatus>;
+  in?: Maybe<Array<Maybe<EnumOrderStatus>>>;
+  nin?: Maybe<Array<Maybe<EnumOrderStatus>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrder_IdOperatorsInput = {
+  gt?: Maybe<Scalars['MongoID']>;
+  gte?: Maybe<Scalars['MongoID']>;
+  lt?: Maybe<Scalars['MongoID']>;
+  lte?: Maybe<Scalars['MongoID']>;
+  ne?: Maybe<Scalars['MongoID']>;
+  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderUpdatedAtOperatorsInput = {
+  gt?: Maybe<Scalars['Date']>;
+  gte?: Maybe<Scalars['Date']>;
+  lt?: Maybe<Scalars['Date']>;
+  lte?: Maybe<Scalars['Date']>;
+  ne?: Maybe<Scalars['Date']>;
+  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterFindManyOrderCreatedAtOperatorsInput = {
+  gt?: Maybe<Scalars['Date']>;
+  gte?: Maybe<Scalars['Date']>;
+  lt?: Maybe<Scalars['Date']>;
+  lte?: Maybe<Scalars['Date']>;
+  ne?: Maybe<Scalars['Date']>;
+  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export enum SortFindManyOrderInput {
+  IdAsc = '_ID_ASC',
+  IdDesc = '_ID_DESC',
+  CreatedatAsc = 'CREATEDAT_ASC',
+  CreatedatDesc = 'CREATEDAT_DESC'
+}
+
 export type Mutation = {
   __typename?: 'Mutation';
   /** Create one document with mongoose defaults, setters, hooks and validation */
@@ -1146,6 +1364,13 @@ export type Mutation = {
   removeLocation?: Maybe<RemoveByIdLocationPayload>;
   /** Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation.  */
   removeLocations?: Maybe<RemoveManyLocationPayload>;
+  /** Create one document with mongoose defaults, setters, hooks and validation */
+  createOrder?: Maybe<CreateOneOrderPayload>;
+  /** Remove one document: 1) Retrieve one document and remove with hooks via findByIdAndRemove. 2) Return removed document. */
+  removeOrder?: Maybe<RemoveByIdOrderPayload>;
+  /** Remove many documents without returning them: Use Query.remove mongoose method. Do not apply mongoose defaults, setters, hooks and validation.  */
+  removeOrders?: Maybe<RemoveManyOrderPayload>;
+  updateOrderStatus?: Maybe<Order>;
 };
 
 
@@ -1275,6 +1500,28 @@ export type MutationRemoveLocationArgs = {
 export type MutationRemoveLocationsArgs = {
   filter: FilterRemoveManyLocationInput;
   limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type MutationCreateOrderArgs = {
+  record: CreateOneOrderInput;
+};
+
+
+export type MutationRemoveOrderArgs = {
+  _id: Scalars['MongoID'];
+};
+
+
+export type MutationRemoveOrdersArgs = {
+  filter: FilterRemoveManyOrderInput;
+  limit?: Maybe<Scalars['Int']>;
+};
+
+
+export type MutationUpdateOrderStatusArgs = {
+  id: Scalars['MongoID'];
+  status: EnumOrderStatus;
 };
 
 export type CreateOneProductPayload = {
@@ -2412,6 +2659,259 @@ export type FilterRemoveManyLocationCreatedAtOperatorsInput = {
   exists?: Maybe<Scalars['Boolean']>;
 };
 
+export type CreateOneOrderPayload = {
+  __typename?: 'CreateOneOrderPayload';
+  /** Document ID */
+  recordId?: Maybe<Scalars['MongoID']>;
+  /** Created document */
+  record?: Maybe<Order>;
+  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
+  error?: Maybe<ErrorInterface>;
+};
+
+export type CreateOneOrderInput = {
+  orderedProducts?: Maybe<Array<Maybe<OrderOrderedProductsInput>>>;
+  name: Scalars['String'];
+  lastName: Scalars['String'];
+  phone: Scalars['String'];
+  adress: Scalars['String'];
+  status: EnumOrderStatus;
+  updatedAt?: Maybe<Scalars['Date']>;
+  createdAt?: Maybe<Scalars['Date']>;
+};
+
+export type OrderOrderedProductsInput = {
+  type?: Maybe<Scalars['JSON']>;
+  quantity?: Maybe<Scalars['Float']>;
+  product?: Maybe<Scalars['MongoID']>;
+  _id?: Maybe<Scalars['MongoID']>;
+  updatedAt?: Maybe<Scalars['Date']>;
+  createdAt?: Maybe<Scalars['Date']>;
+};
+
+export type RemoveByIdOrderPayload = {
+  __typename?: 'RemoveByIdOrderPayload';
+  /** Document ID */
+  recordId?: Maybe<Scalars['MongoID']>;
+  /** Removed document */
+  record?: Maybe<Order>;
+  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
+  error?: Maybe<ErrorInterface>;
+};
+
+export type RemoveManyOrderPayload = {
+  __typename?: 'RemoveManyOrderPayload';
+  /** Affected documents number */
+  numAffected?: Maybe<Scalars['Int']>;
+  /** Error that may occur during operation. If you request this field in GraphQL query, you will receive typed error in payload; otherwise error will be provided in root `errors` field of GraphQL response. */
+  error?: Maybe<ErrorInterface>;
+};
+
+export type FilterRemoveManyOrderInput = {
+  orderedProducts?: Maybe<Array<Maybe<FilterRemoveManyOrderOrderedProductsInput>>>;
+  name?: Maybe<Scalars['String']>;
+  lastName?: Maybe<Scalars['String']>;
+  phone?: Maybe<Scalars['String']>;
+  adress?: Maybe<Scalars['String']>;
+  status?: Maybe<EnumOrderStatus>;
+  _id?: Maybe<Scalars['MongoID']>;
+  updatedAt?: Maybe<Scalars['Date']>;
+  createdAt?: Maybe<Scalars['Date']>;
+  /** List of *indexed* fields that can be filtered via operators. */
+  _operators?: Maybe<FilterRemoveManyOrderOperatorsInput>;
+  OR?: Maybe<Array<FilterRemoveManyOrderInput>>;
+  AND?: Maybe<Array<FilterRemoveManyOrderInput>>;
+};
+
+export type FilterRemoveManyOrderOrderedProductsInput = {
+  type?: Maybe<Scalars['JSON']>;
+  quantity?: Maybe<Scalars['Float']>;
+  product?: Maybe<Scalars['MongoID']>;
+  _id?: Maybe<Scalars['MongoID']>;
+  updatedAt?: Maybe<Scalars['Date']>;
+  createdAt?: Maybe<Scalars['Date']>;
+};
+
+/** For performance reason this type contains only *indexed* fields. */
+export type FilterRemoveManyOrderOperatorsInput = {
+  orderedProducts?: Maybe<FilterRemoveManyOrderOrderedProductsOperatorsInput>;
+  name?: Maybe<FilterRemoveManyOrderNameOperatorsInput>;
+  lastName?: Maybe<FilterRemoveManyOrderLastNameOperatorsInput>;
+  phone?: Maybe<FilterRemoveManyOrderPhoneOperatorsInput>;
+  adress?: Maybe<FilterRemoveManyOrderAdressOperatorsInput>;
+  status?: Maybe<FilterRemoveManyOrderStatusOperatorsInput>;
+  _id?: Maybe<FilterRemoveManyOrder_IdOperatorsInput>;
+  updatedAt?: Maybe<FilterRemoveManyOrderUpdatedAtOperatorsInput>;
+  createdAt?: Maybe<FilterRemoveManyOrderCreatedAtOperatorsInput>;
+};
+
+export type FilterRemoveManyOrderOrderedProductsOperatorsInput = {
+  type?: Maybe<FilterRemoveManyOrderOrderedProductsTypeOperatorsInput>;
+  quantity?: Maybe<FilterRemoveManyOrderOrderedProductsQuantityOperatorsInput>;
+  product?: Maybe<FilterRemoveManyOrderOrderedProductsProductOperatorsInput>;
+  _id?: Maybe<FilterRemoveManyOrderOrderedProducts_IdOperatorsInput>;
+  updatedAt?: Maybe<FilterRemoveManyOrderOrderedProductsUpdatedAtOperatorsInput>;
+  createdAt?: Maybe<FilterRemoveManyOrderOrderedProductsCreatedAtOperatorsInput>;
+};
+
+export type FilterRemoveManyOrderOrderedProductsTypeOperatorsInput = {
+  gt?: Maybe<Scalars['JSON']>;
+  gte?: Maybe<Scalars['JSON']>;
+  lt?: Maybe<Scalars['JSON']>;
+  lte?: Maybe<Scalars['JSON']>;
+  ne?: Maybe<Scalars['JSON']>;
+  in?: Maybe<Array<Maybe<Scalars['JSON']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['JSON']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderOrderedProductsQuantityOperatorsInput = {
+  gt?: Maybe<Scalars['Float']>;
+  gte?: Maybe<Scalars['Float']>;
+  lt?: Maybe<Scalars['Float']>;
+  lte?: Maybe<Scalars['Float']>;
+  ne?: Maybe<Scalars['Float']>;
+  in?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Float']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderOrderedProductsProductOperatorsInput = {
+  gt?: Maybe<Scalars['MongoID']>;
+  gte?: Maybe<Scalars['MongoID']>;
+  lt?: Maybe<Scalars['MongoID']>;
+  lte?: Maybe<Scalars['MongoID']>;
+  ne?: Maybe<Scalars['MongoID']>;
+  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderOrderedProducts_IdOperatorsInput = {
+  gt?: Maybe<Scalars['MongoID']>;
+  gte?: Maybe<Scalars['MongoID']>;
+  lt?: Maybe<Scalars['MongoID']>;
+  lte?: Maybe<Scalars['MongoID']>;
+  ne?: Maybe<Scalars['MongoID']>;
+  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderOrderedProductsUpdatedAtOperatorsInput = {
+  gt?: Maybe<Scalars['Date']>;
+  gte?: Maybe<Scalars['Date']>;
+  lt?: Maybe<Scalars['Date']>;
+  lte?: Maybe<Scalars['Date']>;
+  ne?: Maybe<Scalars['Date']>;
+  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderOrderedProductsCreatedAtOperatorsInput = {
+  gt?: Maybe<Scalars['Date']>;
+  gte?: Maybe<Scalars['Date']>;
+  lt?: Maybe<Scalars['Date']>;
+  lte?: Maybe<Scalars['Date']>;
+  ne?: Maybe<Scalars['Date']>;
+  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderNameOperatorsInput = {
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  ne?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  regex?: Maybe<Scalars['RegExpAsString']>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderLastNameOperatorsInput = {
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  ne?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  regex?: Maybe<Scalars['RegExpAsString']>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderPhoneOperatorsInput = {
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  ne?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  regex?: Maybe<Scalars['RegExpAsString']>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderAdressOperatorsInput = {
+  gt?: Maybe<Scalars['String']>;
+  gte?: Maybe<Scalars['String']>;
+  lt?: Maybe<Scalars['String']>;
+  lte?: Maybe<Scalars['String']>;
+  ne?: Maybe<Scalars['String']>;
+  in?: Maybe<Array<Maybe<Scalars['String']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['String']>>>;
+  regex?: Maybe<Scalars['RegExpAsString']>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderStatusOperatorsInput = {
+  gt?: Maybe<EnumOrderStatus>;
+  gte?: Maybe<EnumOrderStatus>;
+  lt?: Maybe<EnumOrderStatus>;
+  lte?: Maybe<EnumOrderStatus>;
+  ne?: Maybe<EnumOrderStatus>;
+  in?: Maybe<Array<Maybe<EnumOrderStatus>>>;
+  nin?: Maybe<Array<Maybe<EnumOrderStatus>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrder_IdOperatorsInput = {
+  gt?: Maybe<Scalars['MongoID']>;
+  gte?: Maybe<Scalars['MongoID']>;
+  lt?: Maybe<Scalars['MongoID']>;
+  lte?: Maybe<Scalars['MongoID']>;
+  ne?: Maybe<Scalars['MongoID']>;
+  in?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['MongoID']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderUpdatedAtOperatorsInput = {
+  gt?: Maybe<Scalars['Date']>;
+  gte?: Maybe<Scalars['Date']>;
+  lt?: Maybe<Scalars['Date']>;
+  lte?: Maybe<Scalars['Date']>;
+  ne?: Maybe<Scalars['Date']>;
+  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
+export type FilterRemoveManyOrderCreatedAtOperatorsInput = {
+  gt?: Maybe<Scalars['Date']>;
+  gte?: Maybe<Scalars['Date']>;
+  lt?: Maybe<Scalars['Date']>;
+  lte?: Maybe<Scalars['Date']>;
+  ne?: Maybe<Scalars['Date']>;
+  in?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  nin?: Maybe<Array<Maybe<Scalars['Date']>>>;
+  exists?: Maybe<Scalars['Boolean']>;
+};
+
 export type ProductCardFieldsFragment = (
   { __typename?: 'Product' }
   & Pick<Product, '_id' | 'name' | 'description' | 'price' | 'quantity' | 'photos'>
@@ -2427,6 +2927,40 @@ export type IncrementViewsMutation = (
   & { incrementProductViews?: Maybe<(
     { __typename?: 'Product' }
     & Pick<Product, '_id' | 'name' | 'views'>
+  )> }
+);
+
+export type CreateOrderMutationVariables = Exact<{
+  record: CreateOneOrderInput;
+}>;
+
+
+export type CreateOrderMutation = (
+  { __typename?: 'Mutation' }
+  & { createOrder?: Maybe<(
+    { __typename?: 'CreateOneOrderPayload' }
+    & { record?: Maybe<(
+      { __typename?: 'Order' }
+      & Pick<Order, '_id' | 'name' | 'lastName' | 'adress' | 'phone'>
+      & { products?: Maybe<Array<Maybe<(
+        { __typename?: 'Product' }
+        & Pick<Product, 'name'>
+      )>>> }
+    )> }
+  )> }
+);
+
+export type UpdateOrderStatusMutationVariables = Exact<{
+  id: Scalars['MongoID'];
+  status: EnumOrderStatus;
+}>;
+
+
+export type UpdateOrderStatusMutation = (
+  { __typename?: 'Mutation' }
+  & { updateOrderStatus?: Maybe<(
+    { __typename?: 'Order' }
+    & Pick<Order, 'status' | 'updatedAt'>
   )> }
 );
 
@@ -2535,6 +3069,28 @@ export type MaterialsQuery = (
   )> }
 );
 
+export type OrdersQueryVariables = Exact<{
+  page?: Maybe<Scalars['Int']>;
+  perPage?: Maybe<Scalars['Int']>;
+  filter?: Maybe<FilterFindManyOrderInput>;
+  sort?: Maybe<SortFindManyOrderInput>;
+}>;
+
+
+export type OrdersQuery = (
+  { __typename?: 'Query' }
+  & { orders?: Maybe<(
+    { __typename?: 'OrderPagination' }
+    & { items?: Maybe<Array<(
+      { __typename?: 'Order' }
+      & Pick<Order, '_id' | 'name' | 'lastName' | 'adress' | 'phone' | 'status' | 'totalCost' | 'quantity' | 'createdAt' | 'updatedAt'>
+    )>>, pageInfo: (
+      { __typename?: 'PaginationInfo' }
+      & Pick<PaginationInfo, 'currentPage' | 'pageCount'>
+    ) }
+  )> }
+);
+
 export type ProductQueryVariables = Exact<{
   id: Scalars['MongoID'];
   admin: Scalars['Boolean'];
@@ -2582,7 +3138,7 @@ export type ProductsQuery = (
       & ProductCardFieldsFragment
     )>>, pageInfo: (
       { __typename?: 'PaginationInfo' }
-      & Pick<PaginationInfo, 'currentPage' | 'pageCount'>
+      & Pick<PaginationInfo, 'currentPage' | 'itemCount'>
     ) }
   )> }
 );
@@ -2653,6 +3209,81 @@ export function useIncrementViewsMutation(baseOptions?: Apollo.MutationHookOptio
 export type IncrementViewsMutationHookResult = ReturnType<typeof useIncrementViewsMutation>;
 export type IncrementViewsMutationResult = Apollo.MutationResult<IncrementViewsMutation>;
 export type IncrementViewsMutationOptions = Apollo.BaseMutationOptions<IncrementViewsMutation, IncrementViewsMutationVariables>;
+export const CreateOrderDocument = gql`
+    mutation createOrder($record: CreateOneOrderInput!) {
+  createOrder(record: $record) {
+    record {
+      _id
+      name
+      lastName
+      adress
+      phone
+      products {
+        name
+      }
+    }
+  }
+}
+    `;
+export type CreateOrderMutationFn = Apollo.MutationFunction<CreateOrderMutation, CreateOrderMutationVariables>;
+
+/**
+ * __useCreateOrderMutation__
+ *
+ * To run a mutation, you first call `useCreateOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrderMutation, { data, loading, error }] = useCreateOrderMutation({
+ *   variables: {
+ *      record: // value for 'record'
+ *   },
+ * });
+ */
+export function useCreateOrderMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrderMutation, CreateOrderMutationVariables>) {
+        return Apollo.useMutation<CreateOrderMutation, CreateOrderMutationVariables>(CreateOrderDocument, baseOptions);
+      }
+export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMutation>;
+export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
+export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
+export const UpdateOrderStatusDocument = gql`
+    mutation updateOrderStatus($id: MongoID!, $status: EnumOrderStatus!) {
+  updateOrderStatus(id: $id, status: $status) {
+    status
+    updatedAt
+  }
+}
+    `;
+export type UpdateOrderStatusMutationFn = Apollo.MutationFunction<UpdateOrderStatusMutation, UpdateOrderStatusMutationVariables>;
+
+/**
+ * __useUpdateOrderStatusMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrderStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrderStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrderStatusMutation, { data, loading, error }] = useUpdateOrderStatusMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      status: // value for 'status'
+ *   },
+ * });
+ */
+export function useUpdateOrderStatusMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrderStatusMutation, UpdateOrderStatusMutationVariables>) {
+        return Apollo.useMutation<UpdateOrderStatusMutation, UpdateOrderStatusMutationVariables>(UpdateOrderStatusDocument, baseOptions);
+      }
+export type UpdateOrderStatusMutationHookResult = ReturnType<typeof useUpdateOrderStatusMutation>;
+export type UpdateOrderStatusMutationResult = Apollo.MutationResult<UpdateOrderStatusMutation>;
+export type UpdateOrderStatusMutationOptions = Apollo.BaseMutationOptions<UpdateOrderStatusMutation, UpdateOrderStatusMutationVariables>;
 export const CreateProductDocument = gql`
     mutation createProduct($record: CreateOneProductInput!) {
   createProduct(record: $record) {
@@ -2920,6 +3551,57 @@ export function useMaterialsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<
 export type MaterialsQueryHookResult = ReturnType<typeof useMaterialsQuery>;
 export type MaterialsLazyQueryHookResult = ReturnType<typeof useMaterialsLazyQuery>;
 export type MaterialsQueryResult = Apollo.QueryResult<MaterialsQuery, MaterialsQueryVariables>;
+export const OrdersDocument = gql`
+    query orders($page: Int, $perPage: Int = 20, $filter: FilterFindManyOrderInput, $sort: SortFindManyOrderInput) {
+  orders(page: $page, perPage: $perPage, filter: $filter, sort: $sort) {
+    items {
+      _id
+      name
+      lastName
+      adress
+      phone
+      status
+      totalCost
+      quantity
+      createdAt
+      updatedAt
+    }
+    pageInfo {
+      currentPage
+      pageCount
+    }
+  }
+}
+    `;
+
+/**
+ * __useOrdersQuery__
+ *
+ * To run a query within a React component, call `useOrdersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrdersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrdersQuery({
+ *   variables: {
+ *      page: // value for 'page'
+ *      perPage: // value for 'perPage'
+ *      filter: // value for 'filter'
+ *      sort: // value for 'sort'
+ *   },
+ * });
+ */
+export function useOrdersQuery(baseOptions?: Apollo.QueryHookOptions<OrdersQuery, OrdersQueryVariables>) {
+        return Apollo.useQuery<OrdersQuery, OrdersQueryVariables>(OrdersDocument, baseOptions);
+      }
+export function useOrdersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrdersQuery, OrdersQueryVariables>) {
+          return Apollo.useLazyQuery<OrdersQuery, OrdersQueryVariables>(OrdersDocument, baseOptions);
+        }
+export type OrdersQueryHookResult = ReturnType<typeof useOrdersQuery>;
+export type OrdersLazyQueryHookResult = ReturnType<typeof useOrdersLazyQuery>;
+export type OrdersQueryResult = Apollo.QueryResult<OrdersQuery, OrdersQueryVariables>;
 export const ProductDocument = gql`
     query product($id: MongoID!, $admin: Boolean!) {
   product(_id: $id) {
@@ -2950,7 +3632,7 @@ export const ProductDocument = gql`
     _id
     name
   }
-  recommended: products(limit: 5) {
+  recommended: products(limit: 3) {
     ...productCardFields
   }
 }
@@ -2983,14 +3665,14 @@ export type ProductQueryHookResult = ReturnType<typeof useProductQuery>;
 export type ProductLazyQueryHookResult = ReturnType<typeof useProductLazyQuery>;
 export type ProductQueryResult = Apollo.QueryResult<ProductQuery, ProductQueryVariables>;
 export const ProductsDocument = gql`
-    query Products($filter: FilterFindManyProductInput, $page: Int = 1, $perPage: Int = 10, $sort: SortFindManyProductInput) {
+    query products($filter: FilterFindManyProductInput, $page: Int = 1, $perPage: Int = 10, $sort: SortFindManyProductInput) {
   productsPagination(filter: $filter, page: $page, perPage: $perPage, sort: $sort) {
     items {
       ...productCardFields
     }
     pageInfo {
       currentPage
-      pageCount
+      itemCount
     }
   }
 }

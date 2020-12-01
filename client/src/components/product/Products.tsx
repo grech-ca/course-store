@@ -14,6 +14,9 @@ type Props = {
 };
 
 const useStyles = makeStyles(theme => ({
+  card: {
+    height: 'fit-content',
+  },
   wrapper: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -23,9 +26,9 @@ const useStyles = makeStyles(theme => ({
     display: 'grid',
     flexDirection: 'column',
     gridTemplateColumns: 'repeat(5, 200px)',
-    gridAutoRows: 'initial',
+    gridAutoRows: 280,
     gridGap: theme.spacing(2),
-    minHeight: 800,
+    minHeight: 600,
     padding: theme.spacing(3),
   },
 }));
@@ -61,7 +64,7 @@ const Products: FC<Props> = ({ cart, baseUrl }) => {
   });
   const { productsPagination } = data || {};
   const { items: products = [], pageInfo } = productsPagination || {};
-  const { pageCount = 1 } = pageInfo || {};
+  const { itemCount = 1 } = pageInfo || {};
 
   const handlePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
@@ -75,7 +78,7 @@ const Products: FC<Props> = ({ cart, baseUrl }) => {
   return (
     <ProductsContext.Provider value={{ sort, setSort, filter, setFilter }}>
       <Box className={classes.wrapper}>
-        <Card>
+        <Card className={classes.card}>
           <CardContent>
             <Box className={classes.products}>
               {products?.map(({ name, _id, description, quantity, price, photos }) => (
@@ -96,7 +99,7 @@ const Products: FC<Props> = ({ cart, baseUrl }) => {
           <CardActions>
             <TablePagination
               component="div"
-              count={pageCount || 1}
+              count={itemCount || 1}
               page={page}
               onChangePage={handlePage}
               rowsPerPage={limit}

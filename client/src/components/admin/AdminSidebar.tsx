@@ -5,9 +5,6 @@ import { Paper, List, ListItem, ListItemIcon, ListItemText, Divider } from '@mat
 import { useHistory } from 'react-router-dom';
 
 import HomeIcon from '@material-ui/icons/Home';
-import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import BuildIcon from '@material-ui/icons/Build';
-import MeetingRoomIcon from '@material-ui/icons/MeetingRoom';
 import WeekendIcon from '@material-ui/icons/Weekend';
 import AssignmentTurnedInIcon from '@material-ui/icons/AssignmentTurnedIn';
 
@@ -44,24 +41,24 @@ const routes: Routes = {
     icon: <HomeIcon />,
     divide: true,
   },
-  categories: {
-    label: 'Категории',
-    icon: <InsertDriveFileIcon />,
-  },
-  materials: {
-    label: 'Материалы',
-    icon: <BuildIcon />,
-  },
-  locations: {
-    label: 'Комнаты',
-    icon: <MeetingRoomIcon />,
-  },
-  products: {
+  // categories: {
+  //   label: 'Категории',
+  //   icon: <InsertDriveFileIcon />,
+  // },
+  // materials: {
+  //   label: 'Материалы',
+  //   icon: <BuildIcon />,
+  // },
+  // locations: {
+  //   label: 'Комнаты',
+  //   icon: <MeetingRoomIcon />,
+  // },
+  product: {
     label: 'Мебель',
     icon: <WeekendIcon />,
     divide: true,
   },
-  orders: {
+  order: {
     label: 'Заказы',
     icon: <AssignmentTurnedInIcon />,
   },

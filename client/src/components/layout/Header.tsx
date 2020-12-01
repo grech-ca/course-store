@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { DateTime } from 'luxon';
 
 import { AppBar, Toolbar, Box, Typography, IconButton, Badge, Popover, Divider } from '@material-ui/core';
-import { ShoppingCart, Notifications, AccountCircle } from '@material-ui/icons';
+import { ShoppingCart, Notifications } from '@material-ui/icons';
 import { Link } from 'react-router-dom';
 
 import Spacer from 'components/common/Spacer';
@@ -166,9 +166,9 @@ const Header: FC = () => {
               )}
             </Box>
           </Popover>
-          <IconButton className={classes.iconButton}>
+          {/* <IconButton className={classes.iconButton}>
             <AccountCircle />
-          </IconButton>
+          </IconButton> */}
         </Box>
       </Toolbar>
     </AppBar>

@@ -1,5 +1,6 @@
 import React, { FC, useState, ChangeEvent } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 import {
   Card,
@@ -107,6 +108,8 @@ const useStyles = makeStyles(theme => ({
 const CartCard: FC<Props> = ({ _id, name, description, photo, price, type, quantity, maxQuantity }): JSX.Element => {
   const classes = useStyles();
 
+  const { push } = useHistory();
+
   const { addToCart, setInCartQuantity, decreaseFromCart, removeFromCart } = useCart();
 
   const [imageLoaded, setImageLoaded] = useState(true);
@@ -135,7 +138,7 @@ const CartCard: FC<Props> = ({ _id, name, description, photo, price, type, quant
 
   return (
     <Card className={classes.card}>
-      <CardActionArea className={classes.card}>
+      <CardActionArea onClick={() => push(`/product/${_id}`)} className={classes.card}>
         {imageLoaded && photo ? (
           <CardMedia component="img" className={classes.media} src={photo || undefined} onError={onImageError} />
         ) : (

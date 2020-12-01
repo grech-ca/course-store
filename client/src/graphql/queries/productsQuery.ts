@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 import productCardFields from 'graphql/fragments/productCardFields';
 
 const ProductsQuery = gql`
-  query Products(
+  query products(
     $filter: FilterFindManyProductInput
     $page: Int = 1
     $perPage: Int = 10
@@ -15,7 +15,7 @@ const ProductsQuery = gql`
       }
       pageInfo {
         currentPage
-        pageCount
+        itemCount
       }
     }
   }

@@ -32,7 +32,7 @@ const productQuery = gql`
       _id
       name
     }
-    recommended: products(limit: 5) {
+    recommended: products(limit: 3) {
       ...productCardFields
     }
   }

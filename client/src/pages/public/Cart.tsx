@@ -1,14 +1,17 @@
-import React, { FC, useState, ChangeEvent } from 'react';
+import React, { FC, Fragment, useMemo } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { Container, Box, Paper, Typography, Divider, TextField, Button } from '@material-ui/core';
+import { Container, Box, Paper, Typography, Divider, Button } from '@material-ui/core';
 
+import useModal from 'hooks/useModal';
 import useCart from 'hooks/useCart';
 
 import Layout from 'components/layout/Layout';
 import CartCard from 'components/cart/CartCard';
 import CartPlaceholder from 'components/cart/CartPlaceholder';
+import ProductCreateOrder from 'components/product/ProductCreateOrder';
 
+import { ModalName } from 'ducks/modal/types';
 import { Product } from 'graphql/generated';
 
 const useStyles = makeStyles(theme => ({
@@ -64,77 +67,76 @@ const useStyles = makeStyles(theme => ({
 const Cart: FC = () => {
   const classes = useStyles();
 
-  const { findItemInCartById, products, productsCost, delieverCost } = useCart();
+  const { open } = useModal(ModalName.CreateOrder);
+  const { cart, findItemInCartById, products, productsCost, delieverCost } = useCart();
 
-  const [phone, setPhone] = useState<string>('');
-
-  const handlePhone = (e: ChangeEvent<HTMLInputElement>) => {
-    setPhone(`+8${e.target.value.slice(2, 12)}`);
-  };
+  const orderProducts = useMemo(
+    () =>
+      products.map(({ _id, name, photos }) => ({
+        product: _id,
+        name,
+        photo: photos[0],
+        quantity: cart.find(({ id: cartId }) => cartId === _id)?.quantity || 0,
+      })),
+    [cart, products],
+  );
 
   return (
-    <Layout header>
-      <Container>
-        <Typography className={classes.heading}>Корзина</Typography>
-        <Box className={classes.wrapper}>
-          <Box className={classes.cartItems}>
-            {products.map(({ _id, name, description, photos, price, category, quantity }: Product) => (
-              <CartCard
-                key={_id}
-                _id={_id}
-                name={name}
-                description={description}
-                photo={photos[0]}
-                price={price}
-                type={category?.name}
-                quantity={Math.min(findItemInCartById(_id)?.quantity || 0, quantity)}
-                maxQuantity={quantity}
-              />
-            ))}
-            {!products.length && <CartPlaceholder />}
-          </Box>
-          <Box className={classes.sideColumn}>
-            <Paper className={classes.form}>
-              <Typography className={classes.formTitle}>Сумма заказа</Typography>
-              <Box className={classes.formSection}>
-                <Typography className={classes.cost}>
-                  <Typography component="span">Стоимость</Typography>
-                  <Typography component="span">{productsCost} руб.</Typography>
-                </Typography>
-                <Typography className={classes.cost}>
-                  <Typography component="span">Доставка</Typography>
-                  <Typography component="span">{delieverCost ? `${delieverCost} руб.` : 'Бесплатно'}</Typography>
-                </Typography>
-              </Box>
-              <Divider />
-              <Box className={classes.formSection}>
-                <Typography className={classes.cost}>
-                  <Typography component="span">К оплате</Typography>
-                  <Typography component="span" className={classes.total}>
-                    {productsCost + delieverCost} руб.
-                  </Typography>
-                </Typography>
-              </Box>
-              <Box className={classes.formSection}>
-                <TextField
-                  size="small"
-                  className={classes.phone}
-                  type="tel"
-                  variant="outlined"
-                  label="Телефон"
-                  placeholder="+8"
-                  value={phone}
-                  onChange={handlePhone}
+    <Fragment>
+      <Layout header>
+        <Container>
+          <Typography className={classes.heading}>Корзина</Typography>
+          <Box className={classes.wrapper}>
+            <Box className={classes.cartItems}>
+              {products.map(({ _id, name, description, photos, price, category, quantity }: Product) => (
+                <CartCard
+                  key={_id}
+                  _id={_id}
+                  name={name}
+                  description={description}
+                  photo={photos[0]}
+                  price={price}
+                  type={category?.name}
+                  quantity={Math.min(findItemInCartById(_id)?.quantity || 0, quantity)}
+                  maxQuantity={quantity}
                 />
-                <Button variant="contained" color="primary">
-                  Перейти к оплате
-                </Button>
-              </Box>
-            </Paper>
+              ))}
+              {!products.length && <CartPlaceholder />}
+            </Box>
+            <Box className={classes.sideColumn}>
+              <Paper className={classes.form}>
+                <Typography className={classes.formTitle}>Сумма заказа</Typography>
+                <Box className={classes.formSection}>
+                  <Typography className={classes.cost}>
+                    <Typography component="span">Стоимость</Typography>
+                    <Typography component="span">{productsCost} руб.</Typography>
+                  </Typography>
+                  <Typography className={classes.cost}>
+                    <Typography component="span">Доставка</Typography>
+                    <Typography component="span">{delieverCost ? `${delieverCost} руб.` : 'Бесплатно'}</Typography>
+                  </Typography>
+                </Box>
+                <Divider />
+                <Box className={classes.formSection}>
+                  <Typography className={classes.cost}>
+                    <Typography component="span">К оплате</Typography>
+                    <Typography component="span" className={classes.total}>
+                      {productsCost + delieverCost} руб.
+                    </Typography>
+                  </Typography>
+                </Box>
+                <Box className={classes.formSection}>
+                  <Button onClick={open} variant="contained" color="primary">
+                    Оставить заявку
+                  </Button>
+                </Box>
+              </Paper>
+            </Box>
           </Box>
-        </Box>
-      </Container>
-    </Layout>
+        </Container>
+      </Layout>
+      <ProductCreateOrder products={orderProducts} isMultipleOrder />
+    </Fragment>
   );
 };
 

@@ -72,7 +72,7 @@ ProductSchema.index({ updatedAt: 1 });
 ProductSchema.index({ price: 1 });
 ProductSchema.index({ quantity: 1 });
 
-const Product = mongoose.model<ProductDoc>('Product', ProductSchema);
+export const Product = mongoose.model<ProductDoc>('Product', ProductSchema);
 
 export const ProductTC = composeMongoose(Product, {});
 
@@ -96,15 +96,9 @@ ProductTC.addRelation(
 ProductTC.addRelation(
   'category',
   {
-    resolver: () => CategoryTC.mongooseResolvers.findOne(),
-    args: {
-      filter: (source: any) => ({
-        _operators: {
-          _id: {
-            equals: source.categoryRef
-          }
-        }
-      }) 
+    resolver: () => CategoryTC.mongooseResolvers.findById(),
+    prepareArgs: {
+      _id: (source: any) => source.categoryRef,
     },
     projection: { categoryRef: true },
   } as any

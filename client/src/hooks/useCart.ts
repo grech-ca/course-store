@@ -17,6 +17,7 @@ type Hook = {
   addToCart: (id: string, quantity: number) => void;
   setInCartQuantity: (id: string, quantity: number) => void;
   removeFromCart: (id: string) => void;
+  clearCart: () => void;
   decreaseFromCart: (id: string, quantity: number) => void;
   products: Product[];
   productsCost: number;
@@ -131,6 +132,8 @@ const useCart = (): Hook => {
     return productsCost > 15000 ? 0 : delieverPrice;
   }, [productsCost]);
 
+  const clearCart = () => setCart([]);
+
   return {
     cart,
     findItemInCartById,
@@ -138,6 +141,7 @@ const useCart = (): Hook => {
     setInCartQuantity,
     removeFromCart,
     decreaseFromCart,
+    clearCart,
     products: products as Product[],
     productsCost,
     delieverCost,

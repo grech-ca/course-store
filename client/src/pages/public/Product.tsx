@@ -1,10 +1,11 @@
-import React, { FC, useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { FC, useState, useEffect, ChangeEvent, FormEvent, Fragment } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { Paper, Box, Typography, Divider, IconButton, TextField, Button } from '@material-ui/core';
 import RemoveIcon from '@material-ui/icons/Remove';
 import AddIcon from '@material-ui/icons/Add';
 
+import useModal from 'hooks/useModal';
 import useProduct from 'hooks/useProduct';
 import useCart from 'hooks/useCart';
 import useViews from 'hooks/useViews';
@@ -12,7 +13,9 @@ import useViews from 'hooks/useViews';
 import Layout from 'components/layout/Layout';
 import ProductGallery from 'components/product/ProductGallery';
 import ProductCard from 'components/product/ProductCard';
+import ProductCreateOrder from 'components/product/ProductCreateOrder';
 
+import { ModalName } from 'ducks/modal/types';
 import { Product } from 'graphql/generated';
 
 const useStyles = makeStyles(theme => ({
@@ -105,6 +108,8 @@ const useStyles = makeStyles(theme => ({
 const ProductPage: FC = () => {
   const classes = useStyles();
 
+  const { open: openModal } = useModal(ModalName.CreateOrder);
+
   const [count, setCount] = useState<number | undefined>(1);
 
   const { makeSeen } = useViews();
@@ -148,68 +153,71 @@ const ProductPage: FC = () => {
   }, [_id, makeSeen]);
 
   return (
-    <Layout header sidebar>
-      <Box className={classes.wrapper}>
-        <Paper className={classes.main}>
-          <ProductGallery photos={photos} />
-          <Box className={classes.content}>
-            <Box className={classes.heading}>
-              <Typography className={classes.name}>{name}</Typography>
-              {category && (
-                <Typography component="span" className={classes.category}>
-                  {category.name}
-                </Typography>
-              )}
+    <Fragment>
+      <Layout header sidebar>
+        <Box className={classes.wrapper}>
+          <Paper className={classes.main}>
+            <ProductGallery photos={photos} />
+            <Box className={classes.content}>
+              <Box className={classes.heading}>
+                <Typography className={classes.name}>{name}</Typography>
+                {category && (
+                  <Typography component="span" className={classes.category}>
+                    {category.name}
+                  </Typography>
+                )}
+              </Box>
+              <Divider className={classes.divider} />
+              <Typography className={classes.price}>{price} руб.</Typography>
+              <Typography>Количество:</Typography>
+              <Box component="form" onSubmit={handleCountSubmit} className={classes.form}>
+                <Box className={classes.counter}>
+                  <IconButton size="small" onClick={() => handleCount(-1)}>
+                    <RemoveIcon />
+                  </IconButton>
+                  <TextField
+                    className={classes.counterValue}
+                    onBlur={validateCount}
+                    value={count}
+                    onChange={handleChangeCount}
+                  />
+                  <IconButton size="small" onClick={() => handleCount(1)}>
+                    <AddIcon />
+                  </IconButton>
+                  <Typography className={classes.quantity}>{quantity} шт.</Typography>
+                </Box>
+                <Box className={classes.actions}>
+                  <Button onClick={openModal} variant="contained" color="secondary" className={classes.button}>
+                    Оставить заявку
+                  </Button>
+                  <Button type="submit" variant="contained" color="primary" className={classes.button}>
+                    Добавить в корзину
+                  </Button>
+                </Box>
+              </Box>
+              <Typography>{description}</Typography>
             </Box>
-            <Divider className={classes.divider} />
-            <Typography className={classes.price}>{price} руб.</Typography>
-            <Typography>Количество:</Typography>
-            <Box component="form" onSubmit={handleCountSubmit} className={classes.form}>
-              <Box className={classes.counter}>
-                <IconButton size="small" onClick={() => handleCount(-1)}>
-                  <RemoveIcon />
-                </IconButton>
-                <TextField
-                  className={classes.counterValue}
-                  onBlur={validateCount}
-                  value={count}
-                  onChange={handleChangeCount}
+          </Paper>
+          <Box className={classes.secondary}>
+            <Box className={classes.recommended}>
+              {recommended?.map(({ _id, name, description, photos, price, quantity }: Product) => (
+                <ProductCard
+                  key={_id}
+                  _id={_id}
+                  photo={photos[0]}
+                  name={name}
+                  description={description}
+                  price={price}
+                  quantity={quantity}
+                  cart
                 />
-                <IconButton size="small" onClick={() => handleCount(1)}>
-                  <AddIcon />
-                </IconButton>
-                <Typography className={classes.quantity}>{quantity} шт.</Typography>
-              </Box>
-              <Box className={classes.actions}>
-                <Button variant="contained" color="secondary" className={classes.button}>
-                  Оставить заявку
-                </Button>
-                <Button type="submit" variant="contained" color="primary" className={classes.button}>
-                  Добавить в корзину
-                </Button>
-              </Box>
+              ))}
             </Box>
-            <Typography>{description}</Typography>
-          </Box>
-        </Paper>
-        <Box className={classes.secondary}>
-          <Box className={classes.recommended}>
-            {recommended?.map(({ _id, name, description, photos, price, quantity }: Product) => (
-              <ProductCard
-                key={_id}
-                _id={_id}
-                photo={photos[0]}
-                name={name}
-                description={description}
-                price={price}
-                quantity={quantity}
-                cart
-              />
-            ))}
           </Box>
         </Box>
-      </Box>
-    </Layout>
+      </Layout>
+      <ProductCreateOrder products={[{ product: _id, name, quantity: count as number, photo: photos[0] }]} />
+    </Fragment>
   );
 };
 

@@ -1,6 +1,7 @@
 import React, { FC, Fragment, useMemo, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useQuery } from '@apollo/client';
+
 import { DateTime } from 'luxon';
 import clsx from 'clsx';
 
@@ -149,7 +150,12 @@ const AdminHome: FC = () => {
                   {group.data.map(({ updatedAt, photo, name, _id }, index) => (
                     <Fragment key={_id}>
                       {!index && <Typography className={classes.section}>{group.section}</Typography>}
-                      <SnackCard date={updatedAt} photo={photo || ''} name={name} onClick={() => null} />
+                      <SnackCard
+                        description={DateTime.fromISO(updatedAt).toRelative({ locale: 'ru' }) || ''}
+                        photo={photo || ''}
+                        name={name}
+                        path={`/admin/product/${_id}`}
+                      />
                     </Fragment>
                   ))}
                 </Fragment>

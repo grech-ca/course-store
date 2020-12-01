@@ -13,7 +13,7 @@ type UseModalHookResult = {
 const useModal = (name: ModalName): UseModalHookResult => {
   const dispatch = useDispatch();
 
-  const isOpen = useSelector<Modal>((modal: Modal) => modal[name as ModalName].isOpen) as boolean;
+  const isOpen = useSelector<{ modal: Modal }>(state => state.modal[name as ModalName]?.isOpen) as boolean;
 
   const open = (): void => {
     dispatch(openModal(name));
